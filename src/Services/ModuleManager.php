@@ -57,6 +57,7 @@ class ModuleManager implements Contract
     {
         $this->throwExceptionIfNotInitialised();
         $this->throwExceptionIfModuleDoesNotExist($module);
+        $module = $this->sanitiseModuleName($module);
 
         if ($content = Cache::get($this->getCacheKey()) === null) {
             $content = [$this->getWorkbenchKey() => null];
@@ -122,6 +123,7 @@ class ModuleManager implements Contract
     public function removeModule (string $module) : void
     {
         $this->throwExceptionIfModuleDoesNotExist($module);
+        $module = $this->sanitiseModuleName($module);
 
         try {
             $this->deactivateModule($module);
@@ -542,5 +544,22 @@ class ModuleManager implements Contract
         }
 
         rmdir($dir);
+    }
+
+    /**
+     * Retrieve the module name in its original case
+     *
+     * @param string $module
+     * @return string
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    protected function sanitiseModuleName (string $module) : string
+    {
+        $lower = $this->getModules()->map(function (string $mod) { return strtolower($mod); });
+        $key = array_search(strtolower($module), $lower->toArray());
+
+        return $this->getModules()->get($key);
     }
 }
