@@ -81,7 +81,7 @@ abstract class ServiceProviderFactory extends FileFactory
      */
     protected function getServiceProviderDir (string $module) : string
     {
-        return config("modules.root") . "/{$this->moduleNameToModuleDirName($module)}/Providers/";
+        return config("modules.root") . "/{$this->moduleNameToModuleDirName($module)}/Providers";
     }
 
     /**
