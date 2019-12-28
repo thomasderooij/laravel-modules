@@ -4,7 +4,9 @@
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
-        "laravel"
+        "laravel",
+        "modules",
+        "modular"
     ],
     "license": "MIT",
     "require": {
