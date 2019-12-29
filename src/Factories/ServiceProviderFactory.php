@@ -92,7 +92,7 @@ abstract class ServiceProviderFactory extends FileFactory
      */
     protected function moduleNameToModuleDirName (string $module) : string
     {
-        return ucfirst(strtolower($module));
+        return $module;
     }
 
     /**
