@@ -2,6 +2,7 @@
 
 namespace Thomasderooij\LaravelModules\Factories;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
@@ -30,7 +31,7 @@ abstract class FileFactory
      * @param string $fileName
      * @param string $stub
      * @param array $values
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     protected function populateFile (string $dir, string $fileName, string $stub, array $values = []) : void
     {
