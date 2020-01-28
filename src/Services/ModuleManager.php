@@ -313,7 +313,7 @@ class ModuleManager implements Contract
     protected function save (Collection $trackerContent): void
     {
         // Get the qualified directory to store the tracker file in
-        $storageDir = base_path($this->getModuleStorageDir());
+        $storageDir = base_path($this->getRelativeTrackerDir());
 
         // Get the qualified file name
         $trackerFile = $storageDir . $this->getTrackerFileName();
@@ -423,7 +423,7 @@ class ModuleManager implements Contract
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
 
-        $trackerFile = base_path(static::getModuleStorageDir() . static::getTrackerFileName());
+        $trackerFile = base_path(static::getRelativeTrackerDir() . static::getTrackerFileName());
 
         return collect(json_decode(file_get_contents($trackerFile), true));
     }
@@ -436,7 +436,7 @@ class ModuleManager implements Contract
     protected static function hasTrackerFile () : bool
     {
         try {
-            $trackerFile = base_path(static::getModuleStorageDir() . static::getTrackerFileName());
+            $trackerFile = base_path(static::getRelativeTrackerDir() . static::getTrackerFileName());
         } catch (ConfigFileNotFoundException $e) {
             return false;
         }
@@ -450,11 +450,11 @@ class ModuleManager implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    protected static function getModuleStorageDir () : string
+    protected static function getRelativeTrackerDir () : string
     {
         static::throwExceptionIfConfigIsNotFound();
 
-        return "storage/".config("modules.root")."/";
+        return config("modules.root")."/";
     }
 
     /**

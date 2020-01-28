@@ -79,4 +79,25 @@ class EventMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Events/$event.php")));
         unlink(app_path("Events/$event.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make an event with the module option
+        $event = "NewEvent";
+        $this->artisan("make:event", ["name" => $event, "--module" => "vanilla"]);
+
+        // I should have a event in my app dir
+        $this->assertTrue(class_exists("App\\Events\\$event"));
+        $this->assertTrue(is_file(app_path("Events/$event.php")));
+        unlink(app_path("Events/$event.php"));
+    }
 }

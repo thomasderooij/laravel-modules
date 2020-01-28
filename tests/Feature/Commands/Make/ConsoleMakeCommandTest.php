@@ -79,4 +79,27 @@ class ConsoleMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Console/Commands/$command.php")));
         unlink(app_path("Console/Commands/$command.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        $this->moduleManager->clearWorkbench();
+
+        // And I make a migration with the module option
+        $command = "NewCommand";
+        $this->artisan("make:command", ["name" => $command, "--module" => "vanilla"]);
+
+        // I should have a command in my app dir
+        $this->assertTrue(class_exists("App\\Console\\Commands\\$command"));
+        $this->assertTrue(is_file(app_path("Console/Commands/$command.php")));
+        unlink(app_path("Console/Commands/$command.php"));
+    }
 }

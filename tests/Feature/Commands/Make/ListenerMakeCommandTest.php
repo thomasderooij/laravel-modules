@@ -127,4 +127,27 @@ class ListenerMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Listeners/$listener.php")));
         unlink(app_path("Listeners/$listener.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a listener with the module option
+        $listener = "NewListener";
+        $response = $this->artisan("make:listener", ["name" => $listener, "--module" => "vanilla"]);
+        $response->expectsOutput("Listener created successfully.");
+        $response->run();
+
+        // I should have a listener in my app dir
+        $this->assertTrue(class_exists("App\\Listeners\\$listener"));
+        $this->assertTrue(is_file(app_path("Listeners/$listener.php")));
+        unlink(app_path("Listeners/$listener.php"));
+    }
 }

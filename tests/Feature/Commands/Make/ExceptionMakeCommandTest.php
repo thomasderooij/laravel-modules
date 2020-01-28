@@ -79,4 +79,25 @@ class ExceptionMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Exceptions/$exception.php")));
         unlink(app_path("Exceptions/$exception.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a migration with the module option
+        $exception = "NewException";
+        $this->artisan("make:exception", ["name" => $exception, "--module" => "vanilla"]);
+
+        // I should have an exception in my app dir
+//        $this->assertTrue(class_exists($this->moduleManager->getModuleNameSpace($module) . "\\Exceptions\\$exception"));
+        $this->assertTrue(is_file(app_path("Exceptions/$exception.php")));
+        unlink(app_path("Exceptions/$exception.php"));
+    }
 }

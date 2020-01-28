@@ -57,7 +57,7 @@ php artisan module:set <module-name>
 This sets one of your modules to your workbench
 
 ```bash
-php artisan module:deactivate
+php artisan module:unset
 ```
 This clears your workbench
 

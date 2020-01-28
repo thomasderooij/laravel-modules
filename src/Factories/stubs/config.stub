@@ -17,5 +17,6 @@ return [
      | And run "composer dump-autoload" in your terminal.
      */
     "root" => env("MODULES_ROOT", "{moduleDirectory}"),
+    "vanilla" => env("MODULES_VANILLA", "vanilla"),
     "autoload" => env("MODULES_AUTOLOAD", "{moduleAutoload}"),
 ];

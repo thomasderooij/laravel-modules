@@ -95,11 +95,12 @@ class ConfigFactory extends FileFactory implements Contract
     /**
      * Create a module tracker file
      *
+     * @param string $rootDir
      * @throws FileNotFoundException
      */
     protected function createModuleTrackerFile (string $rootDir) : void
     {
-        $this->populateFile($this->getRelativeStorageDirectory($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
+        $this->populateFile($this->getRelativeTrackerDirectory($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
     }
 
     /**
@@ -182,8 +183,8 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getRelativeStorageDirectory (string $rootDir) : string
+    public function getRelativeTrackerDirectory (string $rootDir) : string
     {
-        return "storage/$rootDir";
+        return "$rootDir";
     }
 }

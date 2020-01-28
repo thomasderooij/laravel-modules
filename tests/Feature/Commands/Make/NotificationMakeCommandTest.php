@@ -130,4 +130,26 @@ class NotificationMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Notifications/$notification.php")));
         unlink(app_path("Notifications/$notification.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a notification with the module option
+        $notification = "NewNotification";
+        $response = $this->artisan("make:notification", ["name" => $notification, "--module" => "vanilla"]);
+        $response->expectsOutput("Notification created successfully.")->run();
+
+        // I should have a notification in my app dir
+        $this->assertTrue(class_exists("App\\Notifications\\$notification"));
+        $this->assertTrue(is_file(app_path("Notifications/$notification.php")));
+        unlink(app_path("Notifications/$notification.php"));
+    }
 }

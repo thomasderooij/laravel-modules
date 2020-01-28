@@ -128,4 +128,27 @@ class MailMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Mail/$mail.php")));
         unlink(app_path("Mail/$mail.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a mail with the module option
+        $mail = "NewMail";
+        $response = $this->artisan("make:mail", ["name" => $mail, "--module" => "vanilla"]);
+        $response->expectsOutput("Mail created successfully.");
+        $response->run();
+
+        // I should have a mail in my app dir
+        $this->assertTrue(class_exists("App\\Mail\\$mail"));
+        $this->assertTrue(is_file(app_path("Mail/$mail.php")));
+        unlink(app_path("Mail/$mail.php"));
+    }
 }

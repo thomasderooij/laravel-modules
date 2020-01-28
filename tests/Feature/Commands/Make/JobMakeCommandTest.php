@@ -105,4 +105,27 @@ class JobMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path("Jobs/$job.php")));
         unlink(app_path("Jobs/$job.php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a job with the module option
+        $job = "NewJob";
+        $response = $this->artisan("make:job", ["name" => $job, "--module" => "vanilla"]);
+        $response->expectsOutput("Job created successfully.");
+        $response->run();
+
+        // I should have a job in my app dir
+        $this->assertTrue(class_exists("App\\Jobs\\$job"));
+        $this->assertTrue(is_file(app_path("Jobs/$job.php")));
+        unlink(app_path("Jobs/$job.php"));
+    }
 }

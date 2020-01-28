@@ -80,4 +80,25 @@ class ModelMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(app_path($model.".php")));
         unlink(app_path($model.".php"));
     }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a migration with the module option
+        $model = "newModel";
+        $this->artisan("make:model", ["name" => $model, "--module" => "vanilla"]);
+
+        // I should have a model in my app dir
+        $this->assertTrue(class_exists("App\\$model"));
+        $this->assertTrue(is_file(app_path($model.".php")));
+        unlink(app_path($model.".php"));
+    }
 }

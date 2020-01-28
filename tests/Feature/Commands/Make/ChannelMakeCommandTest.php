@@ -65,11 +65,32 @@ class ChannelMakeCommandTest extends ModuleTest
         unlink(app_path("Broadcasting/$channel.php"));
     }
 
-    public function testMakingAChannelResourceWithoutModulesInitialised () : void
+    public function testMakingAChannelWithoutModulesInitialised () : void
     {
         // If I make a channel
         $channel = "NewChannel";
         $this->artisan("make:channel", ["name" => $channel]);
+
+        // I should have a channel in my app dir
+        $this->assertTrue(class_exists("App\\Broadcasting\\$channel"));
+        $this->assertTrue(is_file(app_path("Broadcasting/$channel.php")));
+        unlink(app_path("Broadcasting/$channel.php"));
+    }
+
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a channel with the module option
+        $channel = "NewChannel";
+        $this->artisan("make:channel", ["name" => $channel, "--module" => "vanilla"]);
 
         // I should have a channel in my app dir
         $this->assertTrue(class_exists("App\\Broadcasting\\$channel"));
