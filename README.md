@@ -125,9 +125,14 @@ Migrating multiple modules in one command will make a separate migration batch p
 This project is currently in its beta stage. Should you find any bugs or encounter unexpected behaviour, feel
  free to create an issue.
 
+### Settings
+In the settings, you will find two things: Your current module directory, and the module name for the vanilla
+laravel. You can change your module directory. Just make sure to also change it in your composer psr-4.
+The vanilla Laravel name is just a module name for the default behaviour. If you want to change that name, either
+change it in the config/modules file, or add 'MODULES_VANILLA={your prefered name here}' to your .env file
+
 ### Roadmap
 The following things will be applied before moving to a 1.x stage:
- * factories
  * seeders
  * resources
  * events
