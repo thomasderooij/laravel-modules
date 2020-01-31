@@ -32,7 +32,7 @@ To manage your modules, you can use the following commands are provided:
 ```bash
 php artisan module:new <module-name>
 ```
-This create a new module in your modules directory.
+This creates a new module in your modules directory.
 
 ```bash
 php artisan module:delete <module-name>
@@ -74,7 +74,7 @@ When creating a new module, your directory structure will look as follow:
     ├── bootstrap
     ├── config
     ├── database
-    ├── modules
+    ├── modules<this is the default>
     │   └── YourModule
     │       ├── Console
     │       │   └── Kernel.php
@@ -104,10 +104,9 @@ All other directories, like database, Events, Jobs, Exceptions etc. will be crea
 #### Make
 All the make commands will apply to the module in your workbench and can be overwritten by using --module option.
 If there is no module in your workbench and the --module option is not used, the commands
-will display default Laravel behaviour.
+will display vanilla Laravel behaviour.
 
 The following commands do not apply to your module (yet):
- * [`php artisan make:factory`]
  * [`php artisan make:seeder`]
  * [`php artisan make:test`]
 
