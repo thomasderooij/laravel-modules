@@ -134,7 +134,6 @@ change it in the config/modules file, or add 'MODULES_VANILLA={your prefered nam
 The following things will be applied before moving to a 1.x stage:
  * seeders
  * resources
- * events
  * module dependency tracking
  
 In that order. Probably.
