@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
      * @return void
      * @throws \ReflectionException
      */
-    protected function load($paths)
+    protected function load($paths) : void
     {
         $paths = array_unique(Arr::wrap($paths));
 
@@ -32,7 +32,6 @@ class Kernel extends ConsoleKernel
         }
 
         $namespace = $this->app->getNamespace();
-
         /** @var SplFileInfo $command */
         foreach ((new Finder)->in($paths)->files() as $command) {
 

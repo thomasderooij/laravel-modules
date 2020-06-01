@@ -122,8 +122,8 @@ class ModuleManager implements Contract
      */
     public function removeModule (string $module) : void
     {
-        $this->throwExceptionIfModuleDoesNotExist($module);
         $module = $this->sanitiseModuleName($module);
+        $this->throwExceptionIfModuleDoesNotExist($module);
 
         try {
             $this->deactivateModule($module);
@@ -313,7 +313,7 @@ class ModuleManager implements Contract
     protected function save (Collection $trackerContent): void
     {
         // Get the qualified directory to store the tracker file in
-        $storageDir = base_path($this->getRelativeTrackerDir());
+        $storageDir = base_path($this->getModuleStorageDir());
 
         // Get the qualified file name
         $trackerFile = $storageDir . $this->getTrackerFileName();
@@ -423,7 +423,7 @@ class ModuleManager implements Contract
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
 
-        $trackerFile = base_path(static::getRelativeTrackerDir() . static::getTrackerFileName());
+        $trackerFile = base_path(static::getModuleStorageDir() . static::getTrackerFileName());
 
         return collect(json_decode(file_get_contents($trackerFile), true));
     }
@@ -436,7 +436,7 @@ class ModuleManager implements Contract
     protected static function hasTrackerFile () : bool
     {
         try {
-            $trackerFile = base_path(static::getRelativeTrackerDir() . static::getTrackerFileName());
+            $trackerFile = base_path(static::getModuleStorageDir() . static::getTrackerFileName());
         } catch (ConfigFileNotFoundException $e) {
             return false;
         }
@@ -450,11 +450,11 @@ class ModuleManager implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    protected static function getRelativeTrackerDir () : string
+    protected static function getModuleStorageDir () : string
     {
         static::throwExceptionIfConfigIsNotFound();
 
-        return config("modules.root")."/";
+        return "storage/".config("modules.root")."/";
     }
 
     /**
@@ -533,7 +533,7 @@ class ModuleManager implements Contract
     protected function deleteDirectory (string $dir) : void
     {
         $iterator = new DirectoryIterator($dir);
-        foreach ( $iterator as $fileinfo) {
+        foreach ($iterator as $fileinfo) {
             if($fileinfo->isDot()) continue;
             if($fileinfo->isDir()){
                 $this->deleteDirectory($fileinfo->getPathname());
@@ -546,15 +546,6 @@ class ModuleManager implements Contract
         rmdir($dir);
     }
 
-    /**
-     * Retrieve the module name in its original case
-     *
-     * @param string $module
-     * @return string
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
     protected function sanitiseModuleName (string $module) : string
     {
         $lower = $this->getModules()->map(function (string $mod) { return strtolower($mod); });

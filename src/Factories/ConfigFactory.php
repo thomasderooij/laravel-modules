@@ -89,18 +89,18 @@ class ConfigFactory extends FileFactory implements Contract
             $this->getModuleDirPlaceholder() => $rootDir,
             $this->getModuleNamespacePlaceholder() => ucfirst($rootDir),
             $this->getModuleAutoloadPlaceholder() => $rootDir,
+            $this->getVanillaModuleNamePlaceholder() => $this->getDefaultVanillaModuleName(),
         ]);
     }
 
     /**
      * Create a module tracker file
      *
-     * @param string $rootDir
      * @throws FileNotFoundException
      */
     protected function createModuleTrackerFile (string $rootDir) : void
     {
-        $this->populateFile($this->getRelativeTrackerDirectory($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
+        $this->populateFile($this->getRelativeStorageDirectory($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
     }
 
     /**
@@ -183,8 +183,28 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getRelativeTrackerDirectory (string $rootDir) : string
+    public function getRelativeStorageDirectory (string $rootDir) : string
     {
-        return "$rootDir";
+        return "storage/$rootDir";
+    }
+
+    /**
+     * Get the vanilla module name placeholder
+     *
+     * @return string
+     */
+    public function getVanillaModuleNamePlaceholder () : string
+    {
+        return "{vanillaModule}";
+    }
+
+    /**
+     * Get the default value for the vanilla module
+     *
+     * @return string
+     */
+    public function getDefaultVanillaModuleName () : string
+    {
+        return "Vanilla";
     }
 }

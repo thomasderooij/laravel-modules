@@ -6,17 +6,20 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Contracts\ConsoleCompositeKernel;
 use Thomasderooij\LaravelModules\Contracts\Factories\AppBootstrapFactory as Contract;
+use Thomasderooij\LaravelModules\Contracts\HttpCompositeKernel;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class AppBootstrapFactory extends FileFactory implements Contract
 {
     protected $compositeConsoleKernelClassName;
+    protected $compositeHttpKernelClassName;
 
-    public function __construct(Filesystem $filesystem, ConsoleCompositeKernel $compositeKernel, ModuleManager $moduleManager)
+    public function __construct(Filesystem $filesystem, ConsoleCompositeKernel $consoleCompositeKernel, HttpCompositeKernel $httpCompositeKernel, ModuleManager $moduleManager)
     {
         parent::__construct($filesystem, $moduleManager);
 
-        $this->compositeConsoleKernelClassName = get_class($compositeKernel);
+        $this->compositeConsoleKernelClassName = get_class($consoleCompositeKernel);
+        $this->compositeHttpKernelClassName = get_class($httpCompositeKernel);
     }
 
     /**
@@ -49,7 +52,8 @@ class AppBootstrapFactory extends FileFactory implements Contract
         touch(base_path("bootstrap/{$this->getBootstrapFileName()}"));
 
         $this->populateFile(base_path("bootstrap"), $this->getBootstrapFileName(), $this->getStub(), [
-            $this->getConsoleCompositeKernelPlaceHolder() => $this->getCompositeKernelClassNameStatic()
+            $this->getConsoleCompositeKernelPlaceHolder() => $this->getCompositeKernelClassNameStatic(),
+            $this->getHttpCompositeKernelPlaceHolder() => $this->getHttpKernelClassNameStatic(),
         ]);
     }
 
@@ -60,7 +64,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      */
     protected function getStub () : string
     {
-        return base_path("bootstrap/{$this->getBootstrapOrigFileName()}");
+        return  __DIR__ . "/stubs/bootstrapFile.stub";
     }
 
     /**
@@ -70,7 +74,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      */
     protected function getConsoleCompositeKernelPlaceHolder () : string
     {
-        return "App\Console\Kernel::class";
+        return "{ConsoleCompositeKernel}";
     }
 
     /**
@@ -81,6 +85,16 @@ class AppBootstrapFactory extends FileFactory implements Contract
     protected function getCompositeKernelClassNameStatic () : string
     {
         return $this->compositeConsoleKernelClassName . "::class";
+    }
+
+    protected function getHttpCompositeKernelPlaceHolder () : string
+    {
+        return "{HttpCompositeKernel}";
+    }
+
+    public function getHttpKernelClassNameStatic () : string
+    {
+        return $this->compositeHttpKernelClassName . "::class";
     }
 
     /**

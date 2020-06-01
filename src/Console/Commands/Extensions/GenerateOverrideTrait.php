@@ -39,7 +39,7 @@ trait GenerateOverrideTrait
             $module = $this->moduleManager->getWorkBench();
         }
 
-        if ($module === null || strtolower($module) === strtolower(config("modules.vanilla"))) {
+        if ($module === null) {
             return parent::getPath($name);
         }
 

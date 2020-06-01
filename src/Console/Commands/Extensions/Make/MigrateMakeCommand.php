@@ -61,7 +61,7 @@ class MigrateMakeCommand extends OriginalCommand
 
         // If the directory does not exist, create it with rwrwr access
         if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+            mkdir($dir, 0664, true);
         }
 
         return $dir;

@@ -4,7 +4,7 @@ namespace Thomasderooij\LaravelModules;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Thomasderooij\LaravelModules\Console\CompositeKernel;
+use Thomasderooij\LaravelModules\Console\CompositeKernel as ConsoleCompositeKernel;
 use Thomasderooij\LaravelModules\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Factories\AuthServiceProviderFactory;
 use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
@@ -12,6 +12,8 @@ use Thomasderooij\LaravelModules\Factories\ConfigFactory;
 use Thomasderooij\LaravelModules\Factories\ConsoleKernelFactory;
 use Thomasderooij\LaravelModules\Factories\ControllerFactory;
 use Thomasderooij\LaravelModules\Factories\EventServiceProviderFactory;
+use Thomasderooij\LaravelModules\Factories\HttpKernelFactory;
+use Thomasderooij\LaravelModules\Http\CompositeKernel as HttpCompositeKernel;
 use Thomasderooij\LaravelModules\Factories\ModuleFactory;
 use Thomasderooij\LaravelModules\Factories\ModuleMigrationFactory;
 use Thomasderooij\LaravelModules\Factories\RouteFactory;
@@ -28,12 +30,14 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         "AuthServiceProviderFactory"        => "module.factory.service_provider.auth",
         "BootstrapFactory"                  => "module.factory.bootstrap",
         "BroadcastServiceProviderFactory"   => "module.factory.service_provider.broadcast",
-        "ComposerEditor"                    => "module.service.composer_editor",
-        "CompositeKernel"                   => "module.kernel.console_composite_kernel",
         "ConfigFactory"                     => "module.factory.config",
+        "ComposerEditor"                    => "module.service.composer_editor",
+        "ConsoleCompositeKernel"            => "module.kernel.console_composite_kernel",
         "ConsoleKernelFactory"              => "module.factory.console_kernel",
         "ControllerFactory"                 => "module.factory.controller",
         "EventServiceProviderFactory"       => "module.factory.service_provider.event",
+        "HttpCompositeKernel"               => "module.kernel.http_composite_kernel",
+        "HttpKernelFactory"                 => "module.factory.http_kernel",
         "ModuleFactory"                     => "module.factory.module",
         "ModuleManager"                     => "module.service.manager",
         "ModuleMigrator"                    => "migrator",
@@ -63,23 +67,25 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
      */
     protected function registerServices () : void
     {
+        $this->registerAuthServiceProviderFactory();
         $this->registerBootstrapFactory();
+        $this->registerBroadcastServiceProviderFactory();
+        $this->registerComposerEditor();
         $this->registerConfigFactory();
         $this->registerConsoleCompositeKernel();
         $this->registerConsoleKernelFactory();
         $this->registerControllerFactory();
+        $this->registerEventServiceProviderFactory();
+        $this->registerHttpCompositeKernel();
+        $this->registerHttpKernelFactory();
         $this->registerModuleFactory();
+        $this->registerModuleManager();
+        $this->registerModuleMigrationRepository();
+        $this->registerModuleMigrator();
         $this->registerModuleMigrationFactory();
         $this->registerRouteFactory();
-        $this->registerAuthServiceProviderFactory();
-        $this->registerBroadcastServiceProviderFactory();
-        $this->registerEventServiceProviderFactory();
         $this->registerRouteServiceProviderFactory();
-        $this->registerComposerEditor();
-        $this->registerModuleManager();
         $this->registerRouteSource();
-        $this->registerModuleMigrator();
-        $this->registerModuleMigrationRepository();
     }
 
     protected function registerBootstrapFactory () : void
@@ -87,7 +93,8 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         $this->app->singleton($this->moduleServices["BootstrapFactory"], function ($app) {
             return new AppBootstrapFactory(
                 $app["files"],
-                $app[$this->moduleServices["CompositeKernel"]],
+                $app[$this->moduleServices["ConsoleCompositeKernel"]],
+                $app[$this->moduleServices["HttpCompositeKernel"]],
                 $app[$this->moduleServices["ModuleManager"]]
             );
         });
@@ -106,10 +113,20 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
 
     protected function registerConsoleCompositeKernel () : void
     {
-        $this->app->singleton($this->moduleServices["CompositeKernel"], function ($app) {
-            return new CompositeKernel(
+        $this->app->singleton($this->moduleServices["ConsoleCompositeKernel"], function ($app) {
+            return new ConsoleCompositeKernel(
                 $app,
                 $app["events"]
+            );
+        });
+    }
+
+    protected function registerHttpCompositeKernel () : void
+    {
+        $this->app->singleton($this->moduleServices["HttpCompositeKernel"], function ($app) {
+            return new HttpCompositeKernel(
+                $app,
+                $app["router"]
             );
         });
     }
@@ -121,6 +138,16 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
                 $app["files"],
                 $app[$this->moduleServices["ModuleManager"]],
                 $app[$this->moduleServices["RouteSource"]]
+            );
+        });
+    }
+
+    protected function registerHttpKernelFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["HttpKernelFactory"], function ($app) {
+            return new HttpKernelFactory(
+                $app["files"],
+                $app[$this->moduleServices["ModuleManager"]]
             );
         });
     }
@@ -142,6 +169,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
                 $app[$this->moduleServices["RouteFactory"]],
                 $app[$this->moduleServices["RouteServiceProviderFactory"]],
                 $app[$this->moduleServices["ConsoleKernelFactory"]],
+                $app[$this->moduleServices["HttpKernelFactory"]],
                 $app[$this->moduleServices["ControllerFactory"]],
                 $app[$this->moduleServices["AuthServiceProviderFactory"]],
                 $app[$this->moduleServices["BroadcastServiceProviderFactory"]],

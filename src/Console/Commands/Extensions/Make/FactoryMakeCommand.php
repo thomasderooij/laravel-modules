@@ -3,7 +3,6 @@
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Make;
 
 use Illuminate\Database\Console\Factories\FactoryMakeCommand as OriginalCommand;
-use Illuminate\Support\Str;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\GenerateOverrideTrait;
 
 class FactoryMakeCommand extends OriginalCommand
@@ -11,25 +10,26 @@ class FactoryMakeCommand extends OriginalCommand
     use GenerateOverrideTrait;
 
     /**
-     * Parse the class name and format according to the root namespace.
+     * Get the destination class path.
      *
      * @param  string  $name
      * @return string
      */
-    protected function qualifyClass($name)
+    protected function getPath($name)
     {
-        $name = ltrim($name, '\\/');
-
-        $rootNamespace = $this->rootNamespace();
-
-        if (Str::startsWith($name, $rootNamespace)) {
-            return $name;
+        $module = $this->option("module");
+        if ($module === null) {
+            $module = $this->moduleManager->getWorkBench();
         }
 
-        $name = str_replace('/', '\\', $name);
+        if ($module === null) {
+            return parent::getPath($name);
+        }
 
-        return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\database\\factories\\'.$name
+        $name = str_replace(
+            ['\\', '/'], '', $this->argument('name')
         );
+
+        return $this->moduleManager->getModuleDirectory($module)."/database/factories/{$name}.php";
     }
 }

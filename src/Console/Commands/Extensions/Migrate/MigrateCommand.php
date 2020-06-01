@@ -55,6 +55,12 @@ class MigrateCommand extends OriginalCommand
         // so that migrations may be run for any path within the applications.
         try {
             foreach ($modules as $module) {
+                // If the vanilla laravel is called as a module, migrate normally.
+                if (strtolower($module) === strtolower(config("modules.vanilla"))) {
+                    parent::handle();
+                    continue;
+                }
+
                 // Give a notice if a given module is not recognised
                 if (!$this->moduleManager->hasModule($module)) {
                     $this->displayModuleNotFoundWarning($module);

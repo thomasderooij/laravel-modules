@@ -11,6 +11,7 @@ use Thomasderooij\LaravelModules\Contracts\Factories\RouteServiceProviderFactory
 use Thomasderooij\LaravelModules\Contracts\Factories\AuthServiceProviderFactory as AuthServiceProviderFactoryContract;
 use Thomasderooij\LaravelModules\Contracts\Factories\BroadcastServiceProviderFactory as BroadcastServiceProviderFactoryContract;
 use Thomasderooij\LaravelModules\Contracts\Factories\EventServiceProviderFactory as EventServiceProviderFactoryContract;
+use Thomasderooij\LaravelModules\Contracts\Factories\HttpKernelFactory as HttpKernelFactoryContract;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
@@ -62,6 +63,13 @@ class ModuleFactory implements Contract
     protected $consoleKernelFactory;
 
     /**
+     * The http kernel factory
+     *
+     * @var HttpKernelFactoryContract
+     */
+    protected $httpKernelFactory;
+
+    /**
      * The base controller factory
      *
      * @var ControllerFactoryContract
@@ -79,6 +87,7 @@ class ModuleFactory implements Contract
         RouteFactoryContract $routeFactory,
         RouteServiceProviderFactoryContract $routeServiceProviderFactory,
         ConsoleKernelFactoryContract $consoleKernelFactory,
+        HttpKernelFactoryContract $httpKernelFactory,
         ControllerFactoryContract $controllerFactory,
         AuthServiceProviderFactoryContract $authServiceProviderFactory,
         BroadcastServiceProviderFactoryContract $broadcastServiceProviderFactory,
@@ -92,6 +101,7 @@ class ModuleFactory implements Contract
         $this->broadcastServiceProviderFactory = $broadcastServiceProviderFactory;
         $this->eventServiceProviderFactory = $eventServiceProviderFactory;
         $this->consoleKernelFactory = $consoleKernelFactory;
+        $this->httpKernelFactory = $httpKernelFactory;
         $this->controllerFactory = $controllerFactory;
         $this->moduleManager = $moduleManager;
     }
@@ -119,6 +129,7 @@ class ModuleFactory implements Contract
         $this->createBaseDirectory($module);
         $this->routeFactory->create($module);
         $this->consoleKernelFactory->create($module);
+        $this->httpKernelFactory->create($module);
         $this->controllerFactory->create($module);
         $this->authServiceProviderFactory->create($module);
         $this->broadcastServiceProviderFactory->create($module);
