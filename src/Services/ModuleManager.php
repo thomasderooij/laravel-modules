@@ -320,7 +320,7 @@ class ModuleManager implements Contract
 
         // If the directory does not exist, create it with rw rw r access
         if (!is_dir($storageDir)) {
-            mkdir($storageDir, 0664, true);
+            mkdir($storageDir, 0777, true);
         }
 
         // store the tracker content as pretty print json
