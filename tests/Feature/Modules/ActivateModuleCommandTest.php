@@ -2,56 +2,55 @@
 
 namespace Tests\Feature\Modules;
 
-use Thomasderooij\LaravelModules\CompositeProviders\RouteCompositeServiceProvider;
 use Thomasderooij\LaravelModules\Console\CompositeKernel;
 
 class ActivateModuleCommandTest extends ModuleTest
 {
-//    public function testActivatingAModuleWithAnEmptyWorkbench () : void
-//    {
-//        // If I initiate modules
-//        $this->initModules();
-//
-//        // And I have a module
-//        $this->createModule();
-//
-//        // And that module has a command
-//        $className = "TestCommand";
-//        $commandName = "test:command";
-//        $this->createCommand($className,$commandName);
-//
-//        // And the module has a route
-//        $this->createRoute("get", "web", $this->module,"/test/route", "TestController@test", "testRoute");
-//
-//        // And the module is not active
-//        $this->moduleManager->deactivateModule($this->module);
-//        $routeCount = count($this->router->getRoutes()->getRoutes());
-//
-//        // And my workbench is empty
-//        $this->moduleManager->clearWorkbench();
-//
-//        // And I activate that module
-//        $response = $this->artisan("module:activate", ["name" => $this->module]);
-//        $response->expectsOutput("The module {$this->module} has been activated.");
-//        $response->run();
-//
-//        // That command should be available
-//        /** @var CompositeKernel $kernel */
-//        $kernel = $this->app->make(CompositeKernel::class);
-//        $this->assertArrayHasKey($commandName, $kernel->all());
-//
-//        // And the module code should remain intact
-//        $this->assertFileExists(base_path(config("modules.root") . "/{$this->module}/Console/Commands/$className.php"));
-//
-//        // And the module be set to the workbench
-//        $this->assertSame($this->moduleManager->getWorkBench(), $this->module);
-//
-//        // And the module should be set to active
-//        $this->assertTrue($this->moduleManager->moduleIsActive($this->module));
-//
-////         todo: rebuild the service providers to register this route
-////        $this->assertCount($routeCount + 1, $this->router->getRoutes()->getRoutes());
-//    }
+    public function testActivatingAModuleWithAnEmptyWorkbench () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have a module
+        $this->createModule();
+
+        // And that module has a command
+        $className = "TestCommand";
+        $commandName = "test:command";
+        $this->createCommand($className,$commandName);
+
+        // And the module has a route
+        $this->createRoute("get", "web", $this->module,"/test/route", "TestController@test", "testRoute");
+
+        // And the module is not active
+        $this->moduleManager->deactivateModule($this->module);
+        $routeCount = count($this->router->getRoutes()->getRoutes());
+
+        // And my workbench is empty
+        $this->moduleManager->clearWorkbench();
+
+        // And I activate that module
+        $response = $this->artisan("module:activate", ["name" => $this->module]);
+        $response->expectsOutput("The module {$this->module} has been activated.");
+        $response->run();
+
+        // That command should be available
+        /** @var CompositeKernel $kernel */
+        $kernel = $this->app->make(CompositeKernel::class);
+        $this->assertArrayHasKey($commandName, $kernel->all());
+
+        // And the module code should remain intact
+        $this->assertFileExists(base_path(config("modules.root") . "/{$this->module}/Console/Commands/$className.php"));
+
+        // And the module be set to the workbench
+        $this->assertSame($this->moduleManager->getWorkBench(), $this->module);
+
+        // And the module should be set to active
+        $this->assertTrue($this->moduleManager->moduleIsActive($this->module));
+
+//         todo: rebuild the service providers to register this route
+//        $this->assertCount($routeCount + 1, $this->router->getRoutes()->getRoutes());
+    }
 
     public function testCaseDoesNotMatter () : void
     {

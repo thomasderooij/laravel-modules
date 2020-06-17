@@ -46,6 +46,28 @@ class ControllerMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Http/Controllers/$controller.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a controller with the module option
+        $controller = "NewController";
+        $response = $this->artisan("make:controller", ["name" => $controller, "--module" => "vanilla"]);
+        $response->expectsOutput("Controller created successfully.")->run();
+
+        // I should have a controller in my app dir
+//        $this->assertTrue(class_exists("App\\Http\\Controllers\\$controller"));
+        $this->assertTrue(is_file(app_path("Http/Controllers/$controller.php")));
+        unlink(app_path("Http/Controllers/$controller.php"));
+    }
+
     public function testMakingAControllerWithAModelOptionWithTheModelNotPresent () : void
     {
         // If I initiate modules
@@ -173,28 +195,6 @@ class ControllerMakeCommandTest extends ModuleTest
         // I make a controller
         $controller = "NewController";
         $this->artisan("make:controller", ["name" => $controller]);
-
-        // I should have a controller in my app dir
-        $this->assertTrue(class_exists("App\\Http\\Controllers\\$controller"));
-        $this->assertTrue(is_file(app_path("Http/Controllers/$controller.php")));
-        unlink(app_path("Http/Controllers/$controller.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a controller with the module option
-        $controller = "NewController";
-        $response = $this->artisan("make:controller", ["name" => $controller, "--module" => "vanilla"]);
-        $response->expectsOutput("Controller created successfully.")->run();
 
         // I should have a controller in my app dir
         $this->assertTrue(class_exists("App\\Http\\Controllers\\$controller"));

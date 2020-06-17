@@ -49,6 +49,28 @@ class PolicyMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Policies/$policy.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a policy with the module option
+        $policy = "NewPolicy";
+        $response = $this->artisan("make:policy", ["name" => $policy, "--module" => "vanilla"]);
+        $response->expectsOutput("Policy created successfully.")->run();
+
+        // I should have a policy in my app dir
+//        $this->assertTrue(class_exists("App\\Policies\\$policy"));
+        $this->assertTrue(is_file(app_path("Policies/$policy.php")));
+        unlink(app_path("Policies/$policy.php"));
+    }
+
     public function testMakingAPolicyWithAModelOption () : void
     {
         // If I initiate modules
@@ -96,28 +118,6 @@ class PolicyMakeCommandTest extends ModuleTest
         // If I make a policy
         $policy = "NewPolicy";
         $this->artisan("make:policy", ["name" => $policy]);
-
-        // I should have a policy in my app dir
-        $this->assertTrue(class_exists("App\\Policies\\$policy"));
-        $this->assertTrue(is_file(app_path("Policies/$policy.php")));
-        unlink(app_path("Policies/$policy.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a policy with the module option
-        $policy = "NewPolicy";
-        $response = $this->artisan("make:policy", ["name" => $policy, "--module" => "vanilla"]);
-        $response->expectsOutput("Policy created successfully.")->run();
 
         // I should have a policy in my app dir
         $this->assertTrue(class_exists("App\\Policies\\$policy"));

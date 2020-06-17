@@ -47,6 +47,27 @@ class ProviderMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Providers/$provider.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a provider with the module option
+        $provider = "NewProvider";
+        $this->artisan("make:provider", ["name" => $provider, "--module" => "vanilla"]);
+
+        // I should have a provider in my app dir
+//        $this->assertTrue(class_exists("App\\Providers\\$provider"));
+        $this->assertTrue(is_file(app_path("Providers/$provider.php")));
+        unlink(app_path("Providers/$provider.php"));
+    }
+
     public function testMakingAProviderWithoutModuleInWorkbench () : void
     {
         // If I initiate modules
@@ -73,27 +94,6 @@ class ProviderMakeCommandTest extends ModuleTest
         // If I make a provider
         $provider = "NewProvider";
         $this->artisan("make:provider", ["name" => $provider]);
-
-        // I should have a provider in my app dir
-        $this->assertTrue(class_exists("App\\Providers\\$provider"));
-        $this->assertTrue(is_file(app_path("Providers/$provider.php")));
-        unlink(app_path("Providers/$provider.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a provider with the module option
-        $provider = "NewProvider";
-        $this->artisan("make:provider", ["name" => $provider, "--module" => "vanilla"]);
 
         // I should have a provider in my app dir
         $this->assertTrue(class_exists("App\\Providers\\$provider"));

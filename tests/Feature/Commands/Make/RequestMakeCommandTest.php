@@ -47,6 +47,27 @@ class RequestMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Http/Requests/$request.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a request with the module option
+        $request = "NewRequest";
+        $this->artisan("make:request", ["name" => $request, "--module" => "vanilla"]);
+
+        // I should have a request in my app dir
+//        $this->assertTrue(class_exists("App\\Http\\Requests\\$request"));
+        $this->assertTrue(is_file(app_path("Http/Requests/$request.php")));
+        unlink(app_path("Http/Requests/$request.php"));
+    }
+
     public function testMakingARequestWithoutModuleInWorkbench () : void
     {
         // If I initiate modules
@@ -73,27 +94,6 @@ class RequestMakeCommandTest extends ModuleTest
         // If I make a request
         $request = "NewRequest";
         $this->artisan("make:request", ["name" => $request]);
-
-        // I should have a request in my app dir
-        $this->assertTrue(class_exists("App\\Http\\Requests\\$request"));
-        $this->assertTrue(is_file(app_path("Http/Requests/$request.php")));
-        unlink(app_path("Http/Requests/$request.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a request with the module option
-        $request = "NewRequest";
-        $this->artisan("make:request", ["name" => $request, "--module" => "vanilla"]);
 
         // I should have a request in my app dir
         $this->assertTrue(class_exists("App\\Http\\Requests\\$request"));

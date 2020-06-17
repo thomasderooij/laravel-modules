@@ -160,6 +160,4 @@ class FreshCommandTest extends ModuleTest
             unlink($migration);
         });
     }
-
-
 }

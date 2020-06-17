@@ -49,6 +49,28 @@ class ObserverMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Observers/$observer.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a observer with the module option
+        $observer = "NewObserver";
+        $response = $this->artisan("make:observer", ["name" => $observer, "--module" => "vanilla"]);
+        $response->expectsOutput("Observer created successfully.")->run();
+
+        // I should have a observer in my app dir
+//        $this->assertTrue(class_exists("App\\Observers\\$observer"));
+        $this->assertTrue(is_file(app_path("Observers/$observer.php")));
+        unlink(app_path("Observers/$observer.php"));
+    }
+
     public function testMakingAnObserverWithAModelOption () : void
     {
         // If I initiate modules
@@ -97,28 +119,6 @@ class ObserverMakeCommandTest extends ModuleTest
         // If I make a observer
         $observer = "NewObserver";
         $this->artisan("make:observer", ["name" => $observer]);
-
-        // I should have a observer in my app dir
-        $this->assertTrue(class_exists("App\\Observers\\$observer"));
-        $this->assertTrue(is_file(app_path("Observers/$observer.php")));
-        unlink(app_path("Observers/$observer.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a observer with the module option
-        $observer = "NewObserver";
-        $response = $this->artisan("make:observer", ["name" => $observer, "--module" => "vanilla"]);
-        $response->expectsOutput("Observer created successfully.")->run();
 
         // I should have a observer in my app dir
         $this->assertTrue(class_exists("App\\Observers\\$observer"));

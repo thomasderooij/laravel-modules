@@ -3,7 +3,6 @@
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
@@ -39,13 +38,25 @@ trait GenerateOverrideTrait
             $module = $this->moduleManager->getWorkBench();
         }
 
-        if ($module === null) {
+        // If there is not module, or the module is vanilla, or the modules are not initialised, go for the default
+        if ($module === null || $this->isVanilla($module) || !$this->moduleManager::isInitialised()) {
             return parent::getPath($name);
         }
 
         // Parse the namespace to a directory location
         $name = lcfirst($name);
         return base_path().'/'.str_replace('\\', '/', $name).'.php';
+    }
+
+    /**
+     * Check if the module refers to the vanilla laravel code
+     *
+     * @param string $module
+     * @return bool
+     */
+    protected function isVanilla (string $module) : bool
+    {
+        return strtolower($module) === strtolower(config("modules.vanilla"));
     }
 
     /**

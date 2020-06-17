@@ -19,8 +19,11 @@ class NewModuleCommandTest extends ModuleTest
         $response->expectsOutput("Your module has been created in the " . config("modules.root") . "/$module directory.");
         $response->run();
 
-        // I should have a command kernel in the root directory
+        // I should have a command kernel in the root console directory
         $this->assertTrue(is_file(base_path("{$this->root}/$module/Console/Kernel.php")));
+
+        // I should have a HTTP kernel in the root http directory
+        $this->assertTrue(is_file(base_path("{$this->root}/$module/Http/Kernel.php")));
 
         // I should have routing files
         $this->assertTrue(is_file(base_path("{$this->root}/$module/routes/web.php")));

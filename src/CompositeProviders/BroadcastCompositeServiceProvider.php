@@ -8,4 +8,6 @@ use Illuminate\Support\ServiceProvider;
 class BroadcastCompositeServiceProvider extends ServiceProvider
 {
     use CompositeProviderTrait;
+
+    protected $name = "BroadcaseServiceProvider";
 }

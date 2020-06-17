@@ -68,18 +68,6 @@ class EventMakeCommandTest extends ModuleTest
         unlink(app_path("Events/$event.php"));
     }
 
-    public function testMakingAnEventWithoutModulesInitialised () : void
-    {
-        // If I make a event
-        $event = "NewEvent";
-        $this->artisan("make:event", ["name" => $event]);
-
-        // I should have a event in my app dir
-        $this->assertTrue(class_exists("App\\Events\\$event"));
-        $this->assertTrue(is_file(app_path("Events/$event.php")));
-        unlink(app_path("Events/$event.php"));
-    }
-
     public function testUsingTheVanillaOption () : void
     {
         // If I initiate modules
@@ -94,6 +82,18 @@ class EventMakeCommandTest extends ModuleTest
         // And I make an event with the module option
         $event = "NewEvent";
         $this->artisan("make:event", ["name" => $event, "--module" => "vanilla"]);
+
+        // I should have a event in my app dir
+        $this->assertTrue(class_exists("App\\Events\\$event"));
+        $this->assertTrue(is_file(app_path("Events/$event.php")));
+        unlink(app_path("Events/$event.php"));
+    }
+
+    public function testMakingAnEventWithoutModulesInitialised () : void
+    {
+        // If I make a event
+        $event = "NewEvent";
+        $this->artisan("make:event", ["name" => $event]);
 
         // I should have a event in my app dir
         $this->assertTrue(class_exists("App\\Events\\$event"));

@@ -51,6 +51,29 @@ class ResourceMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Http/Resources/$resource.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a resource with the module option
+        $resource = "NewResource";
+        $response = $this->artisan("make:resource", ["name" => $resource, "--module" => "vanilla"]);
+        $response->expectsOutput("Resource created successfully.");
+        $response->run();
+
+        // I should have a resource in my app dir
+//        $this->assertTrue(class_exists("App\\Http\\Resources\\$resource"));
+        $this->assertTrue(is_file(app_path("Http/Resources/$resource.php")));
+        unlink(app_path("Http/Resources/$resource.php"));
+    }
+
     public function testMakingAResourceWithACollectionOption () : void
     {
         // If I initiate modules
@@ -99,29 +122,6 @@ class ResourceMakeCommandTest extends ModuleTest
         // If I make a resource
         $resource = "NewResource";
         $this->artisan("make:resource", ["name" => $resource]);
-
-        // I should have a resource in my app dir
-        $this->assertTrue(class_exists("App\\Http\\Resources\\$resource"));
-        $this->assertTrue(is_file(app_path("Http/Resources/$resource.php")));
-        unlink(app_path("Http/Resources/$resource.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a resource with the module option
-        $resource = "NewResource";
-        $response = $this->artisan("make:resource", ["name" => $resource, "--module" => "vanilla"]);
-        $response->expectsOutput("Resource created successfully.");
-        $response->run();
 
         // I should have a resource in my app dir
         $this->assertTrue(class_exists("App\\Http\\Resources\\$resource"));

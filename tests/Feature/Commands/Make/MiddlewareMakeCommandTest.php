@@ -47,6 +47,27 @@ class MiddlewareMakeCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path(config("modules.root") . "/$module/Http/Middleware/$middleware.php")));
     }
 
+    public function testUsingTheVanillaOption () : void
+    {
+        // If I initiate modules
+        $this->initModules();
+
+        // And I have two modules, of which the latter is in my workbench
+        $module = "TestModule" ;
+        $this->createModule($module);
+        $otherModule = "OtherModule";
+        $this->createModule($otherModule);
+
+        // And I make a middleware with the module option
+        $middleware = "NewMiddleware";
+        $this->artisan("make:middleware", ["name" => $middleware, "--module" => "vanilla"]);
+
+        // I should have a middleware in my app dir
+//        $this->assertTrue(class_exists("App\\Http\\Middleware\\$middleware"));
+        $this->assertTrue(is_file(app_path("Http/Middleware/$middleware.php")));
+        unlink(app_path("Http/Middleware/$middleware.php"));
+    }
+
     public function testMakingAMiddlewareWithoutModuleInWorkbench () : void
     {
         // If I initiate modules
@@ -73,27 +94,6 @@ class MiddlewareMakeCommandTest extends ModuleTest
         // If I make a middleware
         $middleware = "NewMiddleware";
         $this->artisan("make:middleware", ["name" => $middleware]);
-
-        // I should have a middleware in my app dir
-        $this->assertTrue(class_exists("App\\Http\\Middleware\\$middleware"));
-        $this->assertTrue(is_file(app_path("Http/Middleware/$middleware.php")));
-        unlink(app_path("Http/Middleware/$middleware.php"));
-    }
-
-    public function testUsingTheVanillaOption () : void
-    {
-        // If I initiate modules
-        $this->initModules();
-
-        // And I have two modules, of which the latter is in my workbench
-        $module = "TestModule" ;
-        $this->createModule($module);
-        $otherModule = "OtherModule";
-        $this->createModule($otherModule);
-
-        // And I make a middleware with the module option
-        $middleware = "NewMiddleware";
-        $this->artisan("make:middleware", ["name" => $middleware, "--module" => "vanilla"]);
 
         // I should have a middleware in my app dir
         $this->assertTrue(class_exists("App\\Http\\Middleware\\$middleware"));

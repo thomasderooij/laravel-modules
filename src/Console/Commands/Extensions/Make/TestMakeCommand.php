@@ -33,13 +33,15 @@ class TestMakeCommand extends OriginalCommand
      */
     protected function getPath($name)
     {
+        // If there is no module, return default values
         $module = $this->option("module");
         if ($module === null) {
             $module = $this->moduleManager->getWorkBench();
         }
 
-        if ($module === null) {
-            return parent::getPath($name);
+        // If there is not module, or the module is vanilla, or the modules are not initialised, go for the default
+        if ($module === null || $this->isVanilla($module) || !$this->moduleManager::isInitialised()) {
+            return parent::getPath("\\$name");
         }
 
         $name = str_replace(

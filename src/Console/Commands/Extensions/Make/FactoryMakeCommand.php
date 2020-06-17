@@ -22,7 +22,8 @@ class FactoryMakeCommand extends OriginalCommand
             $module = $this->moduleManager->getWorkBench();
         }
 
-        if ($module === null) {
+        // If there is not module, or the module is vanilla, or the modules are not initialised, go for the default
+        if ($module === null || $this->isVanilla($module) || !$this->moduleManager::isInitialised()) {
             return parent::getPath($name);
         }
 
