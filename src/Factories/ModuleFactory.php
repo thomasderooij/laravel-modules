@@ -147,7 +147,7 @@ class ModuleFactory implements Contract
         $dir = $this->getDirName($module);
 
         if (!is_dir($dir)) {
-            mkdir($dir, 0774, true);
+            mkdir($dir, 0777, true);
         }
     }
 
