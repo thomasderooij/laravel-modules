@@ -166,6 +166,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
     {
         $this->app->singleton($this->moduleServices["ModuleFactory"], function ($app) {
             return new ModuleFactory(
+                $app["files"],
                 $app[$this->moduleServices["RouteFactory"]],
                 $app[$this->moduleServices["RouteServiceProviderFactory"]],
                 $app[$this->moduleServices["ConsoleKernelFactory"]],
@@ -256,7 +257,9 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
     protected function registerModuleManager () : void
     {
         $this->app->singleton($this->moduleServices["ModuleManager"], function ($app) {
-            return new ModuleManager();
+            return new ModuleManager(
+                $app['files']
+            );
         });
     }
 

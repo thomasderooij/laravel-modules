@@ -4,16 +4,19 @@ namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Make;
 
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand as OriginalCommand;
 use Illuminate\Database\Migrations\MigrationCreator;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class MigrateMakeCommand extends OriginalCommand
 {
     protected $moduleManager;
+    protected $files;
 
-    public function __construct (MigrationCreator $creator, Composer $composer, ModuleManager $moduleManager)
+    public function __construct (Filesystem $files, MigrationCreator $creator, Composer $composer, ModuleManager $moduleManager)
     {
         $this->moduleManager = $moduleManager;
+        $this->files = $files;
 
         if (($module = $moduleManager->getWorkBench()) !== null) {
             $this->description = $this->description . " for " . ucfirst($module);
@@ -61,7 +64,7 @@ class MigrateMakeCommand extends OriginalCommand
 
         // If the directory does not exist, create it with rwrwr access
         if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+            $this->files->makeDirectory($dir, 0755, true);
         }
 
         return $dir;

@@ -192,6 +192,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($this->makeCommands["Migrate"], function ($app) {
             return new MigrateMakeCommand(
+                $app["files"],
                 $app["migration.creator"],
                 $app["composer"],
                 $app["module.service.manager"]

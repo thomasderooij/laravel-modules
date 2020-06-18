@@ -34,7 +34,7 @@ class RouteFactory extends FileFactory implements Contract
     {
         $directory = $this->getRouteDirectory($module);
         if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);
+            $this->fileSystem->makeDirectory($directory, 0755, true);
         }
 
         foreach ($this->routeSource->getRouteFiles() as $routeFile) {

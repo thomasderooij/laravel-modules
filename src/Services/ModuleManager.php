@@ -3,6 +3,7 @@
 namespace Thomasderooij\LaravelModules\Services;
 
 use DirectoryIterator;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as Contract;
@@ -16,6 +17,16 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class ModuleManager implements Contract
 {
+    /**
+     * @var Filesystem
+     */
+    protected $files;
+
+    public function __construct()
+    {
+        app()->make("files");
+    }
+
     /**
      * Check if modules are initialised
      *
@@ -320,7 +331,7 @@ class ModuleManager implements Contract
 
         // If the directory does not exist, create it with rw rw r access
         if (!is_dir($storageDir)) {
-            mkdir($storageDir, 0777, true);
+            $this->files->makeDirectory($storageDir, 0755, true);
         }
 
         // store the tracker content as pretty print json

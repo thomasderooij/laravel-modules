@@ -149,7 +149,7 @@ abstract class ModuleTest extends TestCase
 
         // create the migrations dir if unavailable
         if (!is_dir($this->getMigrationBasePath($module))) {
-            mkdir($this->getMigrationBasePath($module), 0777, true);
+            $this->files->makeDirectory($this->getMigrationBasePath($module), 0755, true);
         }
 
         return $this->migrationCreator->create($string, $this->getMigrationBasePath($module));

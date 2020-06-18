@@ -3,6 +3,7 @@
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConsoleKernelFactory as ConsoleKernelFactoryContract;
 use Thomasderooij\LaravelModules\Contracts\Factories\ControllerFactory as ControllerFactoryContract;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleFactory as Contract;
@@ -83,7 +84,13 @@ class ModuleFactory implements Contract
      */
     protected $moduleManager;
 
+    /**
+     * @var Filesystem
+     */
+    protected $files;
+
     public function __construct(
+        Filesystem $files,
         RouteFactoryContract $routeFactory,
         RouteServiceProviderFactoryContract $routeServiceProviderFactory,
         ConsoleKernelFactoryContract $consoleKernelFactory,
@@ -95,6 +102,7 @@ class ModuleFactory implements Contract
         ModuleManager $moduleManager
     )
     {
+        $this->files = $files;
         $this->routeFactory = $routeFactory;
         $this->routeServiceProviderFactory = $routeServiceProviderFactory;
         $this->authServiceProviderFactory = $authServiceProviderFactory;
@@ -147,7 +155,7 @@ class ModuleFactory implements Contract
         $dir = $this->getDirName($module);
 
         if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+            $this->files->makeDirectory($dir, 0755, true);
         }
     }
 
