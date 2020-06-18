@@ -18,7 +18,7 @@ class DeleteModuleCommand extends ModuleCommand
      *
      * @var string
      */
-    protected $description = 'Run the laravel_tests in this module';
+    protected $description = 'Delete a module permanently, With all of it\'s code";
 
     public function __construct (ModuleManager $manager)
     {
