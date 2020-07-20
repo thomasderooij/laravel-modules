@@ -31,8 +31,8 @@ class NewModuleCommandTest extends ModuleTest
         $this->assertTrue(is_file(base_path("{$this->root}/$module/routes/console.php")));
 
         // I should have service provider files
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/AuthServiceProvider.php")));
         $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/BroadcastServiceProvider.php")));
+        $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/AuthServiceProvider.php")));
         $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/EventServiceProvider.php")));
         $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/RouteServiceProvider.php")));
 
