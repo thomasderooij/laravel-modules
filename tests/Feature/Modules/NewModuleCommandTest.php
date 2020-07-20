@@ -19,25 +19,31 @@ class NewModuleCommandTest extends ModuleTest
         $response->expectsOutput("Your module has been created in the " . config("modules.root") . "/$module directory.");
         $response->run();
 
+        // I should have the base directories
+        $this->assertDirectoryExists(base_path("{$this->root}/$module/Console"));
+        $this->assertDirectoryExists(base_path("{$this->root}/$module/Http"));
+        $this->assertDirectoryExists(base_path("{$this->root}/$module/routes"));
+        $this->assertDirectoryExists(base_path("{$this->root}/$module/Providers"));
+
         // I should have a command kernel in the root console directory
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Console/Kernel.php")));
+        $this->assertFileExists("{$this->root}/$module/Console/Kernel.php");
 
         // I should have a HTTP kernel in the root http directory
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Http/Kernel.php")));
+        $this->assertFileExists(base_path("{$this->root}/$module/Http/Kernel.php"));
 
         // I should have routing files
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/routes/web.php")));
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/routes/api.php")));
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/routes/console.php")));
+        $this->assertFileExists(base_path("{$this->root}/$module/routes/web.php"));
+        $this->assertFileExists(base_path("{$this->root}/$module/routes/api.php"));
+        $this->assertFileExists(base_path("{$this->root}/$module/routes/console.php"));
 
         // I should have service provider files
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/BroadcastServiceProvider.php")));
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/AuthServiceProvider.php")));
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/EventServiceProvider.php")));
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Providers/RouteServiceProvider.php")));
+        $this->assertFileExists(base_path("{$this->root}/$module/Providers/AuthServiceProvider.php"));
+        $this->assertFileExists(base_path("{$this->root}/$module/Providers/BroadcastServiceProvider.php"));
+        $this->assertFileExists(base_path("{$this->root}/$module/Providers/EventServiceProvider.php"));
+        $this->assertFileExists(base_path("{$this->root}/$module/Providers/RouteServiceProvider.php"));
 
         // I should have a base controller
-        $this->assertTrue(is_file(base_path("{$this->root}/$module/Http/Controllers/Controller.php")));
+        $this->assertFileExists(base_path("{$this->root}/$module/Http/Controllers/Controller.php"));
 
         // The module should be set to active
         $this->assertTrue($this->moduleManager->moduleIsActive(strtolower($module)));

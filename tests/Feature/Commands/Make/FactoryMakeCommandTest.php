@@ -99,8 +99,8 @@ class FactoryMakeCommandTest extends ModuleTest
         unlink(base_path("database/factories/$factory.php"));
     }
 
-    public function testICannotMakeTwoFactoriesWithTheSameName () : void
-    {
-
-    }
+//    public function testICannotMakeTwoFactoriesWithTheSameName () : void
+//    {
+//
+//    }
 }
