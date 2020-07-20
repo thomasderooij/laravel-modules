@@ -105,10 +105,10 @@ All other directories, like database, Events, Jobs, Exceptions etc. will be crea
 All the make commands will apply to the module in your workbench and can be overwritten by using --module option.
 If there is no module in your workbench and the --module option is not used, the commands
 will display vanilla Laravel behaviour.
+ To explicitely refer to the vanilla Laravel directories, you can use the --module=vanilla option.
 
-The following commands do not apply to your module (yet):
+The following command(s) do not apply to your module (yet):
  * [`php artisan make:seeder`]
- * [`php artisan make:test`]
 
 #### Migrate
 The migrate command also applies to the module in your workbench.
