@@ -2,9 +2,13 @@
 
 namespace Thomasderooij\LaravelModules;
 
+use Faker\Generator;
+use Faker\Generator as FakerGenerator;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
 use Thomasderooij\LaravelModules\Console\CompositeKernel as ConsoleCompositeKernel;
+use Thomasderooij\LaravelModules\Database\Factory\EloquentModuleFactory;
 use Thomasderooij\LaravelModules\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Factories\AuthServiceProviderFactory;
 use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
@@ -35,14 +39,15 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         "ConsoleCompositeKernel"            => "module.kernel.console_composite_kernel",
         "ConsoleKernelFactory"              => "module.factory.console_kernel",
         "ControllerFactory"                 => "module.factory.controller",
+        "EloquentFactory"                   => "module.service.eloquent_factory",
         "EventServiceProviderFactory"       => "module.factory.service_provider.event",
         "HttpCompositeKernel"               => "module.kernel.http_composite_kernel",
         "HttpKernelFactory"                 => "module.factory.http_kernel",
         "ModuleFactory"                     => "module.factory.module",
         "ModuleManager"                     => "module.service.manager",
-        "ModuleMigrator"                    => "migrator",
         "ModuleMigrationFactory"            => "module.factory.migration",
         "ModuleMigrationRepository"         => "migration.repository",
+        "ModuleMigrator"                    => "migrator",
         "RouteFactory"                      => "module.factory.route",
         "RouteServiceProviderFactory"       => "module.factory.service_provider.route",
         "RouteSource"                       => "module.service.route_source",
@@ -67,50 +72,46 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
      */
     protected function registerServices () : void
     {
+        $this->registerKernels();
+        $this->registerFactories();
+        $this->registerMicroServices();
+    }
+
+    protected function registerKernels () : void
+    {
+        $this->registerConsoleCompositeKernel();
+        $this->registerHttpCompositeKernel();
+    }
+
+    protected function registerFactories () : void
+    {
         $this->registerAuthServiceProviderFactory();
         $this->registerBootstrapFactory();
         $this->registerBroadcastServiceProviderFactory();
-        $this->registerComposerEditor();
         $this->registerConfigFactory();
-        $this->registerConsoleCompositeKernel();
         $this->registerConsoleKernelFactory();
         $this->registerControllerFactory();
         $this->registerEventServiceProviderFactory();
-        $this->registerHttpCompositeKernel();
         $this->registerHttpKernelFactory();
         $this->registerModuleFactory();
-        $this->registerModuleManager();
-        $this->registerModuleMigrationRepository();
-        $this->registerModuleMigrator();
         $this->registerModuleMigrationFactory();
         $this->registerRouteFactory();
         $this->registerRouteServiceProviderFactory();
+    }
+
+    protected function registerMicroServices () : void
+    {
+        $this->registerComposerEditor();
+        $this->registerEloquentFactory();
+        $this->registerModuleManager();
+        $this->registerModuleMigrationRepository();
+        $this->registerModuleMigrator();
         $this->registerRouteSource();
     }
 
-    protected function registerBootstrapFactory () : void
-    {
-        $this->app->singleton($this->moduleServices["BootstrapFactory"], function ($app) {
-            return new AppBootstrapFactory(
-                $app["files"],
-                $app[$this->moduleServices["ConsoleCompositeKernel"]],
-                $app[$this->moduleServices["HttpCompositeKernel"]],
-                $app[$this->moduleServices["ModuleManager"]]
-            );
-        });
-    }
-
-    protected function registerConfigFactory () : void
-    {
-        $this->app->singleton($this->moduleServices["ConfigFactory"], function ($app) {
-            return new ConfigFactory(
-                $app["files"],
-                $app[$this->moduleServices["ModuleManager"]],
-                $app[$this->moduleServices["ComposerEditor"]]
-            );
-        });
-    }
-
+    /*************************************************************************
+     * Kernels
+     *************************************************************************/
     protected function registerConsoleCompositeKernel () : void
     {
         $this->app->singleton($this->moduleServices["ConsoleCompositeKernel"], function ($app) {
@@ -131,6 +132,54 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
+    /*************************************************************************
+     * Factories
+     *************************************************************************/
+    protected function registerAuthServiceProviderFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["AuthServiceProviderFactory"], function ($app) {
+            return new AuthServiceProviderFactory(
+                $app["files"],
+                $app[$this->moduleServices["ModuleManager"]],
+                $app[$this->moduleServices["RouteSource"]]
+            );
+        });
+    }
+
+    protected function registerBootstrapFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["BootstrapFactory"], function ($app) {
+            return new AppBootstrapFactory(
+                $app["files"],
+                $app[$this->moduleServices["ConsoleCompositeKernel"]],
+                $app[$this->moduleServices["HttpCompositeKernel"]],
+                $app[$this->moduleServices["ModuleManager"]]
+            );
+        });
+    }
+
+    protected function registerBroadcastServiceProviderFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["BroadcastServiceProviderFactory"], function ($app) {
+            return new BroadcastServiceProviderFactory(
+                $app["files"],
+                $app[$this->moduleServices["ModuleManager"]],
+                $app[$this->moduleServices["RouteSource"]]
+            );
+        });
+    }
+
+    protected function registerConfigFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["ConfigFactory"], function ($app) {
+            return new ConfigFactory(
+                $app["files"],
+                $app[$this->moduleServices["ModuleManager"]],
+                $app[$this->moduleServices["ComposerEditor"]]
+            );
+        });
+    }
+
     protected function registerConsoleKernelFactory () : void
     {
         $this->app->singleton($this->moduleServices["ConsoleKernelFactory"], function ($app) {
@@ -142,20 +191,31 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    protected function registerHttpKernelFactory () : void
+    protected function registerControllerFactory () : void
     {
-        $this->app->singleton($this->moduleServices["HttpKernelFactory"], function ($app) {
-            return new HttpKernelFactory(
+        $this->app->singleton($this->moduleServices["ControllerFactory"], function ($app) {
+            return new ControllerFactory(
                 $app["files"],
                 $app[$this->moduleServices["ModuleManager"]]
             );
         });
     }
 
-    protected function registerControllerFactory () : void
+    protected function registerEventServiceProviderFactory () : void
     {
-        $this->app->singleton($this->moduleServices["ControllerFactory"], function ($app) {
-            return new ControllerFactory(
+        $this->app->singleton($this->moduleServices["EventServiceProviderFactory"], function ($app) {
+            return new EventServiceProviderFactory(
+                $app["files"],
+                $app[$this->moduleServices["ModuleManager"]],
+                $app[$this->moduleServices["RouteSource"]]
+            );
+        });
+    }
+
+    protected function registerHttpKernelFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["HttpKernelFactory"], function ($app) {
+            return new HttpKernelFactory(
                 $app["files"],
                 $app[$this->moduleServices["ModuleManager"]]
             );
@@ -201,39 +261,6 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    protected function registerAuthServiceProviderFactory () : void
-    {
-        $this->app->singleton($this->moduleServices["AuthServiceProviderFactory"], function ($app) {
-            return new AuthServiceProviderFactory(
-                $app["files"],
-                $app[$this->moduleServices["ModuleManager"]],
-                $app[$this->moduleServices["RouteSource"]]
-            );
-        });
-    }
-
-    protected function registerBroadcastServiceProviderFactory () : void
-    {
-        $this->app->singleton($this->moduleServices["BroadcastServiceProviderFactory"], function ($app) {
-            return new BroadcastServiceProviderFactory(
-                $app["files"],
-                $app[$this->moduleServices["ModuleManager"]],
-                $app[$this->moduleServices["RouteSource"]]
-            );
-        });
-    }
-
-    protected function registerEventServiceProviderFactory () : void
-    {
-        $this->app->singleton($this->moduleServices["EventServiceProviderFactory"], function ($app) {
-            return new EventServiceProviderFactory(
-                $app["files"],
-                $app[$this->moduleServices["ModuleManager"]],
-                $app[$this->moduleServices["RouteSource"]]
-            );
-        });
-    }
-
     protected function registerRouteServiceProviderFactory () : void
     {
         $this->app->singleton($this->moduleServices["RouteServiceProviderFactory"], function ($app) {
@@ -245,6 +272,9 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
+    /*************************************************************************
+     * Micro services
+     *************************************************************************/
     protected function registerComposerEditor () : void
     {
         $this->app->singleton($this->moduleServices["ComposerEditor"], function ($app) {
@@ -254,19 +284,22 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    protected function registerModuleManager () : void
+    protected function registerEloquentFactory () : void
     {
-        $this->app->singleton($this->moduleServices["ModuleManager"], function ($app) {
-            return new ModuleManager(
-                $app['files']
+        $this->app->singleton(Factory::class, function ($app) {
+            return EloquentModuleFactory::construct(
+                $app[FakerGenerator::class],
+                $this->app->databasePath('factories')
             );
         });
     }
 
-    protected function registerRouteSource () : void
+    protected function registerModuleManager () : void
     {
-        $this->app->singleton($this->moduleServices["RouteSource"], function ($app) {
-            return new RouteSource();
+        $this->app->singleton($this->moduleServices["ModuleManager"], function ($app) {
+            return new ModuleManager(
+//                $app['files']
+            );
         });
     }
 
@@ -292,11 +325,12 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    /**
-     *******************************************************************************************
-     * End of services
-     *******************************************************************************************
-     */
+    protected function registerRouteSource () : void
+    {
+        $this->app->singleton($this->moduleServices["RouteSource"], function ($app) {
+            return new RouteSource();
+        });
+    }
 
     public function provides()
     {

@@ -557,6 +557,16 @@ class ModuleManager implements Contract
         rmdir($dir);
     }
 
+    /**
+     * Standardises module name
+     *
+     * @param string $module
+     * @return string
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     *
+     */
     protected function sanitiseModuleName (string $module) : string
     {
         $lower = $this->getModules()->map(function (string $mod) { return strtolower($mod); });
