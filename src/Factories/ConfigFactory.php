@@ -185,7 +185,7 @@ class ConfigFactory extends FileFactory implements Contract
      */
     public function getRelativeStorageDirectory (string $rootDir) : string
     {
-        return "storage/$rootDir";
+        return $rootDir;
     }
 
     /**

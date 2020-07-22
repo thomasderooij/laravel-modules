@@ -26,6 +26,8 @@ class MigrateMakeCommandTest extends ModuleTest
         $dirContents = scandir($base);
         $file = $base."/".array_pop($dirContents);
         $this->assertNotNull(strpos($file, $migration));
+        unlink($file);
+
     }
 
     public function testUsingTheVanillaOption () : void

@@ -42,10 +42,14 @@ abstract class ServiceProviderFactory extends FileFactory
      */
     public function create (string $module)
     {
-        $this->populateFile(base_path($this->getServiceProviderDir($module)), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNameSpace($module) . $this->getProvidersDirectory(),
-            $this->getClassNamePlaceholder() => $this->getClassName(),
-        ]);
+        $this->populateFile(
+            base_path($this->getServiceProviderDir($module)),
+            $this->getFileName(),
+            $this->getStub(), [
+                $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNameSpace($module) . $this->getProvidersDirectory(),
+                $this->getClassNamePlaceholder() => $this->getClassName(),
+            ]
+        );
     }
 
     /**

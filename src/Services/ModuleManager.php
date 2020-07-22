@@ -465,7 +465,7 @@ class ModuleManager implements Contract
     {
         static::throwExceptionIfConfigIsNotFound();
 
-        return "storage/".config("modules.root")."/";
+        return config("modules.root")."/";
     }
 
     /**

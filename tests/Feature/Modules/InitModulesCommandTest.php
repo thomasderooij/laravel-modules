@@ -32,7 +32,7 @@ class InitModulesCommandTest extends ModuleTest
         $this->assertNotSame($originalFileHash, $newAppHash);
 
         // There should be a tracker file
-        $this->assertTrue(is_file(base_path("storage/{$this->root}/tracker")));
+        $this->assertTrue(is_file(base_path("{$this->root}/tracker")));
 
         // And the config should have the root module specified
         $this->refreshApplication();
