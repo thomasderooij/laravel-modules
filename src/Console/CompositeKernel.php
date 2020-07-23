@@ -24,9 +24,6 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
 
     public function __construct(Application $app, Dispatcher $events)
     {
-        // Have the parent set the app to its private properties
-        parent::__construct($app, $events);
-
         // Once the app is booted, compile the kernels we want to manage
         $app->booted(function (Application $app) use ($events) {
             $this->kernels = [];
@@ -38,6 +35,9 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
 
             $this->activeModulesToKernels($app, $events);
         });
+
+        // Have the parent set the app to its private properties
+        parent::__construct($app, $events);
     }
 
     /**
