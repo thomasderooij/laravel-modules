@@ -16,8 +16,9 @@ composer require thomasderooij/laravel-modules
 ## Docs
 This package enables you to use the Laravel framework with separate modules for code that can be disables 
 and have dependencies on other modules. A workbench is provided to keep track of the module you're currently
- working on. Each module has all functionality the vanilla Laravel has, and has service providers which are 
- included in the project via a composite provider.
+ working on, and all command, such as "make:controller" apply to the module currently in your workbench. 
+ Each module has all functionality the vanilla Laravel has, and has service providers which are included in the project
+  via a composite provider.
 
 ### Getting started
 To get started, run the following commands:
@@ -32,7 +33,7 @@ To manage your modules, you can use the following commands are provided:
 ```bash
 php artisan module:new <module-name>
 ```
-This creates a new module in your modules directory.
+This creates a new module in your modules directory, and sets it to your workbench.
 
 ```bash
 php artisan module:delete <module-name>
@@ -105,7 +106,7 @@ All other directories, like database, Events, Jobs, Exceptions etc. will be crea
 All the make commands will apply to the module in your workbench and can be overwritten by using --module option.
 If there is no module in your workbench and the --module option is not used, the commands
 will display vanilla Laravel behaviour.
- To explicitely refer to the vanilla Laravel directories, you can use the --module=vanilla option.
+ To explicitly refer to the vanilla Laravel directories, you can use the --module=vanilla option.
 
 The following command(s) do not apply to your module (yet):
  * [`php artisan make:seeder`]
