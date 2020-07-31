@@ -132,9 +132,7 @@ change it in the config/modules file, or add 'MODULES_VANILLA={your prefered nam
 
 ### Roadmap
 The following things will be applied before moving to a 1.x stage:
- * Http kernel functionality
  * Broadcast service provider composite functionality
- * Factory method functionality
  * module dependency tracking
  
 In that order. Probably.
