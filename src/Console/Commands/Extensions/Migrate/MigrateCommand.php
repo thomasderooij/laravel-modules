@@ -4,9 +4,7 @@
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate;
 
 use Illuminate\Database\Console\Migrations\MigrateCommand as OriginalCommand;
-use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 use Illuminate\Database\Migrations\Migrator;
-use Illuminate\Support\Collection;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrait;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
@@ -26,7 +24,6 @@ class MigrateCommand extends OriginalCommand
         $this->moduleManager = $moduleManager;
 
         parent::__construct($migrator);
-
     }
 
     /**
