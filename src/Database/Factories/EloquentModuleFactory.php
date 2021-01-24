@@ -1,6 +1,6 @@
 <?php
 
-namespace Thomasderooij\LaravelModules\Database\Factory;
+namespace Thomasderooij\LaravelModules\Database\Factories;
 
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;

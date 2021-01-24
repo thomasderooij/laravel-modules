@@ -2,13 +2,12 @@
 
 namespace Thomasderooij\LaravelModules;
 
-use Faker\Generator;
 use Faker\Generator as FakerGenerator;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
 use Thomasderooij\LaravelModules\Console\CompositeKernel as ConsoleCompositeKernel;
-use Thomasderooij\LaravelModules\Database\Factory\EloquentModuleFactory;
+use Thomasderooij\LaravelModules\Database\Factories\EloquentModuleFactory;
 use Thomasderooij\LaravelModules\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Factories\AuthServiceProviderFactory;
 use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
