@@ -25,7 +25,7 @@ interface ModuleManager
      *
      * @return string|null
      */
-    public function getWorkBench ();
+    public function getWorkbench ();
 
     /**
      * Set a module to your workbench

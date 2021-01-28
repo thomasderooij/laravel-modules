@@ -42,7 +42,7 @@ class ActivateModuleCommand extends ModuleCommand
         $this->moduleManager->activateModule($module);
 
         // if the workbench is empty, set the activated module to the workbench
-        if ($this->moduleManager->getWorkBench() === null) {
+        if ($this->moduleManager->getWorkbench() === null) {
             $this->moduleManager->setWorkbench($module);
         }
 

@@ -297,7 +297,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
     {
         $this->app->singleton($this->moduleServices["ModuleManager"], function ($app) {
             return new ModuleManager(
-//                $app['files']
+                $app['files']
             );
         });
     }

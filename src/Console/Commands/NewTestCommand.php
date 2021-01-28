@@ -12,7 +12,7 @@ class NewTestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'module:new-test 
+    protected $signature = 'module:new-test
                     { test : the type of test you want to create }
                     { name : The name of your test }
                     {--module= : The module in which you want to create a test }
@@ -108,7 +108,7 @@ class NewTestCommand extends Command
             return $module;
         }
 
-        return $this->manager->getWorkBench();
+        return $this->manager->getWorkbench();
     }
 
     protected function getMiscOptions () : array

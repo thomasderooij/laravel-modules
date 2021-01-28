@@ -23,10 +23,10 @@ class CheckWorkbenchCommand extends ModuleCommand
 
     public function handle ()
     {
-        if ($this->moduleManager->getWorkBench() === null) {
+        if ($this->moduleManager->getWorkbench() === null) {
             $this->info("Your workbench is empty.");
         } else {
-            $this->info($this->moduleManager->getWorkBench());
+            $this->info($this->moduleManager->getWorkbench());
         }
     }
 }

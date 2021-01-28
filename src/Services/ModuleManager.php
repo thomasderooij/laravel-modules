@@ -22,9 +22,9 @@ class ModuleManager implements Contract
      */
     protected $files;
 
-    public function __construct()
+    public function __construct(Filesystem $files)
     {
-        app()->make("files");
+        $this->files = $files;
     }
 
     /**
@@ -42,7 +42,7 @@ class ModuleManager implements Contract
      *
      * @return string|null
      */
-    public function getWorkBench ()
+    public function getWorkbench () : ?string
     {
         $cache = Cache::get($this->getCacheKey());
 
@@ -142,7 +142,7 @@ class ModuleManager implements Contract
             // Do nothing
         }
 
-        if (strtoupper($this->getWorkBench()) === strtolower($module)) {
+        if (strtoupper($this->getWorkbench()) === strtolower($module)) {
             $this->clearWorkbench();
         }
 
@@ -231,7 +231,7 @@ class ModuleManager implements Contract
         $this->throwExceptionIfModuleDoesNotExist($module);
         $this->throwExceptionIfModuleIsNotActive($module);
 
-        if (strtolower($module) === strtolower($this->getWorkBench())) {
+        if (strtolower($module) === strtolower($this->getWorkbench())) {
             $this->clearWorkbench();
         }
 
@@ -287,7 +287,7 @@ class ModuleManager implements Contract
      */
     public function getModuleDirectory (string $module) : string
     {
-        return $this->getModuleRoot() . "/" . $module;
+        return $this->getModulesRoot() . "/" . $module;
     }
 
     /**
