@@ -75,4 +75,9 @@ class InitModulesCommandTest extends Test
 
         $response->run();
     }
+
+    public function testInitWhenModulesAreAlreadyInitialised () : void
+    {
+
+    }
 }
