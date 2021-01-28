@@ -46,6 +46,32 @@ class ConfigFactoryTest extends Test
         $uut->create($this->rootDir);
     }
 
+    /**
+     * Here we test if the undo function call all the arguments we expect it to call
+     */
+    public function testUndo () : void
+    {
+        $mockEditor = Mockery::mock(ComposerEditor::class);
+
+        // If I have a config factory
+        $uut = Mockery::mock(ConfigFactory::class.'[removeTrackerFile, removeConfigFile]', [
+            $this->app->make(Filesystem::class),
+            $this->app->make(ModuleManager::class),
+            $mockEditor,
+        ]);
+
+        // The following methods should be called
+        $uut->shouldAllowMockingProtectedMethods();
+        $uut->shouldReceive('removeTrackerFile')->once();
+        $uut->shouldReceive('removeConfigFile')->once();
+
+        // And the composer editor should remove namespace to the autoload
+        $mockEditor->shouldReceive('removeNamespaceFromAutoload')->once();
+
+        // When I call the undo function
+        $uut->undo($this->rootDir);
+    }
+
     public function testCreateConfigFile () : void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
@@ -174,8 +200,59 @@ class ConfigFactoryTest extends Test
         $this->assertMatchesSnapshot($appFileArgument);
     }
 
-    public function testUndo () : void
+    public function testRemoveTrackerFile () : void
     {
+        $mockFilesystem = Mockery::mock(Filesystem::class);
+        $this->instance(Filesystem::class, $mockFilesystem);
+        $mockManager = Mockery::mock(ModuleManager::class);
+        $this->instance(ModuleManagerContract::class, $mockManager);
+        $this->instance(ComposerEditorContract::class, $this->app->make(ComposerEditor::class));
 
+        // If I have a config factory
+        /** @var ConfigFactoryContract $uut */
+        $reflection = new \ReflectionClass(ConfigFactory::class);
+        $uut = $reflection->getMethod("removeTrackerFile"); // The unit under test is this specific method
+        $uut->setAccessible(true);
+
+        // The filesystem delete function should be called for the module tracker file
+        $mockFilesystem
+            ->shouldReceive('delete')
+            ->withArgs([base_path("{$this->rootDir}/{$this->trackerFileName}")])
+            ->once()
+        ;
+
+        // And the module manager should provide the module root directory
+        $mockManager->shouldReceive('getModulesRoot')->andReturn($this->rootDir)->once();
+
+        // And the module manager should provide the name of the tracker file
+        $mockManager->shouldReceive('getTrackerFileName')->andReturn($this->trackerFileName)->once();
+
+        // When I call the removeTrackerFile method
+        $factory = $this->app->make(ConfigFactory::class);
+        $uut->invoke($factory, $this->rootDir);
+    }
+
+    public function testRemoveConfigFile () : void
+    {
+        $mockFilesystem = Mockery::mock(Filesystem::class);
+        $this->instance(Filesystem::class, $mockFilesystem);
+        $this->instance(ModuleManagerContract::class, $this->app->make(ModuleManager::class));
+        $this->instance(ComposerEditorContract::class, $this->app->make(ComposerEditor::class));
+
+        // If I have a config factory
+        /** @var ConfigFactoryContract $uut */
+        $reflection = new \ReflectionClass(ConfigFactory::class);
+        $uut = $reflection->getMethod("removeConfigFile"); // The unit under test is this specific method
+        $uut->setAccessible(true);
+
+        $mockFilesystem
+            ->shouldReceive('delete')
+            ->withArgs([config_path("modules.php")])
+            ->once()
+        ;
+
+        // When I call the replaceServiceProviders method
+        $factory = $this->app->make(ConfigFactory::class);
+        $uut->invoke($factory, $this->rootDir);
     }
 }

@@ -60,9 +60,7 @@ class ConfigFactory extends FileFactory implements Contract
      */
     protected function removeTrackerFile () : void
     {
-        $dir = base_path($this->getModuleDirPlaceholder());
-        $this->fileSystem->cleanDirectory($dir);
-        rmdir($dir);
+        $this->fileSystem->delete(base_path($this->moduleManager->getModulesRoot()."/{$this->moduleManager->getTrackerFileName()}"));
     }
 
     /**

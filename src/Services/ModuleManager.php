@@ -287,7 +287,17 @@ class ModuleManager implements Contract
      */
     public function getModuleDirectory (string $module) : string
     {
-        return config("modules.root") . "/" . $module;
+        return $this->getModuleRoot() . "/" . $module;
+    }
+
+    /**
+     * Get the root modules directory
+     *
+     * @return string
+     */
+    public function getModulesRoot () : string
+    {
+        return config("modules.root");
     }
 
     /**

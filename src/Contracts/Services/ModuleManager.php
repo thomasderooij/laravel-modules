@@ -145,6 +145,13 @@ interface ModuleManager
     public function getModuleDirectory (string $module) : string;
 
     /**
+     * Get the modules base directory
+     *
+     * @return string
+     */
+    public function getModulesRoot () : string;
+
+    /**
      * Get the tracker file name
      *
      * @return string

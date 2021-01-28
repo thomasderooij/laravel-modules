@@ -8,8 +8,8 @@ use Illuminate\Support\Composer;
 use Thomasderooij\LaravelModules\Contracts\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleMigrationFactory;
+use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\ModuleException;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class InitModuleCommand extends Command
 {
@@ -104,6 +104,7 @@ class InitModuleCommand extends Command
             $this->configFactory->create($rootDir);
         } catch (ModuleException $e) {
             $this->bootstrapFactory->undo();
+            $this->moduleManager->removeModuleDirectory();
             $this->displayConfigErrorMessage($e);
             return;
         }
@@ -114,6 +115,7 @@ class InitModuleCommand extends Command
         } catch (ModuleException $e) {
             $this->bootstrapFactory->undo();
             $this->configFactory->undo();
+            $this->moduleManager->removeModuleDirectory();
             $this->displayMigrationErrorMessage($e);
             return;
         }
