@@ -3,23 +3,9 @@
 *.scss linguist-vendored
 *.js linguist-vendored
 
-/.github export-ignore
-/app export-ignore
-/bin export-ignore
-/bootstrap export-ignore
-/config export-ignore
-/database export-ignore
-/public export-ignore
-/resources export-ignore
-/routes export-ignore
-/storage export-ignore
 /tests export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
 .travis.yml export-ignore
-artisan export-ignore
 composer.lock export-ignore
 phpunit.xml export-ignore
-server.php export-ignore
-webpack.mix.js export-ignore
-CHANGELOG.md export-ignore

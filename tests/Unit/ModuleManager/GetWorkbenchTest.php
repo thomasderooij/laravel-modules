@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Unit;
+namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as ModuleManagerContract;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Tests\Test;
 
-class ModuleManagerTest extends Test
+class GetWorkbenchTest extends ModuleManagerTest
 {
     /**
      * Here we check if we get null when we're asking what's in an empty workbench
@@ -50,26 +47,5 @@ class ModuleManagerTest extends Test
         // And I ask for the workbench
         // I expect to receive testModule
         $this->assertSame("testModule", $uut->getWorkbench());
-    }
-
-    private function getMockFilesystem () : Mockery\MockInterface
-    {
-        $filesystem = Mockery::mock(Filesystem::class);
-        $this->instance('files', $filesystem);
-
-        return $filesystem;
-    }
-
-    private function getMockManager (Filesystem $filesystem = null, array $mockFunctions = []) : Mockery\MockInterface
-    {
-        if ($filesystem === null) {
-            $filesystem = $this->getMockFilesystem();
-        }
-
-        $functions = implode(", ", $mockFunctions);
-        $mock = Mockery::mock(ModuleManager::class."[$functions]", [$filesystem]);
-        $mock->shouldAllowMockingProtectedMethods();
-
-        return $mock;
     }
 }
