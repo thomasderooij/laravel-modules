@@ -10,20 +10,24 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2|^8",
-        "laravel/framework": ">=5.8|>=6|>=7"
+        "php": "^7.2"
     },
     "require-dev": {
-        "facade/ignition": "^1.4",
-        "fzaninotto/faker": "^1.9   ",
-        "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^8.0"
+        "laravel/framework": "^7.30",
+        "phpunit/phpunit": "^8.5",
+        "mockery/mockery": "^1.3",
+        "orchestra/testbench": "^5.14",
+        "spatie/phpunit-snapshot-assertions": "^3.0"
     },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
+    "autoload": {
+        "psr-4": {
+            "Thomasderooij\\LaravelModules\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Thomasderooij\\LaravelModules\\Tests\\": "tests"
+        }
     },
     "extra": {
         "laravel": {
@@ -33,34 +37,6 @@
             ]
         }
     },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Thomasderooij\\LaravelModules\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\": "app",
-            "Tests\\": "tests/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
-    },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
-        ]
-    }
+    "prefer-stable": true
 }

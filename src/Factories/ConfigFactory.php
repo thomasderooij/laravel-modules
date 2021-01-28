@@ -2,10 +2,6 @@
 
 namespace Thomasderooij\LaravelModules\Factories;
 
-use App\Providers\AuthServiceProvider;
-use App\Providers\BroadcastServiceProvider;
-use App\Providers\EventServiceProvider;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\CompositeProviders\AuthCompositeServiceProvider;
@@ -100,7 +96,7 @@ class ConfigFactory extends FileFactory implements Contract
      */
     protected function createModuleTrackerFile (string $rootDir) : void
     {
-        $this->populateFile($this->getRelativeStorageDirectory($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
+        $this->populateFile($this->getModuleRoot($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
     }
 
     /**
@@ -111,10 +107,10 @@ class ConfigFactory extends FileFactory implements Contract
     protected function replaceServiceProviders () : void
     {
         $this->populateFile(config_path(), "app.php", config_path("app.php"), [
-            AuthServiceProvider::class => AuthCompositeServiceProvider::class,
-            BroadcastServiceProvider::class => BroadcastCompositeServiceProvider::class,
-            EventServiceProvider::class => EventCompositeServiceProvider::class,
-            RouteServiceProvider::class => RouteCompositeServiceProvider::class,
+            "App\Providers\AuthServiceProvider" => AuthCompositeServiceProvider::class,
+            "App\Providers\BroadcastServiceProvider" => BroadcastCompositeServiceProvider::class,
+            "App\Providers\EventServiceProvider" => EventCompositeServiceProvider::class,
+            "App\Providers\RouteServiceProvider" => RouteCompositeServiceProvider::class,
         ]);
     }
 
@@ -183,9 +179,9 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getRelativeStorageDirectory (string $rootDir) : string
+    public function getModuleRoot (string $rootDir) : string
     {
-        return $rootDir;
+        return base_path($rootDir);
     }
 
     /**

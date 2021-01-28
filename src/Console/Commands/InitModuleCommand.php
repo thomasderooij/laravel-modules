@@ -5,12 +5,10 @@ namespace Thomasderooij\LaravelModules\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Composer;
-use Illuminate\Support\Facades\Artisan;
+use Thomasderooij\LaravelModules\Contracts\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleMigrationFactory;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesAlreadyInitiatedException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleException;
-use Thomasderooij\LaravelModules\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class InitModuleCommand extends Command
