@@ -2,6 +2,7 @@
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Composer;
@@ -9,7 +10,6 @@ use Thomasderooij\LaravelModules\Contracts\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleMigrationFactory;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\ModuleException;
 
 class InitModuleCommand extends Command
 {
@@ -82,7 +82,6 @@ class InitModuleCommand extends Command
     /**
      * Handle the module initialisation
      *
-     * @throws FileNotFoundException
      */
     public function handle()
     {
@@ -102,7 +101,7 @@ class InitModuleCommand extends Command
         //  in your composer.json file.
         try {
             $this->configFactory->create($rootDir);
-        } catch (ModuleException $e) {
+        } catch (FileNotFoundException $e) {
             $this->bootstrapFactory->undo();
             $this->moduleManager->removeModuleDirectory();
             $this->displayConfigErrorMessage($e);
@@ -112,7 +111,7 @@ class InitModuleCommand extends Command
         // Create a migration file to track module migrations
         try {
             $this->moduleMigrationFactory->create();
-        } catch (ModuleException $e) {
+        } catch (FileNotFoundException $e) {
             $this->bootstrapFactory->undo();
             $this->configFactory->undo();
             $this->moduleManager->removeModuleDirectory();
@@ -143,9 +142,9 @@ class InitModuleCommand extends Command
     /**
      * Display the error message when config file creation fails
      *
-     * @param ModuleException $e
+     * @param Exception $e
      */
-    protected function displayConfigErrorMessage (ModuleException $e) : void
+    protected function displayConfigErrorMessage (Exception $e) : void
     {
         $this->displayErrorMessage($e);
     }
@@ -153,9 +152,9 @@ class InitModuleCommand extends Command
     /**
      * Display the error message when migration creation fails
      *
-     * @param ModuleException $e
+     * @param Exception $e
      */
-    protected function displayMigrationErrorMessage (ModuleException $e) : void
+    protected function displayMigrationErrorMessage (Exception $e) : void
     {
         $this->displayErrorMessage($e);
     }
@@ -163,9 +162,9 @@ class InitModuleCommand extends Command
     /**
      * Display a module exception as an error message in the console
      *
-     * @param ModuleException $e
+     * @param Exception $e
      */
-    protected function displayErrorMessage (ModuleException $e) : void
+    protected function displayErrorMessage (Exception $e) : void
     {
         $this->error($e->getMessage());
     }

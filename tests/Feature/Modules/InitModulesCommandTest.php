@@ -44,9 +44,9 @@ class InitModulesCommandTest extends Test
     }
 
     /**
-     * @group uut
+     * Here we test initialising modules when all goes well
      */
-    public function testInitiatingModules () : void
+    public function testInitialisingModules () : void
     {
         // When I run the init command
         $response = $this->artisan("module:init");
@@ -68,6 +68,7 @@ class InitModulesCommandTest extends Test
         // And the migration factory create method should be called
         $this->migrationFactory->shouldReceive('create')->once();
 
+        // And the module manager should be asked if its initialised
         $this->moduleManager->shouldReceive('isInitialised')->andReturn(false)->once();
 
         // And composer should be trigger
@@ -76,8 +77,22 @@ class InitModulesCommandTest extends Test
         $response->run();
     }
 
+    /**
+     * Here we test the response if we try to initialise modules more than once
+     */
     public function testInitWhenModulesAreAlreadyInitialised () : void
     {
+        // When I run the init command
+        $response = $this->artisan("module:init");
+        // I expect to be told the modules are already initialised
+        $response->expectsOutput("Modules are already initiated.");
 
+        // If the modules are already initialised
+        $this->moduleManager->shouldReceive('isInitialised')->andReturn(true)->once();
+
+        // The artisan service provider is going to ask for a workbench, so that should return null
+        $this->moduleManager->shouldReceive('getWorkBench')->andReturn(null);
     }
+
+    //todo: test what happens if one of the factories throws an exception
 }

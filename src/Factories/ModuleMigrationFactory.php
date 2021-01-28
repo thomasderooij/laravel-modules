@@ -2,12 +2,14 @@
 
 namespace Thomasderooij\LaravelModules\Factories;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleMigrationFactory as Contract;
 
 class ModuleMigrationFactory extends FileFactory implements Contract
 {
     /**
      * Create a new migration file
+     * @throws FileNotFoundException
      */
     public function create(): void
     {
