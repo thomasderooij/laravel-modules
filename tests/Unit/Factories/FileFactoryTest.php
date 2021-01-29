@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Unit;
+namespace Thomasderooij\LaravelModules\Tests\Unit\Factories;
 
 use Illuminate\Filesystem\Filesystem;
 use Mockery;

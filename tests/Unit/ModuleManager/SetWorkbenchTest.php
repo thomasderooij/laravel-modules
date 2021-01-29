@@ -34,7 +34,7 @@ class SetWorkbenchTest extends ModuleManagerTest
         $uut->shouldReceive("sanitiseModuleName")->withArgs([$moduleName])->andReturn("test_module")->once();
 
         // The workbench key should be fetched to read and write to the bench
-        $workbenchKey = "magic_key";
+        $workbenchKey = "workbench_key";
         $uut->shouldReceive("getWorkbenchKey")->andReturn($workbenchKey)->twice(); // the actual key doesn't matter in this test
 
         // The cache key should be provided to store a new module in the workbench
@@ -49,7 +49,6 @@ class SetWorkbenchTest extends ModuleManagerTest
         Cache::shouldReceive('get')->andReturn(null)->once();
 
         // And in the end, the cache should store the new module under then new cache key
-//        dd($workbenchKey, [$actualKey => $workbenchKey], $cacheValitidy);
         Cache::shouldReceive('put')->withArgs([$actualKey, [$workbenchKey => strtolower($moduleName)], $cacheValitidy]);
 
         $uut->setWorkbench($moduleName);

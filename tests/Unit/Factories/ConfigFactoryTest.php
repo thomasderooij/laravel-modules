@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Unit;
+namespace Thomasderooij\LaravelModules\Tests\Unit\Factories;
 
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
@@ -88,7 +88,7 @@ class ConfigFactoryTest extends Test
         $uut->setAccessible(true);
 
         // A stub file for the config file should be fetched
-        $configStub = realpath(__DIR__ . '/../../src/Factories/stubs/config.stub');
+        $configStub = realpath(__DIR__ . '/../../../src/Factories/stubs/config.stub');
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$configStub])
@@ -129,7 +129,7 @@ class ConfigFactoryTest extends Test
         $uut->setAccessible(true);
 
         // A stub for the tracker file should be fetched
-        $trackerStub = realpath(__DIR__ . '/../../src/Factories/stubs/tracker.stub');
+        $trackerStub = realpath(__DIR__ . '/../../../src/Factories/stubs/tracker.stub');
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$trackerStub])

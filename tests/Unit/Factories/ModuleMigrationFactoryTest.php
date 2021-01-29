@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Unit;
+namespace Thomasderooij\LaravelModules\Tests\Unit\Factories;
 
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
@@ -32,7 +32,7 @@ class ModuleMigrationFactoryTest extends Test
         $uut = $this->app->make(ModuleMigrationFactory::class);
 
         // A stub file should be fetched
-        $stub = realpath(__DIR__ . '/../../src/Factories/stubs/moduleMigration.stub');
+        $stub = realpath(__DIR__ . '/../../../src/Factories/stubs/moduleMigration.stub');
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$stub])

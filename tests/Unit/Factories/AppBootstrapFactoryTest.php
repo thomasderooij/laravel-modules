@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Unit;
+namespace Thomasderooij\LaravelModules\Tests\Unit\Factories;
 
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
@@ -49,7 +49,7 @@ class AppBootstrapFactoryTest extends Test
         ;
 
         // A stub file should be fetched
-        $stub = realpath(__DIR__ . '/../../src/Factories/stubs/bootstrapFile.stub');
+        $stub = realpath(__DIR__ . '/../../../src/Factories/stubs/bootstrapFile.stub');
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$stub])
