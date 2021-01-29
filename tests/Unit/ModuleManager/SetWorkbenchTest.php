@@ -54,4 +54,9 @@ class SetWorkbenchTest extends ModuleManagerTest
 
         $uut->setWorkbench($moduleName);
     }
+
+    public function testSetWorkbenchWithACurrentWorkbench () : void
+    {
+
+    }
 }

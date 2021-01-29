@@ -27,6 +27,7 @@ class ConfigFactoryTest extends Test
         $mockEditor = Mockery::mock(ComposerEditor::class);
 
         // If I have a config factory
+        /** @var Mockery\MockInterface&ConfigFactory $uut */
         $uut = Mockery::mock(ConfigFactory::class.'[createConfigFile, createModuleTrackerFile, replaceServiceProviders]', [
             $this->app->make(Filesystem::class),
             $this->app->make(ModuleManager::class),
@@ -54,6 +55,7 @@ class ConfigFactoryTest extends Test
         $mockEditor = Mockery::mock(ComposerEditor::class);
 
         // If I have a config factory
+        /** @var Mockery\MockInterface&ConfigFactory $uut */
         $uut = Mockery::mock(ConfigFactory::class.'[removeTrackerFile, removeConfigFile]', [
             $this->app->make(Filesystem::class),
             $this->app->make(ModuleManager::class),
@@ -69,7 +71,7 @@ class ConfigFactoryTest extends Test
         $mockEditor->shouldReceive('removeNamespaceFromAutoload')->once();
 
         // When I call the undo function
-        $uut->undo($this->rootDir);
+        $uut->undo();
     }
 
     public function testCreateConfigFile () : void
