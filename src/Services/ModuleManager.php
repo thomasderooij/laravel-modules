@@ -70,13 +70,14 @@ class ModuleManager implements Contract
         $this->throwExceptionIfModuleDoesNotExist($module);
         $module = $this->sanitiseModuleName($module);
 
-        if ($content = Cache::get($this->getCacheKey()) === null) {
+        $cacheKey = $this->getCacheKey();
+        if (($content = Cache::get($cacheKey)) === null) {
             $content = [$this->getWorkbenchKey() => null];
         }
 
         $content[$this->getWorkbenchKey()] = $module;
 
-        Cache::put($this->getCacheKey(), $content, $this->getCacheValidity());
+        Cache::put($cacheKey, $content, $this->getCacheValidity());
     }
 
     /**
@@ -88,7 +89,7 @@ class ModuleManager implements Contract
     {
         $this->throwExceptionIfNotInitialised();
 
-        if ($content = Cache::get($this->getCacheKey()) === null) {
+        if (($content = Cache::get($this->getCacheKey())) === null) {
             $content = [$this->getWorkbenchKey() => null];
         }
 
