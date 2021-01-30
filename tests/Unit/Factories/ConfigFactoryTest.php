@@ -145,8 +145,41 @@ class ConfigFactoryTest extends Test
 
     public function testRevertServiceProviders () : void
     {
+        $mockFilesystem = Mockery::mock(Filesystem::class);
+        $this->instance(Filesystem::class, $mockFilesystem);
+        $this->instance(ModuleManagerContract::class, $this->app->make(ModuleManager::class));
+        $this->instance(ComposerEditorContract::class, $this->app->make(ComposerEditor::class));
 
+        // If I have a config factory
+        /** @var ConfigFactoryContract $uut */
+        $reflection = new \ReflectionClass(ConfigFactory::class);
+        $uut = $reflection->getMethod("revertServiceProviders"); // The unit under test is this specific method
+        $uut->setAccessible(true);
+
+        $mockFilesystem
+            ->shouldReceive('get')
+            ->withArgs([config_path('app.php')])
+            ->andReturn(['File content']) // We don't care about the content
+            ->once()
+        ;
+
+        $appFileArgument = null;
+        $mockFilesystem
+            ->shouldReceive('put')
+            ->withArgs([
+                config_path('app.php'),
+                Mockery::capture($appFileArgument)
+            ])
+            ->once()
+        ;
+
+        // When I call the replaceServiceProviders method
+        $factory = $this->app->make(ConfigFactory::class);
+        $uut->invoke($factory, $this->rootDir);
+
+        $this->assertMatchesSnapshot($appFileArgument);
     }
+    // todo: Test the fetching of the right array for the replacing of the service providers
 
     public function testRemoveConfigFile () : void
     {
