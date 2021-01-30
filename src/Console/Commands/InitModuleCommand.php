@@ -140,7 +140,7 @@ class InitModuleCommand extends Command
             if ($this->composerEditor->hasNamespaceInAutoload($rootDir)) {
                 $this->composerEditor->removeNamespaceFromAutoload($rootDir);
             }
-            $this->fileSystem->delete($this->moduleManager->getModulesRoot());
+            $this->fileSystem->delete($this->moduleManager->getModulesDirectory());
             $this->displayConfigErrorMessage($e);
             return;
         }

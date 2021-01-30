@@ -162,14 +162,15 @@ class ModuleManager implements Contract
     }
 
     /**
-     * Get the module directory relative path
+     * Get the module directory path
      *
      * @param string $module
      * @return string
+     * @throws ConfigFileNotFoundException
      */
     public function getModuleDirectory (string $module) : string
     {
-        return $this->getModulesRoot() . "/" . $module;
+        return $this->getModulesDirectory() . "/" . $module;
     }
 
     /**
@@ -198,9 +199,15 @@ class ModuleManager implements Contract
      * Get the root modules directory
      *
      * @return string
+     *
+     * @throws ConfigFileNotFoundException
      */
-    public function getModulesRoot () : string
+    public function getModulesDirectory () : string
     {
+        if (!$this->hasConfig()) {
+            throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
+        }
+
         return base_path(config("modules.root"));
     }
 
@@ -383,18 +390,19 @@ class ModuleManager implements Contract
     /**
      * Get a collection of your modules
      *
-     * @return Collection
+     * @return array
      * @throws ConfigFileNotFoundException
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
      */
-    protected function getModules(): Collection
+    protected function getModules(): array
     {
         if (!$this->isInitialised()) {
             throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
         }
 
-        return collect($this->getTrackerContent()[$this->getModulesTrackerKey()]);
+        return $this->getTrackerContent()[$this->getModulesTrackerKey()];
     }
 
     /**

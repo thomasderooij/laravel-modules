@@ -1,3 +1,4 @@
 make everything strict typed
 name the default tracker file name .tracker
 make the tracker file name configurable in the config
+look at the getModuleDirectory function in the moduleManager. This might break in a linux filesystem.

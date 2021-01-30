@@ -93,7 +93,7 @@ interface ModuleManager
      *
      * @return string
      */
-    public function getModulesRoot () : string;
+    public function getModulesDirectory () : string;
 
     /**
      * Get the tracker file name
