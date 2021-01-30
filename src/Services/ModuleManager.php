@@ -32,9 +32,9 @@ class ModuleManager implements Contract
      *
      * @return bool
      */
-    public static function isInitialised () : bool
+    public function isInitialised () : bool
     {
-        return static::hasConfig() && static::hasTrackerFile();
+        return $this->hasConfig() && $this->hasTrackerFile();
     }
 
     /**
@@ -66,7 +66,7 @@ class ModuleManager implements Contract
      */
     public function setWorkbench (string $module) : void
     {
-        if (!static::isInitialised()) {
+        if (!$this->isInitialised()) {
             throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
         }
         if (!$this->hasModule($module)) {
@@ -91,7 +91,7 @@ class ModuleManager implements Contract
      */
     public function clearWorkbench () : void
     {
-        if (!static::isInitialised()) {
+        if (!$this->isInitialised()) {
             throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
         }
 
@@ -191,15 +191,15 @@ class ModuleManager implements Contract
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
      */
-    public static function getActiveModules (bool $skipCheck = false) : Collection
+    public function getActiveModules (bool $skipCheck = false) : Collection
     {
-        if (!$skipCheck && !static::isInitialised()) {
+        if (!$skipCheck && !$this->isInitialised()) {
             throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
-        } elseif ($skipCheck && !static::hasTrackerFile()) {
+        } elseif ($skipCheck && !$this->hasTrackerFile()) {
             return collect([]);
         }
 
-        return collect(static::getTrackerContent()[static::getActiveModulesTrackerKey()]);
+        return collect($this->getTrackerContent()[$this->getActiveModulesTrackerKey()]);
     }
 
     /**
@@ -242,7 +242,7 @@ class ModuleManager implements Contract
      */
     public function deactivateModule (string $module) : void
     {
-        if (!static::isInitialised()) {
+        if (!$this->isInitialised()) {
             throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
         }
 
@@ -289,9 +289,9 @@ class ModuleManager implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    public static function getModuleNameSpace (string $module, bool $includeBackslash = true) : string
+    public function getModuleNameSpace (string $module, bool $includeBackslash = true) : string
     {
-        if (!static::hasConfig()) {
+        if (!$this->hasConfig()) {
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
         }
 
@@ -329,7 +329,7 @@ class ModuleManager implements Contract
      *
      * @return string
      */
-    public static function getTrackerFileName () : string
+    public function getTrackerFileName () : string
     {
         return "tracker";
     }
@@ -344,7 +344,7 @@ class ModuleManager implements Contract
      */
     protected function getModules(): Collection
     {
-        if (!static::isInitialised()) {
+        if (!$this->isInitialised()) {
             throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
         }
 
@@ -381,13 +381,13 @@ class ModuleManager implements Contract
      * @throws ConfigFileNotFoundException
      * @throws TrackerFileNotFoundException
      */
-    protected static function getTrackerContent () : Collection
+    protected function getTrackerContent () : Collection
     {
-        if (!static::hasTrackerFile()) {
+        if (!$this->hasTrackerFile()) {
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
 
-        $trackerFile = base_path(static::getModuleStorageDir() . static::getTrackerFileName());
+        $trackerFile = base_path($this->getModuleStorageDir() . $this->getTrackerFileName());
 
         return collect(json_decode(file_get_contents($trackerFile), true));
     }
@@ -397,15 +397,15 @@ class ModuleManager implements Contract
      *
      * @return bool
      */
-    protected static function hasTrackerFile () : bool
+    protected function hasTrackerFile () : bool
     {
         try {
-            $trackerFile = base_path(static::getModuleStorageDir() . static::getTrackerFileName());
+            $trackerFile = base_path($this->getModuleStorageDir() .$this->getTrackerFileName());
         } catch (ConfigFileNotFoundException $e) {
             return false;
         }
 
-        return is_file($trackerFile);
+        return $this->files->isFile($trackerFile);
     }
 
     /**
@@ -414,9 +414,9 @@ class ModuleManager implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    protected static function getModuleStorageDir () : string
+    protected function getModuleStorageDir () : string
     {
-        if (!static::hasConfig()) {
+        if (!$this->hasConfig()) {
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
         }
 
@@ -436,7 +436,7 @@ class ModuleManager implements Contract
         ];
     }
 
-    protected static function hasConfig () : bool
+    protected function hasConfig () : bool
     {
         return config("modules.root") !== null;
     }
@@ -456,7 +456,7 @@ class ModuleManager implements Contract
      *
      * @return string
      */
-    protected static function getActiveModulesTrackerKey () : string
+    protected function getActiveModulesTrackerKey () : string
     {
         return "activeModules";
     }
@@ -498,18 +498,7 @@ class ModuleManager implements Contract
      */
     protected function deleteDirectory (string $dir) : void
     {
-        $iterator = new DirectoryIterator($dir);
-        foreach ($iterator as $fileinfo) {
-            if($fileinfo->isDot()) continue;
-            if($fileinfo->isDir()){
-                $this->deleteDirectory($fileinfo->getPathname());
-            }
-            if($fileinfo->isFile()){
-                @unlink($fileinfo->getPathname());
-            }
-        }
-
-        rmdir($dir);
+        $this->files->delete($dir);
     }
 
     /**

@@ -2,16 +2,15 @@
 
 namespace Thomasderooij\LaravelModules\Console;
 
-use App\Console\Kernel;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Thomasderooij\LaravelModules\Contracts\ConsoleCompositeKernel;
+use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
 {
@@ -29,8 +28,9 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
             $this->kernels = [];
 
             // Include the default kernel if it still exists
-            if (class_exists(Kernel::class)) {
-                $this->kernels[] = new Kernel($app, $events);
+            $class = "App\Console\Kernel";
+            if (class_exists($class)) {
+                $this->kernels[] = new $class($app, $events);
             }
 
             $this->activeModulesToKernels($app, $events);
@@ -51,8 +51,10 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
      */
     protected function activeModulesToKernels (Application $app, Dispatcher $events) : void
     {
-        foreach (ModuleManager::getActiveModules(true) as $module) {
-            $className = ModuleManager::getModuleNameSpace($module) . "Console\\Kernel";
+        /** @var ModuleManager $moduleManager */
+        $moduleManager = $app->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);
+        foreach ($moduleManager->getActiveModules(true) as $module) {
+            $className = $moduleManager->getModuleNameSpace($module) . "Console\\Kernel";
 
             // Check if the module has the standard kernel, and add it to the kernel list if it exists
             if (class_exists($className)) {

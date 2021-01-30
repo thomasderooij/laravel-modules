@@ -18,7 +18,7 @@ interface ModuleManager
      *
      * @return bool
      */
-    public static function isInitialised () : bool;
+    public function isInitialised () : bool;
 
     /**
      * Get the content of your workbench
@@ -89,7 +89,7 @@ interface ModuleManager
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
      */
-    public static function getActiveModules (bool $skipCheck = false) : Collection;
+    public function getActiveModules (bool $skipCheck = false) : Collection;
 
     /**
      * Set a module from inactive to active
@@ -134,7 +134,7 @@ interface ModuleManager
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    public static function getModuleNameSpace (string $module, bool $includeBackslash = true) : string;
+    public function getModuleNameSpace (string $module, bool $includeBackslash = true) : string;
 
     /**
      * Get the module directory relative path
@@ -156,5 +156,5 @@ interface ModuleManager
      *
      * @return string
      */
-    public static function getTrackerFileName () : string;
+    public function getTrackerFileName () : string;
 }

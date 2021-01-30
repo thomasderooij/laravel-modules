@@ -4,7 +4,7 @@ namespace Thomasderooij\LaravelModules\Database\Factories;
 
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
+use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class EloquentModuleFactory extends Factory
 {
@@ -15,11 +15,13 @@ class EloquentModuleFactory extends Factory
         $pathToFactories = $pathToFactories ?: database_path('factories');
         $instance->load($pathToFactories);
 
-        if (ModuleManager::isInitialised()) {
+        /** @var ModuleManager $moduleManager */
+        $moduleManager = app()->make("module.service.manager");
+        if ($moduleManager->isInitialised()) {
             /** @var ModuleManager $manager */
             $manager = app()->make("module.service.manager");
 
-            foreach (ModuleManager::getActiveModules() as $module) {
+            foreach ($moduleManager->getActiveModules() as $module) {
                 $path = $manager->getModuleDirectory($module) . "/database/factories";
                 $instance->load($path);
             }

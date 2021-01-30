@@ -6,10 +6,10 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Router;
 use Thomasderooij\LaravelModules\Contracts\HttpCompositeKernel;
+use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class CompositeKernel extends HttpKernel implements HttpCompositeKernel
 {
@@ -73,8 +73,10 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
             $this->kernels[] = new $vanilla($app, $router);
         }
 
-        foreach (ModuleManager::getActiveModules(true) as $module) {
-            $className = ModuleManager::getModuleNameSpace($module) . "Http\\CompositeKernel";
+        /** @var ModuleManager $moduleManager */
+        $moduleManager = $app->make("module.service.manager");
+        foreach ($moduleManager->getActiveModules(true) as $module) {
+            $className = $moduleManager->getModuleNameSpace($module) . "Http\\CompositeKernel";
 
             // Check if the module has the standard kernel, and add it to the kernel list if it exists
             if (class_exists($className)) {
