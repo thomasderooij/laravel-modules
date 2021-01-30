@@ -126,7 +126,7 @@ abstract class ModuleTest extends TestCase
     protected function createRoute (string $method, string $type, string $module, string $url, string $controller, string $routeName = null) : void
     {
         $routeFile = base_path(config("modules.root"). "/" . ucfirst($module)."/routes/$type.php");
-        $content = $this->getRouteNamespaceWrapper($this->moduleManager->getModuleNameSpace($module, false));
+        $content = $this->getRouteNamespaceWrapper($this->moduleManager->getModuleNamespace($module, false));
         $content = str_replace("{content}", $this->getRoute($method, $url, $controller, $routeName), $content);
         $content = $this->getRouteStub() . $content;
 

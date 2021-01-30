@@ -10,20 +10,14 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class SetWorkbenchTest extends ModuleManagerTest
 {
+    private $method = "setWorkbench";
     /**
      * Test setting a workbench if all goes well
      */
     public function testSetWorkbenchWithoutACurrentWorkbench () : void
     {
         // If I have a module manager on which I want to set a workbench
-        $uut = $this->getMockManager(null, [
-            "getCacheKey",
-            "getCacheValidity",
-            "getWorkbenchKey",
-            "hasModule",
-            "isInitialised",
-            "sanitiseModuleName"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // It should check if it should throw an exception for not having been initialised
         $uut->shouldReceive("isInitialised")->andReturn(true)->once();
@@ -62,14 +56,7 @@ class SetWorkbenchTest extends ModuleManagerTest
     public function testSetWorkbenchWithACurrentWorkbench () : void
     {
         // If I have a module manager on which I want to set a workbench
-        $uut = $this->getMockManager(null, [
-            "getCacheKey",
-            "getCacheValidity",
-            "getWorkbenchKey",
-            "hasModule",
-            "isInitialised",
-            "sanitiseModuleName"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // It should check if it should throw an exception for not having been initialised
         $uut->shouldReceive("isInitialised")->andReturn(true)->once();
@@ -106,9 +93,7 @@ class SetWorkbenchTest extends ModuleManagerTest
     public function testShouldThrowAnExceptionIfNotInitialised () : void
     {
         // If I have a module manager on which I want to set a workbench
-        $uut = $this->getMockManager(null, [
-            "isInitialised",
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // And the modules are not initialised
         $uut->shouldReceive('isInitialised')->andReturn(false);
@@ -122,10 +107,7 @@ class SetWorkbenchTest extends ModuleManagerTest
     public function testShouldThrowAnExceptionIfModuleDoesNotExist () : void
     {
         // If I have a module manager on which I want to set a workbench
-        $uut = $this->getMockManager(null, [
-            "hasModule",
-            "isInitialised",
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // And the modules are initialised
         $uut->shouldReceive('isInitialised')->andReturn(true);

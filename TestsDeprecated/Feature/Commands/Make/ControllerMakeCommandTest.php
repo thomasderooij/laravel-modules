@@ -79,7 +79,7 @@ class ControllerMakeCommandTest extends ModuleTest
         // And I make a controller with a model
         $controller = "NewController";
         $model = "Aggregates\\NewModel";
-        $expectedQuestion = "A " . $this->moduleManager->getModuleNameSpace($this->module) . $model . " model does not exist. Do you want to generate it?";
+        $expectedQuestion = "A " . $this->moduleManager->getModuleNamespace($this->module) . $model . " model does not exist. Do you want to generate it?";
         $response = $this->artisan("make:controller", ["name" => $controller, "--model" => $model]);
         $response->expectsQuestion($expectedQuestion, "yes");
         $response->expectsOutput("Model created successfully.");
@@ -138,7 +138,7 @@ class ControllerMakeCommandTest extends ModuleTest
         // And I make a controller with the parent option
         $controller = "NewController";
         $model = "Aggregates\\NewModel";
-        $expectedQuestion = "A " . $this->moduleManager->getModuleNameSpace($this->module) . $model . " model does not exist. Do you want to generate it?";
+        $expectedQuestion = "A " . $this->moduleManager->getModuleNamespace($this->module) . $model . " model does not exist. Do you want to generate it?";
         $response = $this->artisan("make:controller", ["name" => $controller, "--parent" => $model]);
         $response->expectsQuestion($expectedQuestion, "yes");
         $response->expectsOutput("Model created successfully.");

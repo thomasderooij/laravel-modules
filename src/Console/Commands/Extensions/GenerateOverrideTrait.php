@@ -85,7 +85,7 @@ trait GenerateOverrideTrait
 
         // If we have modules, and a module can be found, return the module namespace
         if ($this->moduleManager->isInitialised() && $module !== null) {
-            return $this->moduleManager->getModuleNameSpace($module);
+            return $this->moduleManager->getModuleNamespace($module);
         }
 
         // If there is no module, return default namespace

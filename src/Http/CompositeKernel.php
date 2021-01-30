@@ -76,7 +76,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
         /** @var ModuleManager $moduleManager */
         $moduleManager = $app->make("module.service.manager");
         foreach ($moduleManager->getActiveModules(true) as $module) {
-            $className = $moduleManager->getModuleNameSpace($module) . "Http\\CompositeKernel";
+            $className = $moduleManager->getModuleNamespace($module) . "Http\\CompositeKernel";
 
             // Check if the module has the standard kernel, and add it to the kernel list if it exists
             if (class_exists($className)) {

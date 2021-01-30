@@ -54,7 +54,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
         /** @var ModuleManager $moduleManager */
         $moduleManager = $app->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);
         foreach ($moduleManager->getActiveModules(true) as $module) {
-            $className = $moduleManager->getModuleNameSpace($module) . "Console\\Kernel";
+            $className = $moduleManager->getModuleNamespace($module) . "Console\\Kernel";
 
             // Check if the module has the standard kernel, and add it to the kernel list if it exists
             if (class_exists($className)) {

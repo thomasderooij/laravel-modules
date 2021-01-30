@@ -8,29 +8,29 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleCreationException;
 
 class AddModuleTest extends ModuleManagerTest
 {
+    private $method = "addModule";
+
     public function testAddingAModule () : void
     {
-        $uut = $this->getMockManager(null, [
-            "activateModule",
-            "getTrackerContent",
-            "hasModule",
-            "save",
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have a module name
         $module = "new_module";
 
         // And this module does not exist yet
-        $uut->expects("hasModule")->withArgs([$module])->andReturn(false);
+        $uut->shouldReceive("hasModule")->withArgs([$module])->andReturn(false);
 
         // Next I should get the tracker content
-        $modulesKey = "modules";
-        $trackerContent = [$modulesKey => [], "activeModules" => []];
-        $uut->expects("getTrackerContent")->withNoArgs()->andReturn($trackerContent);
+        $modulesKey = "modules_key";
+        $trackerContent = [$modulesKey => [], "active_modules_key" => []];
+        $uut->shouldReceive("getTrackerContent")->withNoArgs()->andReturn($trackerContent);
+
+        // Next we'll get the modules tracker key
+        $uut->shouldReceive("getModulesTrackerKey")->andReturn($modulesKey)->twice();
 
         // Then the module should be saved to the module tracker file
-        $updatedTrackerContent = [$modulesKey => [$module], "activeModules" => []];
-        $uut->expects("save")->withArgs([$updatedTrackerContent])->once();
+        $updatedTrackerContent = [$modulesKey => [$module], "active_modules_key" => []];
+        $uut->shouldReceive("save")->withArgs([$updatedTrackerContent])->once();
 
         // And the module should be activated
         $uut->shouldReceive("activateModule")->withArgs([$module])->once();
@@ -41,13 +41,13 @@ class AddModuleTest extends ModuleManagerTest
 
     public function testAddingAModuleTwice () : void
     {
-        $uut = $this->getMockManager(null, ["hasModule"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have a module name
         $module = "new_module";
 
         // And this module already exists
-        $uut->expects("hasModule")->withArgs([$module])->andReturn(true);
+        $uut->shouldReceive("hasModule")->withArgs([$module])->andReturn(true);
 
         // I expect an exception
         $this->expectException(ModuleCreationException::class);

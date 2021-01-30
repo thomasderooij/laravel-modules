@@ -4,28 +4,20 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
-use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class IsInitialisedTest extends ModuleManagerTest
 {
-    public function testHasConfigAndTrackerFile () : void
+    private $method = "isInitialised";
+
+    public function testIsInitialised () : void
     {
-        $filesystem = $this->getMockFilesystem();
+        $uut = $this->getMockManager(null, $this->method);
 
-        // I the config specifies a module root dir
-        $rootDir = "root_dir";
-        Config::shouldReceive('get')->withArgs(['modules.root', null])->andReturn($rootDir);
-
-        // And there is a modules tracker file
-        $filesystem
-            ->shouldReceive('isFile')
-            ->withArgs([base_path("$rootDir/tracker")])
-            ->andReturn(true)
-        ;
-
-        /** @var ModuleManager $uut */
-        $uut = $this->app->make('module.service.manager');
+        // If I have a config file
+        $uut->shouldReceive("hasConfig")->andReturn(true);
+        // And I have a tracker file
+        $uut->shouldReceive("hasTrackerFile")->andReturn(true);
 
         // The the modules should be considered to be initialised
         $this->assertTrue($uut->isInitialised());
@@ -33,37 +25,40 @@ class IsInitialisedTest extends ModuleManagerTest
 
     public function testCheckingInitialisationIfThereIsNoConfig () : void
     {
-        $filesystem = $this->getMockFilesystem();
+        $uut = $this->getMockManager(null, $this->method);
 
-        // I the config does not specify a module root dir
-        Config::shouldReceive('get')->withArgs(['modules.root', null])->andReturn(null);
+        // If I don't  have a config file
+        $uut->shouldReceive("hasConfig")->andReturn(false);
+        // But I do have a tracker file
+        $uut->shouldReceive("hasTrackerFile")->andReturn(true);
 
-        /** @var ModuleManager $uut */
-        $uut = $this->app->make('module.service.manager');
-
-        // The the modules should be considered to be initialised
+        // The the modules should be considered to not be initialised
         $this->assertFalse($uut->isInitialised());
     }
 
     public function testCheckingInitialisationIfThereIsNoTrackerFile () : void
     {
-        $filesystem = $this->getMockFilesystem();
+        $uut = $this->getMockManager(null, $this->method);
 
-        // I the config specifies a module root dir
-        $rootDir = "root_dir";
-        Config::shouldReceive('get')->withArgs(['modules.root', null])->andReturn($rootDir);
+        // If I have a config file
+        $uut->shouldReceive("hasConfig")->andReturn(true);
+        // But I don't have a tracker file
+        $uut->shouldReceive("hasTrackerFile")->andReturn(false);
 
-        // But there isn't a modules tracker file
-        $filesystem
-            ->shouldReceive('isFile')
-            ->withArgs([base_path("$rootDir/tracker")])
-            ->andReturn(false)
-        ;
+        // The the modules should be considered to not be initialised
+        $this->assertFalse($uut->isInitialised());
+    }
 
-        /** @var ModuleManager $uut */
-        $uut = $this->app->make('module.service.manager');
+    public function testCheckingInitialisationWhenNeitherFileIsPresent () : void
+    {
+        $uut = $this->getMockManager(null, $this->method);
 
-        // The the modules should be considered to be initialised
+        // If I have a config file
+        $uut->shouldReceive("hasConfig")->andReturn(false);
+        // And I don't have a tracker file
+        $uut->shouldReceive("hasTrackerFile")->andReturn(false);
+
+        // The the modules should be considered to not be initialised
         $this->assertFalse($uut->isInitialised());
     }
 }

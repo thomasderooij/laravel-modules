@@ -18,7 +18,7 @@ class BroadcastServiceProviderFactory extends ServiceProviderFactory implements 
         $relativePath = $this->getRelativeModuleFileDir($module);
 
         $this->populateFile(base_path($this->getServiceProviderDir($module)), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNameSpace($module) . $this->getProvidersDirectory(),
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersDirectory(),
             $this->getClassNamePlaceholder() => $this->getClassName(),
             $this->getRouteFilePlaceholder() => $this->getRelativeRouteFile($relativePath),
         ]);

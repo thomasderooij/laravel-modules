@@ -86,7 +86,7 @@ interface ModuleManager
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    public function getModuleNameSpace (string $module, bool $includeBackslash = true) : string;
+    public function getModuleNamespace (string $module, bool $includeBackslash = true) : string;
 
     /**
      * Get the modules base directory

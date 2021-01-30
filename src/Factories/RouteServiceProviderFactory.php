@@ -20,8 +20,8 @@ class RouteServiceProviderFactory extends ServiceProviderFactory implements Cont
         $relativePath = $this->getRelativeModuleFileDir($module);
 
         $this->populateFile(base_path($this->getServiceProviderDir($module)), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNameSpace($module) . $this->getProvidersDirectory(),
-            $this->getControllerNamespacePlaceholder() => $this->moduleManager->getModuleNameSpace($module, false),
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersDirectory(),
+            $this->getControllerNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module, false),
             $this->getClassNamePlaceholder() => $this->getClassName(),
             $this->getWebRouteFilePlaceholder() => $this->getWebFile($relativePath),
             $this->getApiRouteFilePlaceholder() => $this->getApiFile($relativePath),

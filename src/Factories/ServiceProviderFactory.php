@@ -46,7 +46,7 @@ abstract class ServiceProviderFactory extends FileFactory
             base_path($this->getServiceProviderDir($module)),
             $this->getFileName(),
             $this->getStub(), [
-                $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNameSpace($module) . $this->getProvidersDirectory(),
+                $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersDirectory(),
                 $this->getClassNamePlaceholder() => $this->getClassName(),
             ]
         );

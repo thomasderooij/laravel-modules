@@ -9,26 +9,24 @@ use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class GetModulesTest extends ModuleManagerTest
 {
+    private $method = "getModules";
+
     public function testGetModules () : void
     {
         // If I have a method to get all the modules
         $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod("getModules");
+        $uut = $reflection->getMethod($this->method);
         $uut->setAccessible(true);
 
-        $moduleManager = $this->getMockManager(null, [
-            "getModulesTrackerKey",
-            "getTrackerContent",
-            "isInitialised"
-        ]);
+        $moduleManager = $this->getMockManager(null, $this->method);
 
         // I should check if the modules are initialised
         $moduleManager->expects("isInitialised")->andReturn(true);
 
         // Then I should get the tracker content
-        $modulesKey = "modules";
+        $modulesKey = "modules_key";
         $modules = ["module_1", "other_module", "inactive_module"];
-        $trackerContent = [$modulesKey => $modules, "activeModules" => ["module_1", "other_module"]];
+        $trackerContent = [$modulesKey => $modules, "active_modules_key" => ["module_1", "other_module"]];
         $moduleManager->expects("getTrackerContent")->andReturn($trackerContent);
 
         // Then I should get the modules key
@@ -44,10 +42,10 @@ class GetModulesTest extends ModuleManagerTest
     {
         // If I have a method to get all the modules
         $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod("getModules");
+        $uut = $reflection->getMethod($this->method);
         $uut->setAccessible(true);
 
-        $moduleManager = $this->getMockManager(null, ["isInitialised"]);
+        $moduleManager = $this->getMockManager(null, $this->method);
 
         // And the modules are not initialised
         $moduleManager->expects("isInitialised")->andReturn(false);

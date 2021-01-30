@@ -10,19 +10,11 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class DeactivateModuleTest extends ModuleManagerTest
 {
+    private $method = "deactivateModule";
+
     public function testDeactivatingAModuleCurrentlyInOurWorkbench () : void
     {
-        $uut = $this->getMockManager(null, [
-            "clearWorkbench",
-            "getActiveModulesTrackerKey",
-            "getTrackerContent",
-            "getWorkbench",
-            "hasModule",
-            "isInitialised",
-            "moduleIsActive",
-            "sanitiseModuleName",
-            "save"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If my modules are initialised
         $uut->shouldReceive("isInitialised")->once()->andReturn(true);
@@ -40,8 +32,8 @@ class DeactivateModuleTest extends ModuleManagerTest
         $uut->shouldReceive("clearWorkbench");
 
         // Next we get the tracker content
-        $modulesKey = "modules";
-        $activeModulesKey = "activeModules";
+        $modulesKey = "modules_key";
+        $activeModulesKey = "active_modules_key";
         $trackerContent = [$modulesKey => [$sanitisedModuleName, $otherModule], $activeModulesKey => [$module, $otherModule]];
         $uut->shouldReceive("getTrackerContent")->andReturn($trackerContent);
         $uut->shouldReceive("getActiveModulesTrackerKey")->andReturn($activeModulesKey);
@@ -56,17 +48,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAModuleNotInOurWorkbench () : void
     {
-        $uut = $this->getMockManager(null, [
-            "clearWorkbench",
-            "getActiveModulesTrackerKey",
-            "getTrackerContent",
-            "getWorkbench",
-            "hasModule",
-            "isInitialised",
-            "moduleIsActive",
-            "sanitiseModuleName",
-            "save"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If my modules are initialised
         $uut->shouldReceive("isInitialised")->once()->andReturn(true);
@@ -82,8 +64,8 @@ class DeactivateModuleTest extends ModuleManagerTest
         $uut->shouldReceive("getWorkbench")->andReturn("some_other_module");
 
         // Next we get the tracker content
-        $modulesKey = "modules";
-        $activeModulesKey = "activeModules";
+        $modulesKey = "modules_key";
+        $activeModulesKey = "active_modules_key";
         $trackerContent = [$modulesKey => [$sanitisedModuleName, $otherModule], $activeModulesKey => [$module, $otherModule]];
         $uut->shouldReceive("getTrackerContent")->andReturn($trackerContent);
         $uut->shouldReceive("getActiveModulesTrackerKey")->andReturn($activeModulesKey);
@@ -98,7 +80,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAModuleWhenModulesAreNotInitialised () : void
     {
-        $uut = $this->getMockManager(null, ["isInitialised"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If my modules are not initialised
         $uut->shouldReceive("isInitialised")->once()->andReturn(false);
@@ -114,10 +96,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingANonExistentModule () : void
     {
-        $uut = $this->getMockManager(null, [
-            "hasModule",
-            "isInitialised"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If my modules are initialised
         $module = "non_existent_module";
@@ -137,11 +116,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAnAlreadyInactiveModule () : void
     {
-        $uut = $this->getMockManager(null, [
-            "hasModule",
-            "isInitialised",
-            "moduleIsActive"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If my modules are initialised
         $module = "inactive_module";

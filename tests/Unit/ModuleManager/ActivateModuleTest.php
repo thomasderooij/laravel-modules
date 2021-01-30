@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
-use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Exceptions\ModuleAlreadyActiveException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class ActivateModuleTest extends ModuleManagerTest
 {
+    private $method = "activateModule";
+
     /**
      * All public methods called by the module will be mocked, since they will also get their own test
      *  As a result, we will not be testing them in this test.
      */
-    public function testActivatingModule () : void
+    public function testActivateModule () : void
     {
-        $uut = $this->getMockManager(null, [
-            "getActiveModulesTrackerKey",
-            "getTrackerContent",
-            "hasModule",
-            "moduleIsActive",
-            "save",
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I want to activate a module
         $module = "test_module";
@@ -32,8 +27,8 @@ class ActivateModuleTest extends ModuleManagerTest
         // And not yet be active
         $uut->shouldReceive("moduleIsActive")->withArgs([$module])->andReturn(false);
         // Next we will need the tracker file content
-        $modulesKey = "modules";
-        $activeModulesKey = "activeModules";
+        $modulesKey = "modules_key";
+        $activeModulesKey = "active_modules_key";
         $trackerContent = [$modulesKey => [$module], $activeModulesKey => []];
         $uut->shouldReceive("getTrackerContent")->withNoArgs()->andReturn($trackerContent);
         // Next we fetch the active modules key
@@ -52,7 +47,7 @@ class ActivateModuleTest extends ModuleManagerTest
 
     public function testThrowingExceptionIfThereIsNoSuchModule () : void
     {
-        $uut = $this->getMockManager(null, ["hasModule"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have a module name
         $module = "non_existent_module";
@@ -71,7 +66,7 @@ class ActivateModuleTest extends ModuleManagerTest
 
     public function testThrowingExceptionIfTheModuleIsAlreadyActive () : void
     {
-        $uut = $this->getMockManager(null, ["hasModule", "moduleIsActive"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have a module
         $module = "active_module";

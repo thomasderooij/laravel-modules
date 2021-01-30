@@ -10,18 +10,21 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as ModuleManag
 
 class GetWorkbenchTest extends ModuleManagerTest
 {
+    private $method = "getWorkbench";
+
     /**
      * Here we check if we get null when we're asking what's in an empty workbench
      */
     public function testGetWorkbenchWhenEmpty () : void
     {
-        $this->getMockManager($this->getMockFilesystem(), []);
-
         // If I have a module manager
-        /** @var ModuleManagerContract $uut */
-        $uut = $this->app->make('module.service.manager');
+        $uut = $this->getMockManager(null, $this->method);
 
-        Cache::shouldReceive('get')->andReturn(null)->once(); // We don't care about the arguments here
+        // We should get the cache key
+        $cacheKey = "cache_key";
+        $uut->shouldReceive("getCacheKey")->andReturn($cacheKey);
+
+        Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn(null)->once(); // We don't care about the arguments here
 
         // And I ask for the workbench
         // I expect to receive null
@@ -33,14 +36,15 @@ class GetWorkbenchTest extends ModuleManagerTest
      */
     public function testGetWorkbenchWhenNotEmpty () : void
     {
-        $uut = $this->getMockManager(null, ["getWorkbenchKey"]);
-
         // If I have a module manager
-        /** @var ModuleManagerContract&Mockery\MockInterface $uut */
-        $uut = $this->getMockManager(null, ["getWorkbenchKey"]);
+        $uut = $this->getMockManager(null, $this->method);
+
+        // We should get the cache key
+        $cacheKey = "cache_key";
+        $uut->shouldReceive("getCacheKey")->andReturn($cacheKey);
 
         // And there is an active module
-        Cache::shouldReceive('get')->andReturn(["module" => "testModule"])->once(); // We also don't care about the arguments here
+        Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn(["module" => "testModule"])->once(); // We also don't care about the arguments here
         // The manager should know they key
         $uut->shouldReceive("getWorkbenchKey")->andReturn("module")->once();
 

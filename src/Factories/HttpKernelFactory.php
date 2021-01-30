@@ -62,7 +62,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      */
     protected function getKernelNamespace (string $module) : string
     {
-        return $this->moduleManager->getModuleNameSpace($module) . $this->getHttpDirectory();
+        return $this->moduleManager->getModuleNamespace($module) . $this->getHttpDirectory();
     }
 
     /**

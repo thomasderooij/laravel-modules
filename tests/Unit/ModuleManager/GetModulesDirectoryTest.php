@@ -9,9 +9,11 @@ use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundExc
 
 class GetModulesDirectoryTest extends ModuleManagerTest
 {
+    private $method = "getModulesDirectory";
+
     public function testGetModulesDirectory () : void
     {
-        $uut = $this->getMockManager(null, ["hasConfig"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // I should check if there is a config file
         $uut->shouldReceive("hasConfig")->andReturn(true);
@@ -29,7 +31,7 @@ class GetModulesDirectoryTest extends ModuleManagerTest
 
     public function testGetModulesDirectoryWithoutConfig () : void
     {
-        $uut = $this->getMockManager(null, ["hasConfig"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I don't have a config file
         $uut->shouldReceive("hasConfig")->andReturn(false);

@@ -8,21 +8,18 @@ use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialised
 
 class GetActiveModulesTest extends ModuleManagerTest
 {
+    private $method = "getActiveModules";
+
     public function testGetActiveModules () : void
     {
-        $uut = $this->getMockManager(null, [
-            "getActiveModulesTrackerKey",
-            "getTrackerContent",
-            "hasTrackerFile",
-            "isInitialised"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have initialised my modules
         $uut->shouldReceive("isInitialised")->andReturn(true);
 
         // I will get my tracker content
-        $modulesKey = "modules";
-        $activeModulesKey = "activeModules";
+        $modulesKey = "modules_key";
+        $activeModulesKey = "active_modules_keys";
         $modules = ["module_1", "other_modules", "deprecated_module"];
         $activeModules = ["modules_1", "other_module"];
         $trackerContent = [$modulesKey => $modules, $activeModulesKey => $activeModules];
@@ -42,10 +39,7 @@ class GetActiveModulesTest extends ModuleManagerTest
 
     public function testGettingActiveModulesWhenModulesAreNotInitialised () : void
     {
-        $uut = $this->getMockManager(null, [
-            "hasTrackerFile",
-            "isInitialised"
-        ]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I not have initialised my modules
         $uut->shouldReceive("isInitialised")->andReturn(false);
@@ -62,7 +56,7 @@ class GetActiveModulesTest extends ModuleManagerTest
 
     public function testGettingActiveModulesWhenNotInitialisedAndNotSkippingCheck () : void
     {
-        $uut = $this->getMockManager(null, ["isInitialised"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I not have initialised my modules
         $uut->shouldReceive("isInitialised")->andReturn(false);

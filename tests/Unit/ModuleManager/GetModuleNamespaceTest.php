@@ -6,19 +6,20 @@ namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
 use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class GetModuleNamespaceTest extends ModuleManagerTest
 {
+    private $method = "getModuleNamespace";
+
     public function testGetModuleNamespace () : void
     {
-        $uut = $this->getMockManager(null, ["hasConfig"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have a module
         $module = "test_module";
 
         // We should check if there is a configuration file
-        $uut->expects("hasConfig")->andReturn(true);
+        $uut->shouldReceive("hasConfig")->andReturn(true);
 
         // I should get the module root from the configuration
         $moduleRoot = "module_root";
@@ -28,18 +29,18 @@ class GetModuleNamespaceTest extends ModuleManagerTest
         $expected = "Module_root\\Test_module\\";
 
         // When I call the function
-        $this->assertSame($expected, $uut->getModuleNameSpace($module));
+        $this->assertSame($expected, $uut->getModuleNamespace($module));
     }
 
     public function testGetModuleNamespaceWithoutConfigFiles () : void
     {
-        $uut = $this->getMockManager(null, ["hasConfig"]);
+        $uut = $this->getMockManager(null, $this->method);
 
         // If I have a module
         $module = "test_module";
 
         // If there is no configuration file
-        $uut->expects("hasConfig")->andReturn(false);
+        $uut->shouldReceive("hasConfig")->andReturn(false);
 
         // I expect to receive an exception
         $this->expectException(ConfigFileNotFoundException::class);
@@ -47,6 +48,6 @@ class GetModuleNamespaceTest extends ModuleManagerTest
         $this->expectExceptionMessage("Could not locate modules file in the config directory.");
 
         // When I ask for the module namespace
-        $uut->getModuleNameSpace($module);
+        $uut->getModuleNamespace($module);
     }
 }

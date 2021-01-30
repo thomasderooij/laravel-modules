@@ -6,7 +6,6 @@ namespace Thomasderooij\LaravelModules\Services;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as Contract;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
@@ -67,6 +66,7 @@ class ModuleManager implements Contract
      * @throws ModuleNotFoundException
      * @throws TrackerFileNotFoundException
      * @throws ModulesNotInitialisedException
+     * @throws FileNotFoundException
      */
     public function addModule (string $module) : void
     {
@@ -181,7 +181,7 @@ class ModuleManager implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    public function getModuleNameSpace (string $module, bool $includeBackslash = true) : string
+    public function getModuleNamespace (string $module, bool $includeBackslash = true) : string
     {
         if (!$this->hasConfig()) {
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
@@ -411,13 +411,13 @@ class ModuleManager implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    protected function getModuleStorageDir () : string
+    protected function getModulesRoot () : string
     {
         if (!$this->hasConfig()) {
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
         }
 
-        return config("modules.root")."/";
+        return config("modules.root");
     }
 
     /**
@@ -444,7 +444,7 @@ class ModuleManager implements Contract
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
 
-        $trackerFile = base_path($this->getModuleStorageDir() . $this->getTrackerFileName());
+        $trackerFile = base_path($this->getModulesRoot() . $this->getTrackerFileName());
 
         return json_decode($this->files->get($trackerFile), true);
     }
@@ -472,7 +472,7 @@ class ModuleManager implements Contract
     protected function hasTrackerFile () : bool
     {
         try {
-            $trackerFile = base_path($this->getModuleStorageDir() .$this->getTrackerFileName());
+            $trackerFile = base_path($this->getModulesRoot() .$this->getTrackerFileName());
         } catch (ConfigFileNotFoundException $e) {
             return false;
         }
@@ -507,7 +507,7 @@ class ModuleManager implements Contract
     protected function save (array $trackerContent): void
     {
         // Get the qualified directory to store the tracker file in
-        $storageDir = base_path($this->getModuleStorageDir());
+        $storageDir = base_path($this->getModulesRoot());
 
         // Get the qualified file name
         $trackerFile = $storageDir . $this->getTrackerFileName();
