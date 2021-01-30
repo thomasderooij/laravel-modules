@@ -1,0 +1,3 @@
+make everything strict typed
+name the default tracker file name .tracker
+make the tracker file name configurable in the config

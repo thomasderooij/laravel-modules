@@ -47,14 +47,17 @@ class ClearWorkbenchTest extends ModuleManagerTest
      */
     public function testClearingTheWorkbenchWhenModulesAreNotInitialised () : void
     {
-        $uut = $this->getMockManager(null, [
-            "isInitialised",
-        ]);
+        $uut = $this->getMockManager(null, ["isInitialised"]);
 
+        // When my modules are not initialised
         $uut->shouldReceive("isInitialised")->andReturn(false);
 
+        // I expect an exception
         $this->expectException(ModulesNotInitialisedException::class);
+        // With a message
+        $this->expectExceptionMessage("The modules need to be initialised first. You can do this by running the module:init command.");
 
+        // When I try to clear the workbench
         $uut->clearWorkbench();
     }
 }

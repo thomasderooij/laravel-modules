@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Contracts\Services;
 
 use Illuminate\Support\Collection;
@@ -14,36 +16,16 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 interface ModuleManager
 {
     /**
-     * Check if modules are initialised
-     *
-     * @return bool
-     */
-    public function isInitialised () : bool;
-
-    /**
-     * Get the content of your workbench
-     *
-     * @return string|null
-     */
-    public function getWorkbench ();
-
-    /**
-     * Set a module to your workbench
+     * Set a module from inactive to active
      *
      * @param string $module
      * @throws ConfigFileNotFoundException
+     * @throws ModuleAlreadyActiveException
      * @throws ModuleNotFoundException
-     * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
-     */
-    public function setWorkbench (string $module) : void;
-
-    /**
-     * Clear your workbench
-     *
      * @throws ModulesNotInitialisedException
      */
-    public function clearWorkbench () : void;
+    public function activateModule (string $module) : void;
 
     /**
      * Add a module to your tracker file
@@ -59,49 +41,11 @@ interface ModuleManager
     public function addModule (string $module) : void;
 
     /**
-     * Remove a module and its content from your project
+     * Clear your workbench
      *
-     * @param string $module
-     * @throws ConfigFileNotFoundException
-     * @throws ModuleNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    public function removeModule (string $module) : void;
-
-    /**
-     * Check if a module exists
-     *
-     * @param string $module
-     * @return bool
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    public function hasModule (string $module) : bool;
-
-    /**
-     * Get a collection of your currently active modules
-     *
-     * @param bool $skipCheck
-     * @return Collection
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    public function getActiveModules (bool $skipCheck = false) : Collection;
-
-    /**
-     * Set a module from inactive to active
-     *
-     * @param string $module
-     * @throws ConfigFileNotFoundException
-     * @throws ModuleAlreadyActiveException
-     * @throws ModuleNotFoundException
-     * @throws TrackerFileNotFoundException
      * @throws ModulesNotInitialisedException
      */
-    public function activateModule (string $module) : void;
+    public function clearWorkbench () : void;
 
     /**
      * Set a module to not-active
@@ -116,15 +60,23 @@ interface ModuleManager
     public function deactivateModule (string $module) : void;
 
     /**
-     * Check if a module is active
+     * Get a collection of your currently active modules
      *
-     * @param string $module
-     * @return bool
+     * @param bool $skipCheck
+     * @return array
      * @throws ConfigFileNotFoundException
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
      */
-    public function moduleIsActive (string $module) : bool;
+    public function getActiveModules (bool $skipCheck = false) : array;
+
+    /**
+     * Get the module directory relative path
+     *
+     * @param string $module
+     * @return string
+     */
+    public function getModuleDirectory (string $module) : string;
 
     /**
      * Get the base namespace of a given module
@@ -135,14 +87,6 @@ interface ModuleManager
      * @throws ConfigFileNotFoundException
      */
     public function getModuleNameSpace (string $module, bool $includeBackslash = true) : string;
-
-    /**
-     * Get the module directory relative path
-     *
-     * @param string $module
-     * @return string
-     */
-    public function getModuleDirectory (string $module) : string;
 
     /**
      * Get the modules base directory
@@ -157,4 +101,62 @@ interface ModuleManager
      * @return string
      */
     public function getTrackerFileName () : string;
+
+    /**
+     * Get the content of your workbench
+     *
+     * @return string|null
+     */
+    public function getWorkbench () : ?string;
+
+    /**
+     * Check if a module exists
+     *
+     * @param string $module
+     * @return bool
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function hasModule (string $module) : bool;
+
+    /**
+     * Check if modules are initialised
+     *
+     * @return bool
+     */
+    public function isInitialised () : bool;
+
+    /**
+     * Check if a module is active
+     *
+     * @param string $module
+     * @return bool
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function moduleIsActive (string $module) : bool;
+
+    /**
+     * Remove a module and its content from your project
+     *
+     * @param string $module
+     * @throws ConfigFileNotFoundException
+     * @throws ModuleNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function removeModule (string $module) : void;
+
+    /**
+     * Set a module to your workbench
+     *
+     * @param string $module
+     * @throws ConfigFileNotFoundException
+     * @throws ModuleNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function setWorkbench (string $module) : void;
 }
