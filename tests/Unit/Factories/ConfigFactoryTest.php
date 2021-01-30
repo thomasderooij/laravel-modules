@@ -17,7 +17,6 @@ use Thomasderooij\LaravelModules\Tests\Test;
 class ConfigFactoryTest extends Test
 {
     private $rootDir = "test_root";
-    private $trackerFileName = "tracker";
 
     /**
      * Here we test if the create function calls the expected protected functions and dependencies
@@ -28,7 +27,7 @@ class ConfigFactoryTest extends Test
 
         // If I have a config factory
         /** @var Mockery\MockInterface&ConfigFactory $uut */
-        $uut = Mockery::mock(ConfigFactory::class.'[createConfigFile, createModuleTrackerFile, replaceServiceProviders]', [
+        $uut = Mockery::mock(ConfigFactory::class.'[createConfigFile,, replaceServiceProviders]', [
             $this->app->make(Filesystem::class),
             $this->app->make(ModuleManager::class),
             $mockEditor,
@@ -37,11 +36,7 @@ class ConfigFactoryTest extends Test
         // The following methods should be called
         $uut->shouldAllowMockingProtectedMethods();
         $uut->shouldReceive('createConfigFile')->withArgs([$this->rootDir])->once();
-        $uut->shouldReceive('createModuleTrackerFile')->withArgs([$this->rootDir])->once();
         $uut->shouldReceive('replaceServiceProviders')->once();
-
-        // And the composer editor should add a namespace to the autoload
-        $mockEditor->shouldReceive('addNamespaceToAutoload')->withArgs([$this->rootDir])->once();
 
         // When I call the create function
         $uut->create($this->rootDir);
@@ -56,7 +51,7 @@ class ConfigFactoryTest extends Test
 
         // If I have a config factory
         /** @var Mockery\MockInterface&ConfigFactory $uut */
-        $uut = Mockery::mock(ConfigFactory::class.'[removeTrackerFile, removeConfigFile]', [
+        $uut = Mockery::mock(ConfigFactory::class.'[removeConfigFile, revertServiceProviders]', [
             $this->app->make(Filesystem::class),
             $this->app->make(ModuleManager::class),
             $mockEditor,
@@ -64,11 +59,8 @@ class ConfigFactoryTest extends Test
 
         // The following methods should be called
         $uut->shouldAllowMockingProtectedMethods();
-        $uut->shouldReceive('removeTrackerFile')->once();
+        $uut->shouldReceive('revertServiceProviders')->once();
         $uut->shouldReceive('removeConfigFile')->once();
-
-        // And the composer editor should remove namespace to the autoload
-        $mockEditor->shouldReceive('removeNamespaceFromAutoload')->once();
 
         // When I call the undo function
         $uut->undo();
@@ -114,57 +106,6 @@ class ConfigFactoryTest extends Test
         $this->assertMatchesSnapshot($configFileArgument);
     }
 
-    public function testCreateTrackerFile () : void
-    {
-        $mockFilesystem = Mockery::mock(Filesystem::class);
-        $this->instance(Filesystem::class, $mockFilesystem);
-        $mockManager = Mockery::mock(ModuleManager::class);
-        $this->instance(ModuleManagerContract::class, $mockManager);
-        $this->instance(ComposerEditorContract::class, $this->app->make(ComposerEditor::class));
-
-        // If I have a config factory
-        /** @var ConfigFactoryContract $uut */
-        $reflection = new \ReflectionClass(ConfigFactory::class);
-        $uut = $reflection->getMethod("createModuleTrackerFile"); // The unit under test is this specific method
-        $uut->setAccessible(true);
-
-        // A stub for the tracker file should be fetched
-        $trackerStub = realpath(__DIR__ . '/../../../src/Factories/stubs/tracker.stub');
-        $mockFilesystem
-            ->shouldReceive('get')
-            ->withArgs([$trackerStub])
-            ->andReturn(['Tracker stub content']) // We don't care about the content
-            ->once()
-        ;
-
-        // A new directory for the module root should be create
-        $mockFilesystem
-            ->shouldReceive('makeDirectory')
-            ->withArgs([base_path($this->rootDir), 0755, true])
-            ->once()
-        ;
-
-        // And a new tracker file should be created, based on the stub
-        $trackerFileArgument = null; // This variable will be used to capture the argument content
-        $mockFilesystem
-            ->shouldReceive('put')
-            ->withArgs([
-                base_path("{$this->rootDir}/{$this->trackerFileName}"),
-                Mockery::capture($trackerFileArgument)
-            ])
-            ->once()
-        ;
-
-        // And the module manager should provide the tracker file name of the modules
-        $mockManager->shouldReceive('getTrackerFileName')->andReturn($this->trackerFileName)->once();
-
-        // When I call the createConfigFile method with a rootdir as argument
-        $factory = $this->app->make(ConfigFactory::class);
-        $uut->invoke($factory, $this->rootDir);
-
-        $this->assertMatchesSnapshot($trackerFileArgument);
-    }
-
     public function testReplaceServiceProviders () : void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
@@ -202,36 +143,9 @@ class ConfigFactoryTest extends Test
         $this->assertMatchesSnapshot($appFileArgument);
     }
 
-    public function testRemoveTrackerFile () : void
+    public function testRevertServiceProviders () : void
     {
-        $mockFilesystem = Mockery::mock(Filesystem::class);
-        $this->instance(Filesystem::class, $mockFilesystem);
-        $mockManager = Mockery::mock(ModuleManager::class);
-        $this->instance(ModuleManagerContract::class, $mockManager);
-        $this->instance(ComposerEditorContract::class, $this->app->make(ComposerEditor::class));
 
-        // If I have a config factory
-        /** @var ConfigFactoryContract $uut */
-        $reflection = new \ReflectionClass(ConfigFactory::class);
-        $uut = $reflection->getMethod("removeTrackerFile"); // The unit under test is this specific method
-        $uut->setAccessible(true);
-
-        // The filesystem delete function should be called for the module tracker file
-        $mockFilesystem
-            ->shouldReceive('delete')
-            ->withArgs([base_path("{$this->rootDir}/{$this->trackerFileName}")])
-            ->once()
-        ;
-
-        // And the module manager should provide the module root directory
-        $mockManager->shouldReceive('getModulesRoot')->andReturn($this->rootDir)->once();
-
-        // And the module manager should provide the name of the tracker file
-        $mockManager->shouldReceive('getTrackerFileName')->andReturn($this->trackerFileName)->once();
-
-        // When I call the removeTrackerFile method
-        $factory = $this->app->make(ConfigFactory::class);
-        $uut->invoke($factory, $this->rootDir);
     }
 
     public function testRemoveConfigFile () : void

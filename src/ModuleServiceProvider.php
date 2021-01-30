@@ -16,6 +16,7 @@ use Thomasderooij\LaravelModules\Factories\ConsoleKernelFactory;
 use Thomasderooij\LaravelModules\Factories\ControllerFactory;
 use Thomasderooij\LaravelModules\Factories\EventServiceProviderFactory;
 use Thomasderooij\LaravelModules\Factories\HttpKernelFactory;
+use Thomasderooij\LaravelModules\Factories\TrackerFactory;
 use Thomasderooij\LaravelModules\Http\CompositeKernel as HttpCompositeKernel;
 use Thomasderooij\LaravelModules\Factories\ModuleFactory;
 use Thomasderooij\LaravelModules\Factories\ModuleMigrationFactory;
@@ -50,6 +51,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         "RouteFactory"                      => "module.factory.route",
         "RouteServiceProviderFactory"       => "module.factory.service_provider.route",
         "RouteSource"                       => "module.service.route_source",
+        "TrackerFactory"                    => "module.factory.tracker",
     ];
 
     /**
@@ -96,6 +98,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         $this->registerModuleMigrationFactory();
         $this->registerRouteFactory();
         $this->registerRouteServiceProviderFactory();
+        $this->registerTrackerFactory();
     }
 
     protected function registerMicroServices () : void
@@ -173,8 +176,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         $this->app->singleton($this->moduleServices["ConfigFactory"], function ($app) {
             return new ConfigFactory(
                 $app["files"],
-                $app[$this->moduleServices["ModuleManager"]],
-                $app[$this->moduleServices["ComposerEditor"]]
+                $app[$this->moduleServices["ModuleManager"]]
             );
         });
     }
@@ -267,6 +269,16 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
                 $app["files"],
                 $app[$this->moduleServices["ModuleManager"]],
                 $app[$this->moduleServices["RouteSource"]]
+            );
+        });
+    }
+
+    protected function registerTrackerFactory () : void
+    {
+        $this->app->singleton($this->moduleServices["TrackerFactory"], function ($app) {
+            return new TrackerFactory(
+                $app["files"],
+                $app[$this->moduleServices["ModuleManager"]]
             );
         });
     }

@@ -72,11 +72,14 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($this->moduleCommands["Init"], function ($app) {
             return new InitModuleCommand(
-                $app["composer"],
                 $app["module.factory.bootstrap"],
-                $app["module.factory.migration"],
+                $app["composer"],
+                $app["module.service.composer_editor"],
                 $app["module.factory.config"],
-                $app["module.service.manager"]
+                $app["files"],
+                $app["module.service.manager"],
+                $app["module.factory.migration"],
+                $app["module.factory.tracker"]
             );
         });
     }

@@ -9,24 +9,15 @@ use Thomasderooij\LaravelModules\CompositeProviders\BroadcastCompositeServicePro
 use Thomasderooij\LaravelModules\CompositeProviders\EventCompositeServiceProvider;
 use Thomasderooij\LaravelModules\CompositeProviders\RouteCompositeServiceProvider;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory as Contract;
-use Thomasderooij\LaravelModules\Contracts\Services\ComposerEditor;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class ConfigFactory extends FileFactory implements Contract
 {
-    /**
-     * A service to edit the composer file to match the module functionality
-     *
-     * @var ComposerEditor
-     */
-    protected $composerEditor;
-
-    public function __construct (Filesystem $filesystem, ModuleManager $moduleManager, ComposerEditor $composerEditor)
+    public function __construct (Filesystem $filesystem, ModuleManager $moduleManager)
     {
         parent::__construct($filesystem, $moduleManager);
 
         $this->moduleManager = $moduleManager;
-        $this->composerEditor = $composerEditor;
     }
 
     /**
@@ -38,9 +29,9 @@ class ConfigFactory extends FileFactory implements Contract
     public function create (string $rootDir) : void
     {
         $this->createConfigFile($rootDir);
+        // todo: this is not supposed to be in this function
         $this->createModuleTrackerFile($rootDir);
         $this->replaceServiceProviders();
-        $this->composerEditor->addNamespaceToAutoload($rootDir);
     }
 
     /**
@@ -50,17 +41,8 @@ class ConfigFactory extends FileFactory implements Contract
      */
     public function undo () : void
     {
-        $this->composerEditor->removeNamespaceFromAutoload();
-        $this->removeTrackerFile();
         $this->removeConfigFile();
-    }
-
-    /**
-     * Remove the module tracker file
-     */
-    protected function removeTrackerFile () : void
-    {
-        $this->fileSystem->delete(base_path($this->moduleManager->getModulesRoot()."/{$this->moduleManager->getTrackerFileName()}"));
+        $this->revertServiceProviders();
     }
 
     /**
@@ -104,12 +86,37 @@ class ConfigFactory extends FileFactory implements Contract
      */
     protected function replaceServiceProviders () : void
     {
-        $this->populateFile(config_path(), "app.php", config_path("app.php"), [
+        $this->populateFile(
+            config_path(),
+            "app.php",
+            config_path("app.php"),
+            $this->getServiceProvidersArray()
+        );
+    }
+
+    /**
+     * Replace the service providers in the config/app.php file with their original providers
+     *
+     * @throws FileNotFoundException
+     */
+    protected function revertServiceProviders () : void
+    {
+        $this->populateFile(
+            config_path(),
+            "app.php",
+            config_path("app.php"),
+            array_flip($this->getServiceProvidersArray())
+        );
+    }
+
+    protected function getServiceProvidersArray () : array
+    {
+        return [
             "App\Providers\AuthServiceProvider" => AuthCompositeServiceProvider::class,
             "App\Providers\BroadcastServiceProvider" => BroadcastCompositeServiceProvider::class,
             "App\Providers\EventServiceProvider" => EventCompositeServiceProvider::class,
             "App\Providers\RouteServiceProvider" => RouteCompositeServiceProvider::class,
-        ]);
+        ];
     }
 
     /**

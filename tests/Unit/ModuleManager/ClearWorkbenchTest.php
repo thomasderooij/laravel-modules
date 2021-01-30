@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
 use Illuminate\Support\Facades\Cache;
+use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 
 class ClearWorkbenchTest extends ModuleManagerTest
 {
-    public function testUnset () : void
+    /**
+     * Test clearing the workbench
+     */
+    public function testClearingTheWorkbench () : void
     {
         $uut = $this->getMockManager(null, [
             "getCacheKey",
             "getCacheValidity",
             "getWorkbenchKey",
-            "throwExceptionIfNotInitialised",
+            "isInitialised",
         ]);
 
         // We should check if the modules are initialised before moving further
-        $uut->shouldReceive("throwExceptionIfNotInitialised")->once();
+        $uut->shouldReceive("isInitialised")->andReturn(true)->once();
         // Then we fetch the cache key
         $cacheKey = 'cache_key';
         $uut->shouldReceive('getCacheKey')->andReturn($cacheKey);
@@ -34,6 +38,22 @@ class ClearWorkbenchTest extends ModuleManagerTest
         Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn($preexistingCache);
         // And place an empties workbench key inside it
         Cache::shouldReceive('put')->withArgs([$cacheKey, ["somekey" => "somevalue", $workbenchKey => null], $cacheValidity])->once();
+
+        $uut->clearWorkbench();
+    }
+
+    /**
+     * Test that an exception gets thrown when the modules are not initialised
+     */
+    public function testClearingTheWorkbenchWhenModulesAreNotInitialised () : void
+    {
+        $uut = $this->getMockManager(null, [
+            "isInitialised",
+        ]);
+
+        $uut->shouldReceive("isInitialised")->andReturn(false);
+
+        $this->expectException(ModulesNotInitialisedException::class);
 
         $uut->clearWorkbench();
     }

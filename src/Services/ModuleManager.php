@@ -66,8 +66,12 @@ class ModuleManager implements Contract
      */
     public function setWorkbench (string $module) : void
     {
-        $this->throwExceptionIfNotInitialised();
-        $this->throwExceptionIfModuleDoesNotExist($module);
+        if (!static::isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+        }
+        if (!$this->hasModule($module)) {
+            throw new ModuleNotFoundException("There is no module named $module.");
+        }
         $module = $this->sanitiseModuleName($module);
 
         $cacheKey = $this->getCacheKey();
@@ -87,7 +91,9 @@ class ModuleManager implements Contract
      */
     public function clearWorkbench () : void
     {
-        $this->throwExceptionIfNotInitialised();
+        if (!static::isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+        }
 
         if (($content = Cache::get($this->getCacheKey())) === null) {
             $content = [$this->getWorkbenchKey() => null];
@@ -113,7 +119,9 @@ class ModuleManager implements Contract
     {
         $content = $this->getTrackerContent();
 
-        $this->throwExceptionIfModuleExists($module);
+        if ($this->hasModule($module)) {
+            throw new ModuleCreationException("The module \"$module\" already exists.");
+        }
 
         $modules = $content->get($this->getModulesTrackerKey());
         $modules[] = $module;
@@ -135,7 +143,9 @@ class ModuleManager implements Contract
     public function removeModule (string $module) : void
     {
         $module = $this->sanitiseModuleName($module);
-        $this->throwExceptionIfModuleDoesNotExist($module);
+        if (!$this->hasModule($module)) {
+            throw new ModuleNotFoundException("There is no module named $module.");
+        }
 
         try {
             $this->deactivateModule($module);
@@ -183,8 +193,8 @@ class ModuleManager implements Contract
      */
     public static function getActiveModules (bool $skipCheck = false) : Collection
     {
-        if (!$skipCheck) {
-            static::throwExceptionIfNotInitialised();
+        if (!$skipCheck && !static::isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
         } elseif ($skipCheck && !static::hasTrackerFile()) {
             return collect([]);
         }
@@ -206,8 +216,12 @@ class ModuleManager implements Contract
     {
         $content = $this->getTrackerContent();
 
-        $this->throwExceptionIfModuleDoesNotExist($module);
-        $this->throwExceptionIfModuleIsActive($module);
+        if (!$this->hasModule($module)) {
+            throw new ModuleNotFoundException("There is no module named $module.");
+        }
+        if ($this->moduleIsActive($module)) {
+            throw new ModuleAlreadyActiveException("The specified module is already active.");
+        }
 
         $modules = $content->get($this->getActiveModulesTrackerKey());
         $modules[] = $module;
@@ -228,9 +242,16 @@ class ModuleManager implements Contract
      */
     public function deactivateModule (string $module) : void
     {
-        $this->throwExceptionIfNotInitialised();
-        $this->throwExceptionIfModuleDoesNotExist($module);
-        $this->throwExceptionIfModuleIsNotActive($module);
+        if (!static::isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+        }
+
+        if (!$this->hasModule($module)) {
+            throw new ModuleNotFoundException("There is no module named $module.");
+        }
+        if (!$this->moduleIsActive($module)) {
+            throw new ModuleNotActiveException("The specified module is not active.");
+        }
 
         if (strtolower($module) === strtolower($this->getWorkbench())) {
             $this->clearWorkbench();
@@ -270,7 +291,9 @@ class ModuleManager implements Contract
      */
     public static function getModuleNameSpace (string $module, bool $includeBackslash = true) : string
     {
-        static::throwExceptionIfConfigIsNotFound();
+        if (!static::hasConfig()) {
+            throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
+        }
 
         $namespace = ucfirst(config("modules.root")) . "\\" . ucfirst($module);
         if ($includeBackslash) {
@@ -298,7 +321,7 @@ class ModuleManager implements Contract
      */
     public function getModulesRoot () : string
     {
-        return config("modules.root");
+        return base_path(config("modules.root"));
     }
 
     /**
@@ -321,7 +344,9 @@ class ModuleManager implements Contract
      */
     protected function getModules(): Collection
     {
-        $this->throwExceptionIfNotInitialised();
+        if (!static::isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+        }
 
         return collect($this->getTrackerContent()[$this->getModulesTrackerKey()]);
     }
@@ -347,89 +372,6 @@ class ModuleManager implements Contract
 
         // store the tracker content as pretty print json
         file_put_contents($trackerFile, json_encode($trackerContent->toArray(), array_sum($this->getJsonOption())));
-    }
-
-    /**
-     * Throw an exception if modules are not initialised
-     *
-     * @throws ModulesNotInitialisedException
-     */
-    protected static function throwExceptionIfNotInitialised () : void
-    {
-        if (!static::isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
-        }
-    }
-
-    /**
-     * Throw an exception if a module exists
-     *
-     * @param string $module
-     * @throws ConfigFileNotFoundException
-     * @throws ModuleCreationException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    protected function throwExceptionIfModuleExists (string $module) : void
-    {
-        if ($this->hasModule($module)) {
-            throw new ModuleCreationException("The module \"$module\" already exists.");
-        }
-    }
-
-    /**
-     * Throw an exception of a module does not exist
-     *
-     * @param string $module
-     * @throws ConfigFileNotFoundException
-     * @throws ModuleNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    protected function throwExceptionIfModuleDoesNotExist (string $module) : void
-    {
-        if (!$this->hasModule($module)) {
-            throw new ModuleNotFoundException("There is no module named $module.");
-        }
-    }
-
-    /**
-     * Throw an exception if a module is active
-     *
-     * @param string $module
-     * @throws ConfigFileNotFoundException
-     * @throws ModuleAlreadyActiveException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    protected function throwExceptionIfModuleIsActive (string $module) : void
-    {
-        if ($this->moduleIsActive($module)) {
-            throw new ModuleAlreadyActiveException("The specified module is already active.");
-        }
-    }
-
-    /**
-     * Throw an exception of a module is not active
-     *
-     * @param string $module
-     * @throws ConfigFileNotFoundException
-     * @throws ModuleNotActiveException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    protected function throwExceptionIfModuleIsNotActive (string $module) : void
-    {
-        if (!$this->moduleIsActive($module)) {
-            throw new ModuleNotActiveException("The specified module is not active.");
-        }
-    }
-
-    protected static function throwExceptionIfConfigIsNotFound () : void
-    {
-        if (!static::hasConfig()) {
-            throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
-        }
     }
 
     /**
@@ -474,7 +416,9 @@ class ModuleManager implements Contract
      */
     protected static function getModuleStorageDir () : string
     {
-        static::throwExceptionIfConfigIsNotFound();
+        if (!static::hasConfig()) {
+            throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
+        }
 
         return config("modules.root")."/";
     }

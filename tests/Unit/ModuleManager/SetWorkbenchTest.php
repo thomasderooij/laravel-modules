@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
 use Illuminate\Support\Facades\Cache;
+use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
+use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class SetWorkbenchTest extends ModuleManagerTest
 {
@@ -18,17 +20,17 @@ class SetWorkbenchTest extends ModuleManagerTest
             "getCacheKey",
             "getCacheValidity",
             "getWorkbenchKey",
-            "throwExceptionIfNotInitialised",
-            "throwExceptionIfModuleDoesNotExist",
+            "hasModule",
+            "isInitialised",
             "sanitiseModuleName"
         ]);
 
         // It should check if it should throw an exception for not having been initialised
-        $uut->shouldReceive("throwExceptionIfNotInitialised")->once();
+        $uut->shouldReceive("isInitialised")->andReturn(true)->once();
 
         // And it check if the module exists
         $moduleName = "TeSt_MoDuLe";
-        $uut->shouldReceive("throwExceptionIfModuleDoesNotExist")->withArgs([$moduleName])->once();
+        $uut->shouldReceive("hasModule")->withArgs([$moduleName])->andReturn(true)->once();
 
         // It should then sanitise the module name, meaning it should ignore all capitalisation, and return standardised module name
         $uut->shouldReceive("sanitiseModuleName")->withArgs([$moduleName])->andReturn("test_module")->once();
@@ -64,17 +66,17 @@ class SetWorkbenchTest extends ModuleManagerTest
             "getCacheKey",
             "getCacheValidity",
             "getWorkbenchKey",
-            "throwExceptionIfNotInitialised",
-            "throwExceptionIfModuleDoesNotExist",
+            "hasModule",
+            "isInitialised",
             "sanitiseModuleName"
         ]);
 
         // It should check if it should throw an exception for not having been initialised
-        $uut->shouldReceive("throwExceptionIfNotInitialised")->once();
+        $uut->shouldReceive("isInitialised")->andReturn(true)->once();
 
         // And it check if the module exists
         $moduleName = "TeSt_MoDuLe";
-        $uut->shouldReceive("throwExceptionIfModuleDoesNotExist")->withArgs([$moduleName])->once();
+        $uut->shouldReceive("hasModule")->withArgs([$moduleName])->andReturn(true)->once();
 
         // It should then sanitise the module name, meaning it should ignore all capitalisation, and return standardised module name
         $uut->shouldReceive("sanitiseModuleName")->withArgs([$moduleName])->andReturn("test_module")->once();
@@ -99,5 +101,42 @@ class SetWorkbenchTest extends ModuleManagerTest
         Cache::shouldReceive('put')->withArgs([$actualKey, ["somekey" => "somevalue", $workbenchKey => strtolower($moduleName)], $cacheValitidy]);
 
         $uut->setWorkbench($moduleName);
+    }
+
+    public function testShouldThrowAnExceptionIfNotInitialised () : void
+    {
+        // If I have a module manager on which I want to set a workbench
+        $uut = $this->getMockManager(null, [
+            "isInitialised",
+        ]);
+
+        // And the modules are not initialised
+        $uut->shouldReceive('isInitialised')->andReturn(false);
+
+        // I should get an exception
+        $this->expectException(ModulesNotInitialisedException::class);
+
+        $uut->setWorkbench("test_module");
+    }
+
+    public function testShouldThrowAnExceptionIfModuleDoesNotExist () : void
+    {
+        // If I have a module manager on which I want to set a workbench
+        $uut = $this->getMockManager(null, [
+            "hasModule",
+            "isInitialised",
+        ]);
+
+        // And the modules are initialised
+        $uut->shouldReceive('isInitialised')->andReturn(true);
+
+        // But the module does not exist
+        $module = "test_module";
+        $uut->shouldReceive("hasModule")->withArgs([$module])->andReturn(false);
+
+        // I should get an exception
+        $this->expectException(ModuleNotFoundException::class);
+
+        $uut->setWorkbench($module);
     }
 }

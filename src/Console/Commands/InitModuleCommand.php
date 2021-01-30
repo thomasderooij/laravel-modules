@@ -5,10 +5,13 @@ namespace Thomasderooij\LaravelModules\Console\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Thomasderooij\LaravelModules\Contracts\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleMigrationFactory;
+use Thomasderooij\LaravelModules\Contracts\Factories\TrackerFactory;
+use Thomasderooij\LaravelModules\Contracts\Services\ComposerEditor;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class InitModuleCommand extends Command
@@ -28,6 +31,13 @@ class InitModuleCommand extends Command
     protected $description = 'Initialize module functionality';
 
     /**
+     * A factory to replace the application bootstrap file to use modular kernels
+     *
+     * @var AppBootstrapFactory
+     */
+    protected $bootstrapFactory;
+
+    /**
      * The composer class
      *
      * @var Composer
@@ -35,11 +45,11 @@ class InitModuleCommand extends Command
     protected $composer;
 
     /**
-     * A factory to replace the application bootstrap file to use modular kernels
+     * A composer editor to update the composer.json file
      *
-     * @var AppBootstrapFactory
+     * @var ComposerEditor
      */
-    protected $bootstrapFactory;
+    protected $composerEditor;
 
     /**
      * A factory to implement the config file, update composer.json and create a module tracking file
@@ -49,11 +59,11 @@ class InitModuleCommand extends Command
     protected $configFactory;
 
     /**
-     * A factory to create the initial migration to for updating the migrations table
+     * The Laravel filesystem
      *
-     * @var ModuleMigrationFactory
+     * @var Filesystem
      */
-    protected $moduleMigrationFactory;
+    protected $fileSystem;
 
     /**
      * A module managing service to query and register module changes
@@ -62,19 +72,39 @@ class InitModuleCommand extends Command
      */
     protected $moduleManager;
 
+    /**
+     * A factory to create the initial migration to for updating the migrations table
+     *
+     * @var ModuleMigrationFactory
+     */
+    protected $moduleMigrationFactory;
+
+    /**
+     * A factory to create a tracker file
+     *
+     * @var TrackerFactory
+     */
+    protected $trackerFactory;
+
     public function __construct(
-        Composer $composer,
         AppBootstrapFactory $bootstrapFactory,
-        ModuleMigrationFactory $moduleMigrationFactory,
+        Composer $composer,
+        ComposerEditor $composerEditor,
         ConfigFactory $configFactory,
-        ModuleManager $moduleManager
+        Filesystem $filesystem,
+        ModuleManager $moduleManager,
+        ModuleMigrationFactory $moduleMigrationFactory,
+        TrackerFactory  $trackerFactory
     )
     {
-        $this->composer = $composer;
         $this->bootstrapFactory = $bootstrapFactory;
-        $this->moduleMigrationFactory = $moduleMigrationFactory;
+        $this->composer = $composer;
+        $this->composerEditor = $composerEditor;
         $this->configFactory = $configFactory;
+        $this->fileSystem = $filesystem;
         $this->moduleManager = $moduleManager;
+        $this->moduleMigrationFactory = $moduleMigrationFactory;
+        $this->trackerFactory = $trackerFactory;
 
         parent::__construct();
     }
@@ -101,21 +131,17 @@ class InitModuleCommand extends Command
         //  in your composer.json file.
         try {
             $this->configFactory->create($rootDir);
-        } catch (FileNotFoundException $e) {
-            $this->bootstrapFactory->undo();
-            $this->moduleManager->removeModuleDirectory();
-            $this->displayConfigErrorMessage($e);
-            return;
-        }
-
-        // Create a migration file to track module migrations
-        try {
+            $this->trackerFactory->create($rootDir);
+            $this->composerEditor->addNamespaceToAutoload($rootDir);
             $this->moduleMigrationFactory->create();
         } catch (FileNotFoundException $e) {
             $this->bootstrapFactory->undo();
             $this->configFactory->undo();
-            $this->moduleManager->removeModuleDirectory();
-            $this->displayMigrationErrorMessage($e);
+            if ($this->composerEditor->hasNamespaceInAutoload($rootDir)) {
+                $this->composerEditor->removeNamespaceFromAutoload($rootDir);
+            }
+            $this->fileSystem->delete($this->moduleManager->getModulesRoot());
+            $this->displayConfigErrorMessage($e);
             return;
         }
 
