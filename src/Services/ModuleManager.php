@@ -48,6 +48,7 @@ class ModuleManager implements Contract
             throw new ModuleAlreadyActiveException("The module \"$module\" is already active.");
         }
 
+        $module = $this->sanitiseModuleName($module);
         $content = $this->getTrackerContent();
         $modules = $content[$this->getActiveModulesTrackerKey()];
         $modules[] = $module;
@@ -289,12 +290,12 @@ class ModuleManager implements Contract
      * @throws ModuleNotFoundException
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
      */
     public function removeModule (string $module) : void
     {
-        $module = $this->sanitiseModuleName($module);
         if (!$this->hasModule($module)) {
-            throw new ModuleNotFoundException("There is no module named $module.");
+            throw new ModuleNotFoundException("There is no module named \"$module\".");
         }
 
         try {
@@ -303,15 +304,18 @@ class ModuleManager implements Contract
             // Do nothing
         }
 
-        if (strtoupper($this->getWorkbench()) === strtolower($module)) {
+        if (strtolower($this->getWorkbench()) === strtolower($module)) {
             $this->clearWorkbench();
         }
 
+        $module = $this->sanitiseModuleName($module);
         $content = $this->getTrackerContent();
-        $modules = $content->get($this->getModulesTrackerKey());
-        $moduleKey = array_search($this->sanitiseModuleName($module), array_map(function ($mod) { return $this->sanitiseModuleName($mod); }, $modules));
+        $modules = $content[$this->getModulesTrackerKey()];
+        $moduleKey = array_search($module, array_map(function ($mod) {
+            return $this->sanitiseModuleName($mod); }, $modules)
+        );
         unset($modules[$moduleKey]);
-        $content->put($this->getModulesTrackerKey(), $modules);
+        $content[$this->getModulesTrackerKey()] = array_values($modules);
         $this->save($content);
 
         $this->files->delete($this->getModuleDirectory($module));
@@ -446,7 +450,7 @@ class ModuleManager implements Contract
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
 
-        $trackerFile = base_path($this->getModulesRoot() . "/" . $this->getTrackerFileName());
+        $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
 
         return json_decode($this->files->get($trackerFile), true);
     }
@@ -483,21 +487,23 @@ class ModuleManager implements Contract
     }
 
     /**
-     * Standardises module name
+     * Returns the module name as it was first given
      *
      * @param string $module
      * @return string
      * @throws ConfigFileNotFoundException
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
      *
      */
     protected function sanitiseModuleName (string $module) : string
     {
-        $lower = $this->getModules()->map(function (string $mod) { return $this->sanitiseModuleName($mod); });
-        $key = array_search($this->sanitiseModuleName($module), $lower->toArray());
+        $modules = $this->getModules();
+        $lower = array_map(function (string $mod) { return strtolower($mod); }, $modules);
+        $key = array_search(strtolower($module), $lower);
 
-        return $this->getModules()->get($key);
+        return $modules[$key];
     }
 
     /**
@@ -509,13 +515,13 @@ class ModuleManager implements Contract
     protected function save (array $trackerContent): void
     {
         // Get the qualified directory to store the tracker file in
-        $storageDir = base_path($this->getModulesRoot());
+        $storageDir = $this->getModulesDirectory();
 
         // Get the qualified file name
-        $trackerFile = $storageDir . $this->getTrackerFileName();
+        $trackerFile = $storageDir . "/" . $this->getTrackerFileName();
 
         // If the directory does not exist, create it with rw rw r access
-        if (!is_dir($storageDir)) {
+        if (!$this->files->isDirectory($storageDir)) {
             $this->files->makeDirectory($storageDir, 0755, true);
         }
 

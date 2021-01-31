@@ -33,6 +33,8 @@ class ActivateModuleTest extends ModuleManagerTest
         $uut->shouldReceive("getTrackerContent")->withNoArgs()->andReturn($trackerContent);
         // Next we fetch the active modules key
         $uut->shouldReceive("getActiveModulesTrackerKey")->withNoArgs()->andReturn($activeModulesKey);
+        // Next we sanitise the module name
+        $uut->shouldReceive("sanitiseModuleName")->withArgs([$module])->andReturn($module);
 
         // And we should save an updated tracker file, indicating the module is now active
         $updatedTrackerContent = [
