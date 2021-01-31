@@ -15,9 +15,9 @@ class TrackerFactory extends FileFactory implements Contract
      * @param string $rootDir
      * @throws FileNotFoundException
      */
-    public function create(string $rootDir): void
+    public function create(string $root): void
     {
-        $this->populateFile($rootDir, $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
+        $this->populateFile(base_path($root), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
     }
 
     /**
