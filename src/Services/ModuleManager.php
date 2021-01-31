@@ -134,7 +134,7 @@ class ModuleManager implements Contract
 
         $content = $this->getTrackerContent();
         $modules = $content[$this->getActiveModulesTrackerKey()];
-        $activeKey = array_search(strtolower($module), array_map(function (string $mod) { return strtolower($mod); }, $modules));
+        $activeKey = array_search($this->sanitiseModuleName($module), array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $modules));
         unset($modules[$activeKey]);
         $content[$this->getActiveModulesTrackerKey()] = array_values($modules);
 
@@ -218,7 +218,7 @@ class ModuleManager implements Contract
      */
     public function getTrackerFileName () : string
     {
-        return "tracker";
+        return ".tracker";
     }
 
     /**
@@ -250,8 +250,9 @@ class ModuleManager implements Contract
      */
     public function hasModule (string $module) : bool
     {
-        $lower = $this->getModules()->map(function (string $mod) { return strtolower($mod); });
-        return $lower->contains(strtolower($module));
+        $sanitised = array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $this->getModules());
+
+        return array_search($this->sanitiseModuleName($module), $sanitised) !== false;
     }
 
     /**
@@ -275,8 +276,9 @@ class ModuleManager implements Contract
      */
     public function moduleIsActive (string $module) : bool
     {
-        $lower = $this->getActiveModules()->map(function (string $mod) { return strtolower($mod); });
-        return $lower->contains(strtolower($module));
+        $modules = array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $this->getActiveModules());
+
+        return array_search($this->sanitiseModuleName($module), $modules) !== false;
     }
 
     /**
@@ -307,7 +309,7 @@ class ModuleManager implements Contract
 
         $content = $this->getTrackerContent();
         $modules = $content->get($this->getModulesTrackerKey());
-        $moduleKey = array_search(strtolower($module), array_map(function ($mod) { return strtolower($mod); }, $modules));
+        $moduleKey = array_search($this->sanitiseModuleName($module), array_map(function ($mod) { return $this->sanitiseModuleName($mod); }, $modules));
         unset($modules[$moduleKey]);
         $content->put($this->getModulesTrackerKey(), $modules);
         $this->save($content);
@@ -444,7 +446,7 @@ class ModuleManager implements Contract
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
 
-        $trackerFile = base_path($this->getModulesRoot() . $this->getTrackerFileName());
+        $trackerFile = base_path($this->getModulesRoot() . "/" . $this->getTrackerFileName());
 
         return json_decode($this->files->get($trackerFile), true);
     }
@@ -456,7 +458,7 @@ class ModuleManager implements Contract
      */
     protected function getWorkbenchKey () : string
     {
-        return "workBench";
+        return "workbench";
     }
 
     protected function hasConfig () : bool
@@ -472,7 +474,7 @@ class ModuleManager implements Contract
     protected function hasTrackerFile () : bool
     {
         try {
-            $trackerFile = base_path($this->getModulesRoot() .$this->getTrackerFileName());
+            $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
         } catch (ConfigFileNotFoundException $e) {
             return false;
         }
@@ -492,8 +494,8 @@ class ModuleManager implements Contract
      */
     protected function sanitiseModuleName (string $module) : string
     {
-        $lower = $this->getModules()->map(function (string $mod) { return strtolower($mod); });
-        $key = array_search(strtolower($module), $lower->toArray());
+        $lower = $this->getModules()->map(function (string $mod) { return $this->sanitiseModuleName($mod); });
+        $key = array_search($this->sanitiseModuleName($module), $lower->toArray());
 
         return $this->getModules()->get($key);
     }

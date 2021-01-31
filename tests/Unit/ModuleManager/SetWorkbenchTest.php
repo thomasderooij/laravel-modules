@@ -11,6 +11,7 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 class SetWorkbenchTest extends ModuleManagerTest
 {
     private $method = "setWorkbench";
+
     /**
      * Test setting a workbench if all goes well
      */

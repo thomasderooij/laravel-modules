@@ -27,6 +27,7 @@ class DeactivateModuleTest extends ModuleManagerTest
         // Next we should discover the module is active in our workbench
         $sanitisedModuleName = strtolower($module);
         $uut->shouldReceive("sanitiseModuleName")->withArgs([$module])->andReturn($sanitisedModuleName);
+        $uut->shouldReceive("sanitiseModuleName")->withArgs([$otherModule])->andReturn($otherModule);
         $uut->shouldReceive("getWorkbench")->andReturn($sanitisedModuleName);
         // And then clear the workbench
         $uut->shouldReceive("clearWorkbench");
@@ -61,6 +62,7 @@ class DeactivateModuleTest extends ModuleManagerTest
         // Next we should discover the module is not active in our workbench
         $sanitisedModuleName = strtolower($module);
         $uut->shouldReceive("sanitiseModuleName")->withArgs([$module])->andReturn($sanitisedModuleName);
+        $uut->shouldReceive("sanitiseModuleName")->withArgs([$otherModule])->andReturn($otherModule);
         $uut->shouldReceive("getWorkbench")->andReturn("some_other_module");
 
         // Next we get the tracker content

@@ -6,5 +6,5 @@ namespace Thomasderooij\LaravelModules\Tests\Unit\ModuleManager;
 
 class SaveTest extends ModuleManagerTest
 {
-
+    private $method = "name";
 }
