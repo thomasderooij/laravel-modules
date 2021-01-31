@@ -111,7 +111,6 @@ class InitModuleCommand extends Command
 
     /**
      * Handle the module initialisation
-     *
      */
     public function handle()
     {
@@ -141,6 +140,7 @@ class InitModuleCommand extends Command
                 $this->composerEditor->removeNamespaceFromAutoload($rootDir);
             }
             $this->fileSystem->delete($this->moduleManager->getModulesDirectory());
+            $this->moduleMigrationFactory->undo();
             $this->displayConfigErrorMessage($e);
             return;
         }

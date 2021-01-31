@@ -1,6 +1,5 @@
 {
     "name": "thomasderooij/laravel-modules",
-    "type": "project",
     "description": "Laravel framework modules kit.",
     "keywords": [
         "framework",

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Services;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -79,9 +81,8 @@ class ComposerEditor implements Contract
             unset($data["autoload"]["psr-4"][$this->getPsr4Key($rootDir)]);
         }
 
-        $json = json_encode($data, $this->getJsonOptions());
 
-        return $json;
+        return json_encode($data, $this->getJsonOptions());
     }
 
     /**
@@ -105,7 +106,7 @@ class ComposerEditor implements Contract
      */
     protected function getPsr4Key (string $rootDir) : string
     {
-        return ucfirst(strtolower($rootDir)) . "\\";
+        return ucfirst($rootDir). "\\";
     }
 
     /**
@@ -116,7 +117,7 @@ class ComposerEditor implements Contract
      */
     protected function getPsr4Value (string $rootDir) : string
     {
-        return strtolower($rootDir) . "/";
+        return $rootDir;
     }
 
     /**
