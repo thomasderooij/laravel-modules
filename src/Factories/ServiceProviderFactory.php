@@ -57,7 +57,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getRelativeModuleRoutesDir (string $module) : string
+    protected function getModuleRoutesRoot (string $module) : string
     {
         return $this->moduleManager->getModuleRoot($module) . "/" . $this->routeSource->getRouteRootDir();
     }

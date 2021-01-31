@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Factories\ServiceProviderFactory;
 
-class GetRelativeModuleRoutesDirTest extends ServiceProviderFactoryTest
-{
-    private $method = "getRelativeModuleRoutesDir";
+use Thomasderooij\LaravelModules\Tests\Factories\ServiceProviderFactoryTest;
 
-    public function testGetRelativeModuleDir () : void
+class GetModuleRoutesTest extends ServiceProviderFactoryTest
+{
+    private $method = "getModuleRoutesRoot";
+
+    public function testGetModuleRoutesRoot () : void
     {
         // In order to get the relative module directory
         $uut = $this->getMethod($this->method);

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Factories\ServiceProviderFactory;
 
+use Thomasderooij\LaravelModules\Tests\Factories\ServiceProviderFactoryTest;
+
 class GetFileNameTest extends ServiceProviderFactoryTest
 {
     private $method = "getFileName";

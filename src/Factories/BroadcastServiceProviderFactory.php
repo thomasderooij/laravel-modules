@@ -15,7 +15,7 @@ class BroadcastServiceProviderFactory extends ServiceProviderFactory implements 
      */
     public function create (string $module) : void
     {
-        $relativePath = $this->getRelativeModuleRoutesDir($module);
+        $relativePath = $this->getModuleRoutesRoot($module);
 
         $this->populateFile($this->getServiceProviderDir($module), $this->getFileName(), $this->getStub(), [
             $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersRoot(),

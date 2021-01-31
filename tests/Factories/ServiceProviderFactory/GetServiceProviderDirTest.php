@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Factories\ServiceProviderFactory;
 
+use Thomasderooij\LaravelModules\Tests\Factories\ServiceProviderFactoryTest;
+
 class GetServiceProviderDirTest extends ServiceProviderFactoryTest
 {
     private $method = "getServiceProviderDir";
