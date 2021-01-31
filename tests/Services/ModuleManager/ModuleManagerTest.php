@@ -11,47 +11,38 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 abstract class ModuleManagerTest extends Test
 {
-    /**
-     * @return Mockery\MockInterface&Filesystem
-     */
-    protected function getMockFilesystem () : Mockery\MockInterface
-    {
-        $filesystem = Mockery::mock(Filesystem::class);
-        $this->instance('files', $filesystem);
+    protected $filesystem;
 
-        return $filesystem;
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->filesystem = Mockery::mock(Filesystem::class);
+        $this->instance('files', $this->filesystem);
     }
 
     /**
-     * @param Filesystem|null $filesystem
      * @param array $mockFunctions
      * @return Mockery\MockInterface&ModuleManager
      */
-    protected function getMockManager (Filesystem $filesystem = null, string $uut) : Mockery\MockInterface
+    protected function getMockManager (string $method) : Mockery\MockInterface
     {
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        // Get all the methods from out module manager
-        $methods = $reflection->getMethods();
-        $mockFunctions = array_map(function (\ReflectionMethod $method) { return $method->getName(); }, $methods);
-        // Remove the constructor
-        $constructorPosition = array_search("__construct", $mockFunctions);
-        unset($mockFunctions[$constructorPosition]);
-        // And remove the function we want to test
-        $testUnitPosition = array_search($uut, $mockFunctions);
-        if ($testUnitPosition === false) {
-            throw new \Exception("That function does not exist in the ModuleManager class.");
-        }
-        unset($mockFunctions[$testUnitPosition]);
+        $mockMethods = $this->getClassMethods(ModuleManager::class, $method);
 
-        if ($filesystem === null) {
-            $filesystem = $this->getMockFilesystem();
-        }
-
-        $functions = implode(", ", $mockFunctions);
+        $functions = implode(", ", $mockMethods);
         // Mock the module manager with all functions except the one we want to test
-        $mock = Mockery::mock(ModuleManager::class."[$functions]", [$filesystem]);
+        $mock = Mockery::mock(ModuleManager::class."[$functions]", [$this->filesystem]);
         $mock->shouldAllowMockingProtectedMethods();
 
         return $mock;
+    }
+
+    protected function getMethod (string $method) : \ReflectionMethod
+    {
+        $reflection = new \ReflectionClass(ModuleManager::class);
+        $uut = $reflection->getMethod($method);
+        $uut->setAccessible(true);
+
+        return $uut;
     }
 }

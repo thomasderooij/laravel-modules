@@ -12,13 +12,10 @@ class SaveTest extends ModuleManagerTest
 
     public function testSave () : void
     {
-        $filesystem = $this->getMockFilesystem();
-        $moduleManager = $this->getMockManager($filesystem, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // If I have a save function
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
         // I will need to get my modules directory
         $directory = "directory";
@@ -27,16 +24,16 @@ class SaveTest extends ModuleManagerTest
         $trackerFileName = "tracker";
         $moduleManager->shouldReceive("getTrackerFileName")->andReturn($trackerFileName);
         // And check if that directory exists
-        $filesystem->shouldReceive("isDirectory")->withArgs([$directory])->andReturn(false);
+        $this->filesystem->shouldReceive("isDirectory")->withArgs([$directory])->andReturn(false);
         // And create that directory if it doesn't exist
-        $filesystem->shouldReceive("makeDirectory")->withArgs([$directory, 0755, true]);
+        $this->filesystem->shouldReceive("makeDirectory")->withArgs([$directory, 0755, true]);
 
         // Next we get the json options for out tracker content
         $moduleManager->shouldReceive("getJsonOptions")->andReturn([1, 2]);
 
         // And save the tracker content to the tracker file
         $trackerContent =  ["content"];
-        $filesystem->expects("put")->withArgs(["$directory/$trackerFileName", json_encode($trackerContent, 3)]);
+        $this->filesystem->expects("put")->withArgs(["$directory/$trackerFileName", json_encode($trackerContent, 3)]);
 
         $uut->invoke($moduleManager, $trackerContent);
     }

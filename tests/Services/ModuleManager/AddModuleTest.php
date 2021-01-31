@@ -12,7 +12,7 @@ class AddModuleTest extends ModuleManagerTest
 
     public function testAddingAModule () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module name
         $module = "new_module";
@@ -41,7 +41,7 @@ class AddModuleTest extends ModuleManagerTest
 
     public function testAddingAModuleTwice () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module name
         $module = "new_module";

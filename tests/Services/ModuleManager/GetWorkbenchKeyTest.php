@@ -13,11 +13,9 @@ class GetWorkbenchKeyTest extends ModuleManagerTest
     public function testGetWorkbenchKey () : void
     {
         // If I have a function to get a workbench key
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // I expect the workbench key
         $expected = "workbench";

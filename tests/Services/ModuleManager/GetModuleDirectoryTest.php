@@ -13,7 +13,7 @@ class GetModuleDirectoryTest extends ModuleManagerTest
      */
     public function testGetModuleDirectory () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module
         $module = "test_module";

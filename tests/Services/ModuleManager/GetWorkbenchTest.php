@@ -16,7 +16,7 @@ class GetWorkbenchTest extends ModuleManagerTest
     public function testGetWorkbenchWhenEmpty () : void
     {
         // If I have a module manager
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // We should get the cache key
         $cacheKey = "cache_key";
@@ -35,7 +35,7 @@ class GetWorkbenchTest extends ModuleManagerTest
     public function testGetWorkbenchWhenNotEmpty () : void
     {
         // If I have a module manager
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // We should get the cache key
         $cacheKey = "cache_key";

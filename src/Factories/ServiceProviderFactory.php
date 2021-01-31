@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
+use Thomasderooij\LaravelModules\Contracts\Factories\ServiceProviderFactory as Contract;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-// todo: make this a contract
+use Thomasderooij\LaravelModules\Contracts\Services\RouteSource;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Services\RouteSource;
 
-abstract class ServiceProviderFactory extends FileFactory
+abstract class ServiceProviderFactory extends FileFactory implements Contract
 {
     /**
      * The module manager service
@@ -39,17 +41,14 @@ abstract class ServiceProviderFactory extends FileFactory
      * @param string $module
      * @throws FileNotFoundException
      * @throws ConfigFileNotFoundException
+     * @return void
      */
-    public function create (string $module)
+    public function create (string $module) : void
     {
-        $this->populateFile(
-            base_path($this->getServiceProviderDir($module)),
-            $this->getFileName(),
-            $this->getStub(), [
-                $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersDirectory(),
-                $this->getClassNamePlaceholder() => $this->getClassName(),
-            ]
-        );
+        $this->populateFile($this->getServiceProviderDir($module), $this->getFileName(), $this->getStub(), [
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersRoot(),
+            $this->getClassNamePlaceholder() => $this->getClassName(),
+        ]);
     }
 
     /**
@@ -58,9 +57,9 @@ abstract class ServiceProviderFactory extends FileFactory
      * @param string $module
      * @return string
      */
-    protected function getRelativeModuleFileDir (string $module) : string
+    protected function getRelativeModuleRoutesDir (string $module) : string
     {
-        return config('modules.root') . "/" . ucfirst($module) . "/" . $this->routeSource->getRouteRootDir();
+        return $this->moduleManager->getModuleRoot($module) . "/" . $this->routeSource->getRouteRootDir();
     }
 
     /**
@@ -85,18 +84,7 @@ abstract class ServiceProviderFactory extends FileFactory
      */
     protected function getServiceProviderDir (string $module) : string
     {
-        return config("modules.root") . "/$module/{$this->getProvidersDirectory()}";
-    }
-
-    /**
-     * Get the module directory name of a given module
-     *
-     * @param string $module
-     * @return string
-     */
-    protected function moduleNameToModuleDirName (string $module) : string
-    {
-        return ucfirst(strtolower($module));
+        return "{$this->moduleManager->getModuleDirectory($module)}/{$this->getProvidersRoot()}";
     }
 
     /**
@@ -114,7 +102,7 @@ abstract class ServiceProviderFactory extends FileFactory
      *
      * @return string
      */
-    protected function getProvidersDirectory () : string
+    protected function getProvidersRoot () : string
     {
         return "Providers";
     }

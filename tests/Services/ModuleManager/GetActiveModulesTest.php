@@ -12,7 +12,7 @@ class GetActiveModulesTest extends ModuleManagerTest
 
     public function testGetActiveModules () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have initialised my modules
         $uut->shouldReceive("isInitialised")->andReturn(true);
@@ -39,7 +39,7 @@ class GetActiveModulesTest extends ModuleManagerTest
 
     public function testGettingActiveModulesWhenModulesAreNotInitialised () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I not have initialised my modules
         $uut->shouldReceive("isInitialised")->andReturn(false);
@@ -56,7 +56,7 @@ class GetActiveModulesTest extends ModuleManagerTest
 
     public function testGettingActiveModulesWhenNotInitialisedAndNotSkippingCheck () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I not have initialised my modules
         $uut->shouldReceive("isInitialised")->andReturn(false);

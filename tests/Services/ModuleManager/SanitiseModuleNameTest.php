@@ -15,10 +15,8 @@ class SanitiseModuleNameTest extends ModuleManagerTest
      */
     public function testSanitiseModuleName () : void
     {
-        $moduleManager = $this->getMockManager(null, $this->method);
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $moduleManager = $this->getMockManager($this->method);
+        $uut = $this->getMethod($this->method);
 
         // If I have modules
         $module = "TestModule";

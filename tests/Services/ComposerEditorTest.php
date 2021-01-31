@@ -44,9 +44,6 @@ class ComposerEditorTest extends Test
         $this->assertMatchesSnapshot($json);
     }
 
-    /**
-     * @group uut
-     */
     public function testRemoveNamespaceFromAutoload () : void
     {
         // If I have a composer editor

@@ -197,6 +197,19 @@ class ModuleManager implements Contract
     }
 
     /**
+     * @param string $module
+     * @return string
+     * @throws ConfigFileNotFoundException
+     * @throws FileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function getModuleRoot(string $module): string
+    {
+        return config("modules.root") . "/" . $this->sanitiseModuleName($module);
+    }
+
+    /**
      * Get the root modules directory
      *
      * @return string

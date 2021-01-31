@@ -53,7 +53,7 @@ class RouteSource implements Contract
      */
     public function getRouteRootDir () : string
     {
-        return "routes/";
+        return "routes";
     }
 
     /**

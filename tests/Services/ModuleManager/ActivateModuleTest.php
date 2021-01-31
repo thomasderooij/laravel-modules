@@ -17,7 +17,7 @@ class ActivateModuleTest extends ModuleManagerTest
      */
     public function testActivateModule () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I want to activate a module
         $module = "test_module";
@@ -49,7 +49,7 @@ class ActivateModuleTest extends ModuleManagerTest
 
     public function testThrowingExceptionIfThereIsNoSuchModule () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module name
         $module = "non_existent_module";
@@ -68,7 +68,7 @@ class ActivateModuleTest extends ModuleManagerTest
 
     public function testThrowingExceptionIfTheModuleIsAlreadyActive () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module
         $module = "active_module";

@@ -64,4 +64,26 @@ abstract class Test extends TestCase
     {
         $app->singleton('Illuminate\Contracts\Http\Kernel', HttpKernel::class);
     }
+
+    protected function getClassMethods (string $class, string $method, bool $excludeConstructor = true) : array
+    {
+        $reflection = new \ReflectionClass($class);
+        // Get all the methods from out module manager
+        $methods = $reflection->getMethods();
+        $mockFunctions = array_map(function (\ReflectionMethod $method) { return $method->getName(); }, $methods);
+        if ($excludeConstructor) {
+            // Remove the constructor
+            $constructorPosition = array_search("__construct", $mockFunctions);
+            unset($mockFunctions[$constructorPosition]);
+        }
+
+        // And remove the function we want to test
+        $testUnitPosition = array_search($method, $mockFunctions);
+        if ($testUnitPosition === false) {
+            throw new \Exception("That function does not exist in the $class class.");
+        }
+        unset($mockFunctions[$testUnitPosition]);
+
+        return $mockFunctions;
+    }
 }

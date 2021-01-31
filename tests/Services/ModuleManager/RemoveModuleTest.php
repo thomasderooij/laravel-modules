@@ -12,8 +12,7 @@ class RemoveModuleTest extends ModuleManagerTest
 
     public function testRemoveModule () : void
     {
-        $filesystem = $this->getMockFilesystem();
-        $uut = $this->getMockManager($filesystem, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // To remove a module, the module needs to exist
         $module = "test_module";
@@ -38,14 +37,14 @@ class RemoveModuleTest extends ModuleManagerTest
         $directory = "directory";
         $uut->expects("getModuleDirectory")->withArgs([$module])->andReturn($directory);
         // And then delete that directory
-        $filesystem->expects("delete")->withArgs([$directory]);
+        $this->filesystem->expects("delete")->withArgs([$directory]);
 
         $uut->removeModule($module);
     }
 
     public function testRemoveNonExistingModule () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // To remove a module, the module needs to exist
         $module = "test_module";

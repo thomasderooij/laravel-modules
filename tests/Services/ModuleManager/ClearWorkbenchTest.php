@@ -16,7 +16,7 @@ class ClearWorkbenchTest extends ModuleManagerTest
      */
     public function testClearingTheWorkbench () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // We should check if the modules are initialised before moving further
         $uut->shouldReceive("isInitialised")->andReturn(true)->once();
@@ -44,7 +44,7 @@ class ClearWorkbenchTest extends ModuleManagerTest
      */
     public function testClearingTheWorkbenchWhenModulesAreNotInitialised () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // When my modules are not initialised
         $uut->shouldReceive("isInitialised")->andReturn(false);

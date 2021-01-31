@@ -10,7 +10,7 @@ class IsInitialisedTest extends ModuleManagerTest
 
     public function testIsInitialised () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a config file
         $uut->shouldReceive("hasConfig")->andReturn(true);
@@ -23,7 +23,7 @@ class IsInitialisedTest extends ModuleManagerTest
 
     public function testCheckingInitialisationIfThereIsNoConfig () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I don't  have a config file
         $uut->shouldReceive("hasConfig")->andReturn(false);
@@ -36,7 +36,7 @@ class IsInitialisedTest extends ModuleManagerTest
 
     public function testCheckingInitialisationIfThereIsNoTrackerFile () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a config file
         $uut->shouldReceive("hasConfig")->andReturn(true);
@@ -49,7 +49,7 @@ class IsInitialisedTest extends ModuleManagerTest
 
     public function testCheckingInitialisationWhenNeitherFileIsPresent () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a config file
         $uut->shouldReceive("hasConfig")->andReturn(false);

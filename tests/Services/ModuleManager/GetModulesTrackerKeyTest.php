@@ -13,15 +13,13 @@ class GetModulesTrackerKeyTest extends ModuleManagerTest
     public function testGetModulesTrackerKey () : void
     {
         // If I have a method to ask for the modules tracker key
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
         // I should receive the tracker key
         $expected = "modules";
 
         // When I ask the module manager for it
-        $modulesManager = $this->getMockManager(null, $this->method);
+        $modulesManager = $this->getMockManager($this->method);
         $this->assertSame($expected, $uut->invoke($modulesManager));
     }
 }

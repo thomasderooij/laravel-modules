@@ -17,12 +17,10 @@ class GetCacheKeyTest extends ModuleManagerTest
     public function testGetCacheKey () : void
     {
         // If I have a method
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
         // I expect the active modules tracker key to be returned
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
         $expected = "modules-cache";
         $this->assertSame($expected, $uut->invoke($moduleManager));
     }

@@ -13,7 +13,7 @@ class GetModulesDirectoryTest extends ModuleManagerTest
 
     public function testGetModulesDirectory () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // I should check if there is a config file
         $uut->shouldReceive("hasConfig")->andReturn(true);
@@ -31,7 +31,7 @@ class GetModulesDirectoryTest extends ModuleManagerTest
 
     public function testGetModulesDirectoryWithoutConfig () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I don't have a config file
         $uut->shouldReceive("hasConfig")->andReturn(false);

@@ -15,11 +15,9 @@ class GetModulesRootTest extends ModuleManagerTest
     public function testGetModulesRoot () : void
     {
         // If I have a method to ask for the modules root
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // I should check if I have a configuration file
         $moduleManager->expects("hasConfig")->andReturn(true);
@@ -36,11 +34,9 @@ class GetModulesRootTest extends ModuleManagerTest
     public function testGetModulesRootWithoutAConfigFile () : void
     {
         // If I have a method to ask for the modules root
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // And I don't have a config file
         $moduleManager->expects("hasConfig")->andReturn(false);

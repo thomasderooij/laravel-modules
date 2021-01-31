@@ -10,7 +10,7 @@ class GetTrackerFileNameTest extends ModuleManagerTest
 
     public function testGetTrackerFile () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // I expect the tracker file name
         $expected = ".tracker";

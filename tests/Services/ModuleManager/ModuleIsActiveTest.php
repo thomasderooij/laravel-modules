@@ -10,7 +10,7 @@ class ModuleIsActiveTest extends ModuleManagerTest
 
     public function testModuleIsActive () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module
         $module = "aCtIvE_mOdUlE";
@@ -30,7 +30,7 @@ class ModuleIsActiveTest extends ModuleManagerTest
 
     public function testModuleIsNotActive () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module
         $module = "aCtIvE_mOdUlE";

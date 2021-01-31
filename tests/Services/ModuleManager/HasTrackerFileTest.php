@@ -12,12 +12,9 @@ class HasTrackerFileTest extends ModuleManagerTest
 
     public function testHasTrackerFile () : void
     {
-        $filesystem = $this->getMockFilesystem();
         // If want to know if there is a tracker file
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
-        $moduleManager = $this->getMockManager($filesystem, $this->method);
+        $uut = $this->getMethod($this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // I first fetch the modules directory
         $root = base_path("root_dir");
@@ -28,7 +25,7 @@ class HasTrackerFileTest extends ModuleManagerTest
         $moduleManager->shouldReceive("getTrackerFileName")->andReturn($trackerFileName);
 
         // And I should see if the tracker file exists
-        $filesystem->shouldReceive("isFile")->withArgs(["$root/$trackerFileName"])->andReturn(true);
+        $this->filesystem->shouldReceive("isFile")->withArgs(["$root/$trackerFileName"])->andReturn(true);
 
         // Then I should get a confirmation
         $this->assertTrue($uut->invoke($moduleManager));
@@ -36,12 +33,9 @@ class HasTrackerFileTest extends ModuleManagerTest
 
     public function testDoesNotHaveTrackerFile () : void
     {
-        $filesystem = $this->getMockFilesystem();
         // If want to know if there is a tracker file
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
-        $moduleManager = $this->getMockManager($filesystem, $this->method);
+        $uut = $this->getMethod($this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // I first fetch the modules directory
         $root = base_path("root_dir");
@@ -52,7 +46,7 @@ class HasTrackerFileTest extends ModuleManagerTest
         $moduleManager->shouldReceive("getTrackerFileName")->andReturn($trackerFileName);
 
         // And I should see if the tracker file exists
-        $filesystem->shouldReceive("isFile")->withArgs(["$root/$trackerFileName"])->andReturn(false);
+        $this->filesystem->shouldReceive("isFile")->withArgs(["$root/$trackerFileName"])->andReturn(false);
 
         // Then I should get a false
         $this->assertFalse($uut->invoke($moduleManager));

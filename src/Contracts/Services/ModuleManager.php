@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Contracts\Services;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Collection;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
@@ -87,6 +88,16 @@ interface ModuleManager
      * @throws ConfigFileNotFoundException
      */
     public function getModuleNamespace (string $module, bool $includeBackslash = true) : string;
+
+    /**
+     * @param string $module
+     * @return string
+     * @throws ConfigFileNotFoundException
+     * @throws FileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function getModuleRoot (string $module) : string;
 
     /**
      * Get the modules base directory

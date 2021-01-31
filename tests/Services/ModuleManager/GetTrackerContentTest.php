@@ -13,13 +13,10 @@ class GetTrackerContentTest extends ModuleManagerTest
 
     public function testGetTrackerContent () : void
     {
-        $filesystem = $this->getMockFilesystem();
         // If I have a method to ask for the modules tracker key
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager($filesystem, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
         // We have to check if there is a tracker file
         $moduleManager->shouldReceive("hasTrackerFile")->andReturn(true);
         // We get the modules directory
@@ -31,7 +28,7 @@ class GetTrackerContentTest extends ModuleManagerTest
 
         // And then we fetch its content
         $content = ["modules" => ["module_1",  "other_module"]];
-        $filesystem->shouldReceive("get")->withArgs(["$directory/$tracker"])->andReturn(json_encode($content));
+        $this->filesystem->shouldReceive("get")->withArgs(["$directory/$tracker"])->andReturn(json_encode($content));
 
         // And we should receive an array
         $this->assertSame($content, $uut->invoke($moduleManager));
@@ -40,11 +37,9 @@ class GetTrackerContentTest extends ModuleManagerTest
     public function testGetTrackerContentWithoutTracker () : void
     {
         // If I have a method to ask for the modules tracker key
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
         // But I don't have a tracker file
         $moduleManager->shouldReceive("hasTrackerFile")->andReturn(false);
 

@@ -14,11 +14,9 @@ class GetModulesTest extends ModuleManagerTest
     public function testGetModules () : void
     {
         // If I have a method to get all the modules
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // I should check if the modules are initialised
         $moduleManager->expects("isInitialised")->andReturn(true);
@@ -41,11 +39,9 @@ class GetModulesTest extends ModuleManagerTest
     public function testGetModulesIfModulesAreNotInitialised () : void
     {
         // If I have a method to get all the modules
-        $reflection = new \ReflectionClass(ModuleManager::class);
-        $uut = $reflection->getMethod($this->method);
-        $uut->setAccessible(true);
+        $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager(null, $this->method);
+        $moduleManager = $this->getMockManager($this->method);
 
         // And the modules are not initialised
         $moduleManager->expects("isInitialised")->andReturn(false);

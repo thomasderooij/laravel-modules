@@ -14,7 +14,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAModuleCurrentlyInOurWorkbench () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If my modules are initialised
         $uut->shouldReceive("isInitialised")->once()->andReturn(true);
@@ -49,7 +49,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAModuleNotInOurWorkbench () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If my modules are initialised
         $uut->shouldReceive("isInitialised")->once()->andReturn(true);
@@ -82,7 +82,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAModuleWhenModulesAreNotInitialised () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If my modules are not initialised
         $uut->shouldReceive("isInitialised")->once()->andReturn(false);
@@ -98,7 +98,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingANonExistentModule () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If my modules are initialised
         $module = "non_existent_module";
@@ -118,7 +118,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 
     public function testDeactivatingAnAlreadyInactiveModule () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If my modules are initialised
         $module = "inactive_module";

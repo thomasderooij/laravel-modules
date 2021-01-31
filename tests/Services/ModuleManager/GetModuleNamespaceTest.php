@@ -13,7 +13,7 @@ class GetModuleNamespaceTest extends ModuleManagerTest
 
     public function testGetModuleNamespace () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module
         $module = "test_module";
@@ -34,7 +34,7 @@ class GetModuleNamespaceTest extends ModuleManagerTest
 
     public function testGetModuleNamespaceWithoutConfigFiles () : void
     {
-        $uut = $this->getMockManager(null, $this->method);
+        $uut = $this->getMockManager($this->method);
 
         // If I have a module
         $module = "test_module";

@@ -17,10 +17,10 @@ class RouteServiceProviderFactory extends ServiceProviderFactory implements Cont
      */
     public function create (string $module) : void
     {
-        $relativePath = $this->getRelativeModuleFileDir($module);
+        $relativePath = $this->getRelativeModuleRoutesDir($module);
 
-        $this->populateFile(base_path($this->getServiceProviderDir($module)), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersDirectory(),
+        $this->populateFile($this->getServiceProviderDir($module), $this->getFileName(), $this->getStub(), [
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersRoot(),
             $this->getControllerNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module, false),
             $this->getClassNamePlaceholder() => $this->getClassName(),
             $this->getWebRouteFilePlaceholder() => $this->getWebFile($relativePath),
