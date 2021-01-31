@@ -8,9 +8,6 @@ class CreateTest extends ServiceProviderFactoryTest
 {
     private $method = "create";
 
-    /**
-     * @group uut
-     */
     public function testCreate () : void
     {
         // When I call create a module

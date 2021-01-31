@@ -65,7 +65,7 @@ abstract class Test extends TestCase
         $app->singleton('Illuminate\Contracts\Http\Kernel', HttpKernel::class);
     }
 
-    protected function getClassMethods (string $class, string $method, bool $excludeConstructor = true) : array
+    protected function getMockableClassMethods (string $class, string $method, bool $excludeConstructor = true) : array
     {
         $reflection = new \ReflectionClass($class);
         // Get all the methods from out module manager
@@ -85,5 +85,14 @@ abstract class Test extends TestCase
         unset($mockFunctions[$testUnitPosition]);
 
         return $mockFunctions;
+    }
+
+    protected function getMethodFromClass (string $method, string $class) : \ReflectionMethod
+    {
+        $reflection = new \ReflectionClass($class);
+        $uut = $reflection->getMethod($method);
+        $uut->setAccessible(true);
+
+        return $uut;
     }
 }
