@@ -21,7 +21,6 @@ class ConsoleKernelFactory extends FileFactory implements Contract
 
     public function __construct(Filesystem $filesystem, ModuleManager $moduleManager, RouteSource $routeSource)
     {
-        $this->moduleManager = $moduleManager;
         $this->routeSource = $routeSource;
 
         parent::__construct($filesystem, $moduleManager);
@@ -87,7 +86,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      */
     protected function getKernelNamespace (string $module) : string
     {
-        return $this->moduleManager->getModuleNamespace($module) . $this->getConsoleDirectory();
+        return $this->moduleManager->getModuleNamespace($module) . "\\" . $this->getConsoleDirectory();
     }
 
     /**

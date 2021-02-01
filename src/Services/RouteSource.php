@@ -77,6 +77,7 @@ class RouteSource implements Contract
             $this->getWebRoute(),
             $this->getApiRoute(),
             $this->getConsoleRoute(),
+            $this->getChannelsRoute(),
         ];
     }
 }

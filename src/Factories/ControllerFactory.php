@@ -55,7 +55,7 @@ class ControllerFactory extends FileFactory implements Contract
      */
     protected function getNamespace (string $module) : string
     {
-        return $this->moduleManager->getModuleNamespace($module) . "Http\\Controllers";
+        return $this->moduleManager->getModuleNamespace($module) . "\\Http\\Controllers";
     }
 
     /**
