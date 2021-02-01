@@ -33,8 +33,8 @@ class RouteFactory extends FileFactory implements Contract
     public function create (string $module) : void
     {
         $directory = $this->getRouteDirectory($module);
-        if (!is_dir($directory)) {
-            $this->fileSystem->makeDirectory($directory, 0755, true);
+        if (!$this->filesystem->exists($directory)) {
+            $this->filesystem->makeDirectory($directory, 0755, true);
         }
 
         foreach ($this->routeSource->getRouteFiles() as $routeFile) {

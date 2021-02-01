@@ -15,7 +15,6 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         // When I call create a module
         $uut = $this->getMethodFromClass("create", BroadcastServiceProviderFactory::class);
         $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
-        $factory->shouldAllowMockingProtectedMethods();
         $module = "NewModule";
 
         // I should get the modules route root

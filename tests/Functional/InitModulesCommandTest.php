@@ -23,9 +23,6 @@ class InitModulesCommandTest extends Test
         $this->instance(Filesystem::class, $this->filesystem);
     }
 
-    /**
-     * @group uut
-     */
     public function testInitModules () : void
     {
         $filesystem = new Filesystem();
@@ -93,5 +90,30 @@ class InitModulesCommandTest extends Test
         $this->assertMatchesSnapshot($appFileContent);
         $this->assertMatchesSnapshot($trackerFileContent);
         $this->assertMatchesSnapshot($composerFileContent);
+    }
+
+    public function testModulesAreAlreadyInitialised () : void
+    {
+        // When I init the modules
+        $response = $this->artisan("module:init");
+
+        // We config should check for a modules root, and return a root
+        Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn("Modules");
+        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
+        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn("file");
+        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
+            'driver' => 'file',
+            'path' => storage_path('framework/cache/data')
+        ]);
+        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
+
+        // And the file system should check for a tracker file
+        $this->filesystem->shouldReceive("isFile")->withArgs([base_path("Modules/.tracker")])->andReturn(true);
+        $this->filesystem->shouldReceive("get")->withArgs([base_path("Modules/.tracker")])->andReturn(json_encode(["modules" => [], "activeModules" => []]));
+
+        // I expect to be told the modules are already initialised
+        $response->expectsOutput("Modules are already initiated.");
+
+        $response->run();
     }
 }

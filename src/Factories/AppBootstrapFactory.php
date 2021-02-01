@@ -38,8 +38,8 @@ class AppBootstrapFactory extends FileFactory implements Contract
      */
     public function undo () : void
     {
-        $this->fileSystem->delete(base_path("bootstrap/{$this->getBootstrapFileName()}"));
-        $this->fileSystem->move(base_path("bootstrap/{$this->getBootstrapOrigFileName()}"), base_path("bootstrap/{$this->getBootstrapFileName()}"));
+        $this->filesystem->delete(base_path("bootstrap/{$this->getBootstrapFileName()}"));
+        $this->filesystem->move(base_path("bootstrap/{$this->getBootstrapOrigFileName()}"), base_path("bootstrap/{$this->getBootstrapFileName()}"));
     }
 
     /**
@@ -102,7 +102,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      */
     protected function renameBootstrapFile () : void
     {
-        $this->fileSystem->move(base_path("bootstrap/{$this->getBootstrapFileName()}"), base_path("bootstrap/{$this->getBootstrapOrigFileName()}"));
+        $this->filesystem->move(base_path("bootstrap/{$this->getBootstrapFileName()}"), base_path("bootstrap/{$this->getBootstrapOrigFileName()}"));
     }
 
     /**

@@ -48,7 +48,7 @@ class ConfigFactory extends FileFactory implements Contract
      */
     protected function removeConfigFile () : void
     {
-        $this->fileSystem->delete(base_path('config') . "/{$this->getConfigFileName()}");
+        $this->filesystem->delete(base_path('config') . "/{$this->getConfigFileName()}");
     }
 
     /**

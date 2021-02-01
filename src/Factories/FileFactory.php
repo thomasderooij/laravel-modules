@@ -9,9 +9,9 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 abstract class FileFactory
 {
     /**
-     * @var Filesystem $fileSystem
+     * @var Filesystem $filesystem
      */
-    protected $fileSystem;
+    protected $filesystem;
 
     /**
      * @var ModuleManager $moduleManager
@@ -20,7 +20,7 @@ abstract class FileFactory
 
     public function __construct (Filesystem $filesystem, ModuleManager $moduleManager)
     {
-        $this->fileSystem = $filesystem;
+        $this->filesystem = $filesystem;
         $this->moduleManager = $moduleManager;
     }
 
@@ -35,17 +35,17 @@ abstract class FileFactory
      */
     protected function populateFile (string $dir, string $fileName, string $stub, array $values = []) : void
     {
-        $content = $this->fileSystem->get($stub);
+        $content = $this->filesystem->get($stub);
 
         foreach ($values as $key => $value) {
             $content = str_replace($key, $value, $content);
         }
 
         if (!is_dir($dir)) {
-            $this->fileSystem->makeDirectory($dir, 0755, true);
+            $this->filesystem->makeDirectory($dir, 0755, true);
         }
 
-        $this->fileSystem->put($this->ensureSlash($dir). $fileName, $content);
+        $this->filesystem->put($this->ensureSlash($dir). $fileName, $content);
     }
 
     /**

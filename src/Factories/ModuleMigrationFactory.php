@@ -25,8 +25,8 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      */
     public function undo(): void
     {
-        if ($this->fileSystem->isFile(base_path($this->getRelativeMigrationDir()) . "/" . $this->getMigrationName())) {
-            $this->fileSystem->delete(base_path($this->getRelativeMigrationDir()) . "/" . $this->getMigrationName());
+        if ($this->filesystem->isFile(base_path($this->getRelativeMigrationDir()) . "/" . $this->getMigrationName())) {
+            $this->filesystem->delete(base_path($this->getRelativeMigrationDir()) . "/" . $this->getMigrationName());
         }
     }
 
