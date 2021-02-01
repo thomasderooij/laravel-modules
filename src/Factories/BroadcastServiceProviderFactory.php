@@ -36,7 +36,7 @@ class BroadcastServiceProviderFactory extends ServiceProviderFactory implements 
 
     protected function getRelativeRouteFile (string $relativePath) : string
     {
-        return $relativePath . $this->routeSource->getChannelsRoute() . $this->routeSource->getRouteFileExtension();
+        return $relativePath . "/" . $this->routeSource->getChannelsRoute() . $this->routeSource->getRouteFileExtension();
     }
 
     /**

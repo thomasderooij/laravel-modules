@@ -14,9 +14,9 @@ class AuthServiceProviderFactoryTest extends Test
     public function testGetStub () : void
     {
         $uut = $this->getMethodFromClass("getStub", AuthServiceProviderFactory::class);
-        $provider = Mockery::mock(AuthServiceProviderFactory::class);
+        $factory = Mockery::mock(AuthServiceProviderFactory::class);
 
-        // If I ask for the sub from this package
+        // If I ask for the stub from this package
         $stub = realpath(__DIR__ . "/../../src/Factories/stubs/authServiceProvider.stub");
 
         // If should be a real file
@@ -25,7 +25,7 @@ class AuthServiceProviderFactoryTest extends Test
         $this->assertTrue($filesystem->isFile($stub));
 
         // And the stub should be returned by the function
-        $this->assertSame($stub, $uut->invoke($provider));
+        $this->assertSame($stub, $uut->invoke($factory));
     }
 
     public function testGetClassName () : void

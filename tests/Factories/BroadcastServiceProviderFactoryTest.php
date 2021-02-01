@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Factories;
 
+use Illuminate\Filesystem\Filesystem;
 use Mockery;
 use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
 {
     public function testCreate () : void
     {
-        $moduleManager = Mockery::mock(ModuleManager::class);
-        $this->instance("module.service.manager", $moduleManager);
-
         // When I call create a module
         $uut = $this->getMethodFromClass("create", BroadcastServiceProviderFactory::class);
-        $factory = Mockery::mock(BroadcastServiceProviderFactory::class, [$this->app->make('files'), $moduleManager, $this->app->make('module.service.route_source')]);
+        $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
         $factory->shouldAllowMockingProtectedMethods();
         $module = "NewModule";
 
@@ -38,7 +35,7 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $factory->shouldReceive("getNamespacePlaceholder")->andReturn($namespacePlaceholder);
         // And the module manager should provide a namespace for the module
         $moduleNamespace = "Module\\Stuff";
-        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn("$moduleNamespace\\");
+        $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn("$moduleNamespace\\");
         // I should also get the providers root
         $providersRoot = "providers_root";
         $factory->shouldReceive("getProvidersRoot")->andReturn($providersRoot);
@@ -63,5 +60,66 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         ]]);
 
         $uut->invoke($factory, $module);
+    }
+
+    public function testGetStub () : void
+    {
+        $uut = $this->getMethodFromClass("getStub", BroadcastServiceProviderFactory::class);
+        $filesystem = $this->app->make(Filesystem::class);
+        $factory = Mockery::mock(BroadcastServiceProviderFactory::class);
+
+        // If I ask for the stub from this package
+        $stub = realpath(__DIR__ . "/../../src/Factories/stubs/broadcastServiceProvider.stub");
+
+        // If should be a real file
+        $this->assertTrue($filesystem->isFile($stub));
+
+        // And the stub should be returned by the function
+        $this->assertSame($stub, $uut->invoke($factory));
+    }
+
+    public function testGetClassName () : void
+    {
+        $uut = $this->getMethodFromClass("getClassName", BroadcastServiceProviderFactory::class);
+        $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
+
+        // I expect to receive BroadcastServiceProvider
+        $expected = "BroadcastServiceProvider";
+
+        // When I ask for the classname
+        $this->assertSame($expected, $uut->invoke($factory));
+    }
+
+    public function testGetRelativeRoutesDir () : void
+    {
+        $uut = $this->getMethodFromClass("getRelativeRouteFile", BroadcastServiceProviderFactory::class);
+        $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
+
+        // If I want to get a routes channels file for my service provider
+        $root = "Modules/routes_path";
+
+        // The route source service should give me the name of the channels file
+        $channelsFileName = "channels_file";
+        $this->routeSource->shouldReceive("getChannelsRoute")->andReturn($channelsFileName);
+        // And if should give me the file extension
+        $extension = ".kt";
+        $this->routeSource->shouldReceive("getRouteFileExtension")->andReturn($extension);
+
+        // And I expect the relative path to the channels file
+        $expected = "$root/$channelsFileName$extension";
+
+        $this->assertSame($expected, $uut->invoke($factory, $root));
+    }
+
+    public function testGetRouteFilePlaceholder () : void
+    {
+        $uut = $this->getMethodFromClass("getRouteFilePlaceholder", BroadcastServiceProviderFactory::class);
+        $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
+
+        // I expect to receive BroadcastServiceProvider
+        $expected = "{routeFile}";
+
+        // When I ask for the classname
+        $this->assertSame($expected, $uut->invoke($factory));
     }
 }
