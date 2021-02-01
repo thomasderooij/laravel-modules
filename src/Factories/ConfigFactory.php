@@ -29,8 +29,6 @@ class ConfigFactory extends FileFactory implements Contract
     public function create (string $rootDir) : void
     {
         $this->createConfigFile($rootDir);
-        // todo: this is not supposed to be in this function
-        $this->createModuleTrackerFile($rootDir);
         $this->replaceServiceProviders();
     }
 
@@ -67,16 +65,6 @@ class ConfigFactory extends FileFactory implements Contract
             $this->getModuleAutoloadPlaceholder() => $rootDir,
             $this->getVanillaModuleNamePlaceholder() => $this->getDefaultVanillaModuleName(),
         ]);
-    }
-
-    /**
-     * Create a module tracker file
-     *
-     * @throws FileNotFoundException
-     */
-    protected function createModuleTrackerFile (string $rootDir) : void
-    {
-        $this->populateFile($this->getModuleRoot($rootDir), $this->moduleManager->getTrackerFileName(), $this->getTrackerStub());
     }
 
     /**

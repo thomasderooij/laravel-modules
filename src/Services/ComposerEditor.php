@@ -117,7 +117,7 @@ class ComposerEditor implements Contract
      */
     protected function getPsr4Value (string $rootDir) : string
     {
-        return $rootDir;
+        return $rootDir."/";
     }
 
     /**

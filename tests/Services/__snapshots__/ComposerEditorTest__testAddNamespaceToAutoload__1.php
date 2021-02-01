@@ -17,7 +17,7 @@
     "autoload": {
         "psr-4": {
             "Thomasderooij\\\\LaravelModules\\\\": "src",
-            "ModuleRoot\\\\": "moduleRoot"
+            "ModuleRoot\\\\": "moduleRoot/"
         }
     },
     "autoload-dev": {
