@@ -35,7 +35,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      */
     public function create (string $module) : void
     {
-        $this->populateFile(base_path($this->getRelativeConsoleDir($module)), $this->getKernelFileName(), $this->getStub(), [
+        $this->populateFile($this->getConsoleDir($module), $this->getKernelFileName(), $this->getStub(), [
             $this->getKernelNamespacePlaceholder() => $this->getKernelNamespace($module),
             $this->getModuleKernelPlaceholder() => $this->getModuleKernel(),
             $this->getKernelConsoleDirPlaceholder() => $this->getKernelConsoleDir($module),
@@ -49,9 +49,9 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getRelativeConsoleDir (string $module) : string
+    protected function getConsoleDir (string $module) : string
     {
-        return config("modules.root") . "/$module/{$this->getConsoleDirectory()}";
+        return base_path(config("modules.root")) . "/$module/{$this->getConsoleDirectory()}";
     }
 
     /**

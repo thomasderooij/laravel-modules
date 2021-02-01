@@ -154,7 +154,7 @@ class ModuleFactory implements Contract
     {
         $dir = $this->getDirName($module);
 
-        if (!is_dir($dir)) {
+        if (!$this->files->isDirectory($dir)) {
             $this->files->makeDirectory($dir, 0755, true);
         }
     }
@@ -168,9 +168,7 @@ class ModuleFactory implements Contract
     protected function getDirName (string $module) : string
     {
         $root = config('modules.root');
-        $name = strtolower($module);
-        $name = ucfirst($name);
 
-        return base_path("{$root}/" . $name);
+        return base_path("{$root}/" . $module);
     }
 }

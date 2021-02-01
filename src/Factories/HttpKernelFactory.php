@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -16,7 +18,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      */
     public function create(string $module): void
     {
-        $this->populateFile(base_path($this->getRelativeConsoleDir($module)), $this->getKernelFileName(), $this->getStub(), [
+        $this->populateFile($this->getHttpDir($module), $this->getKernelFileName(), $this->getStub(), [
             $this->getKernelNamespacePlaceholder() => $this->getKernelNamespace($module),
             $this->getModuleKernelPlaceholder() => $this->getModuleKernel(),
         ]);
@@ -28,9 +30,9 @@ class HttpKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getRelativeConsoleDir (string $module) : string
+    protected function getHttpDir (string $module) : string
     {
-        return config("modules.root") . "/$module/{$this->getHttpDirectory()}";
+        return base_path(config("modules.root")) . "/$module/{$this->getHttpDirectory()}";
     }
 
     /**
@@ -62,7 +64,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      */
     protected function getKernelNamespace (string $module) : string
     {
-        return $this->moduleManager->getModuleNamespace($module) . $this->getHttpDirectory();
+        return $this->moduleManager->getModuleNamespace($module) . "\\". $this->getHttpDirectory();
     }
 
     /**
