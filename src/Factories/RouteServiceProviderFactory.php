@@ -46,7 +46,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory implements Cont
      */
     protected function getWebFile (string $relativePath) : string
     {
-        return $relativePath . $this->routeSource->getWebRoute() . $this->routeSource->getRouteFileExtension();
+        return $relativePath . "/" . $this->routeSource->getWebRoute() . $this->routeSource->getRouteFileExtension();
     }
 
     /**
@@ -57,7 +57,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory implements Cont
      */
     protected function getApiFile (string $relativePath) : string
     {
-        return $relativePath . $this->routeSource->getApiRoute() . $this->routeSource->getRouteFileExtension();
+        return $relativePath . "/" . $this->routeSource->getApiRoute() . $this->routeSource->getRouteFileExtension();
     }
 
     /**
