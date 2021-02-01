@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Functional;
+namespace Thomasderooij\LaravelModules\Tests\Feature;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;

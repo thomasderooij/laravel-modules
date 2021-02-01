@@ -1,6 +1,6 @@
 <?php
 
-namespace Thomasderooij\LaravelModules\Tests\Functional;
+namespace Thomasderooij\LaravelModules\Tests\Feature;
 
 use Thomasderooij\LaravelModules\Tests\Test;
 
