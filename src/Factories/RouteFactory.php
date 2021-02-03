@@ -62,8 +62,6 @@ class RouteFactory extends FileFactory implements Contract
      */
     protected function createRouteFile (string $type, string $directory) : void
     {
-        $directory = $this->ensureSlash($directory);
-
         $this->populateFile($directory, $type . $this->routeSource->getRouteFileExtension(), $this->getStubByType($type), [
             "{typeUcfirst}" => ucfirst($type),
             "{type}" => $type,

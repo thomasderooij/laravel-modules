@@ -4,9 +4,6 @@ namespace Thomasderooij\LaravelModules;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Thomasderooij\LaravelModules\Console\Commands\Extensions\Event\EventCacheCommand;
-use Thomasderooij\LaravelModules\Console\Commands\Extensions\Event\EventGenerateCommand;
-use Thomasderooij\LaravelModules\Console\Commands\Extensions\Event\EventListCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Make\ChannelMakeCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Make\ConsoleMakeCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Make\ControllerMakeCommand;

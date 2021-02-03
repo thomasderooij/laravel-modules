@@ -23,6 +23,8 @@ class ModuleManager implements Contract
      */
     protected $files;
 
+    private $tracker;
+
     public function __construct(Filesystem $files)
     {
         $this->files = $files;
@@ -459,6 +461,10 @@ class ModuleManager implements Contract
      */
     protected function getTrackerContent () : array
     {
+        if ($this->tracker !== null) {
+            return $this->tracker;
+        }
+
         if (!$this->hasTrackerFile()) {
             throw new TrackerFileNotFoundException("No tracker file has been located.");
         }
@@ -516,6 +522,11 @@ class ModuleManager implements Contract
         $lower = array_map(function (string $mod) { return strtolower($mod); }, $modules);
         $key = array_search(strtolower($module), $lower);
 
+        // If we don't have the module in the modules array, we assume its a new module
+        if ($key === false) {
+            return $module;
+        }
+
         return $modules[$key];
     }
 
@@ -539,6 +550,7 @@ class ModuleManager implements Contract
         }
 
         // store the tracker content as pretty print json
+        $this->tracker = $trackerContent;
         $this->files->put($trackerFile, json_encode($trackerContent, array_sum($this->getJsonOptions())));
     }
 }

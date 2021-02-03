@@ -61,7 +61,7 @@ class ControllerFactoryTest extends Test
 
         $module = "NewModule";
         $namespace = "Modules\\NewModule";
-        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace);
+        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn("$namespace\\");
 
         $uut = $this->getMethodFromClass("getNamespace", ControllerFactory::class);
         $factory = $this->app->make("module.factory.controller");

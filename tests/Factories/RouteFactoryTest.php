@@ -25,8 +25,7 @@ class RouteFactoryTest extends Test
         $uut = $this->getMethodFromClass("create", RouteFactory::class);
 
         // I should fetch the route directory
-        $routeDirectory = "route_directory";
-        $factory->shouldReceive("getRouteDirectory")->withArgs([$module])->andReturn($routeDirectory);
+        $factory->shouldReceive("getRouteDirectory")->withArgs([$module])->andReturn($routeDirectory = "route_directory");
 
         // I should get the route directory
         $filesystem->shouldReceive("exists")->withArgs([$routeDirectory])->andReturn(false);
@@ -67,6 +66,9 @@ class RouteFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
+    /**
+     * @group uut
+     */
     public function testCreateRouteFile () : void
     {
         $routeSource = Mockery::mock(RouteSource::class);
@@ -77,19 +79,15 @@ class RouteFactoryTest extends Test
         $uut = $this->getMethodFromClass("createRouteFile", RouteFactory::class);
 
         $directory = "route_directory";
-        // We first make sure the directory ends with a /
-        $factory->expects("ensureSlash")->withArgs([$directory])->andReturn("$directory/");
         // I need to fetch a stub file first
         $fileName = "test_routes";
-        $stub = "path/to/stub";
-        $factory->shouldReceive("getStubByType")->withArgs([$fileName])->andReturn($stub);
+        $factory->shouldReceive("getStubByType")->withArgs([$fileName])->andReturn($stub = "path/to/stub");
 
         // And I need a file extension
-        $extension = ".kt";
-        $routeSource->shouldReceive("getRouteFileExtension")->andReturn($extension);
+        $routeSource->shouldReceive("getRouteFileExtension")->andReturn($extension = ".kt");
 
         // And then I need to call the populateFile function
-        $factory->expects("populateFile")->withArgs(["$directory/", "$fileName$extension", $stub, [
+        $factory->expects("populateFile")->withArgs([$directory, "$fileName$extension", $stub, [
             "{typeUcfirst}" => ucfirst($fileName),
             "{type}" => $fileName,
             "{middleware}"  => $fileName,
