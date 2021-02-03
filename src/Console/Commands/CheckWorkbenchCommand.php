@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -21,8 +23,13 @@ class CheckWorkbenchCommand extends ModuleCommand
      */
     protected $description = 'Check your currently active module';
 
-    public function handle ()
+    public function handle () : void
     {
+        if (!$this->moduleManager->isInitialised()) {
+            $this->displayInitialisationError();
+            return;
+        }
+
         if ($this->moduleManager->getWorkbench() === null) {
             $this->info("Your workbench is empty.");
         } else {

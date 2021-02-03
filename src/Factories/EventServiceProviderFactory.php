@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Thomasderooij\LaravelModules\Contracts\Factories\EventServiceProviderFactory as Contract;

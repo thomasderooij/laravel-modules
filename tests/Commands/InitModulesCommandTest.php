@@ -16,7 +16,7 @@ use Thomasderooij\LaravelModules\Services\ComposerEditor;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Tests\Test;
 
-class InitModulesCommandTest extends Test
+class InitModulesCommandTest extends CommandTest
 {
     private $root = 'test_root';
 
@@ -26,7 +26,6 @@ class InitModulesCommandTest extends Test
     private $configFactory;
     private $filesystem;
     private $migrationFactory;
-    private $moduleManager;
     private $trackerFactory;
 
     protected function setUp(): void
@@ -43,12 +42,13 @@ class InitModulesCommandTest extends Test
         $this->instance('module.factory.config', $this->configFactory);
         $this->filesystem = Mockery::mock(Filesystem::class);
         $this->instance("files", $this->filesystem);
-        $this->moduleManager = Mockery::mock(ModuleManager::class);
-        $this->instance('module.service.manager', $this->moduleManager);
         $this->migrationFactory = Mockery::mock(ModuleMigrationFactory::class);
         $this->instance('module.factory.migration', $this->migrationFactory);
         $this->trackerFactory = Mockery::mock(TrackerFactory::class);
         $this->instance("module.factory.tracker", $this->trackerFactory);
+
+        // The artisan service provider is going to ask for a workbench, so that should return null
+        $this->moduleManager->shouldReceive('getWorkBench')->andReturn(null);
     }
 
     /**
@@ -63,9 +63,6 @@ class InitModulesCommandTest extends Test
         // And I expect to receive instructions after a successful initialisation
         $response->expectsOutput("You are set to go. Make sure to run migration command to get your module migrations working.");
         $response->expectsOutput("Call for module:new your-module-name-here to create a module. For any other info, check out the readme.md file.");
-
-        // The artisan service provider is going to ask for a workbench, so that should return null
-        $this->moduleManager->shouldReceive('getWorkBench')->andReturn(null);
 
         // In this process, the bootstrap factory create method should be called
         $this->bootstrapFactory->shouldReceive('create')->once();
@@ -98,14 +95,12 @@ class InitModulesCommandTest extends Test
     {
         // When I run the init command
         $response = $this->artisan("module:init");
-        // I expect to be told the modules are already initialised
-        $response->expectsOutput("Modules are already initiated.");
 
         // If the modules are already initialised
         $this->moduleManager->shouldReceive('isInitialised')->andReturn(true)->once();
+        // I expect to be told the modules are already initialised
+        $response->expectsOutput("Modules are already initiated.");
 
-        // The artisan service provider is going to ask for a workbench, so that should return null
-        $this->moduleManager->shouldReceive('getWorkBench')->andReturn(null);
         $response->execute();
     }
 
@@ -115,10 +110,6 @@ class InitModulesCommandTest extends Test
         $response = $this->artisan("module:init");
         // I expect to be asked which directory will be my modules directory
         $response->expectsQuestion("What will be the root directory of your modules?", $this->root);
-
-
-        // The artisan service provider is going to ask for a workbench, so that should return null
-        $this->moduleManager->shouldReceive('getWorkBench')->andReturn(null);
 
         // And the module manager should be asked if its initialised
         $this->moduleManager->shouldReceive('isInitialised')->andReturn(false)->once();

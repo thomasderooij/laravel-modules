@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException as FileNotFoundExceptionAlias;

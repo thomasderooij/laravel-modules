@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Services;
 
 use \Thomasderooij\LaravelModules\Contracts\Services\RouteSource as Contract;

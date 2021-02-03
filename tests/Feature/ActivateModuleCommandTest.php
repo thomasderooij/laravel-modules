@@ -1,27 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Tests\Feature;
 
 use Illuminate\Cache\FileStore;
 use Illuminate\Cache\Repository;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Mockery;
-use Thomasderooij\LaravelModules\Tests\Test;
 
-class ActivateModuleCommandTest extends Test
+class ActivateModuleCommandTest extends CommandTest
 {
-    private $filesystem;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->filesystem = Mockery::mock(Filesystem::class);
-        $this->instance('files', $this->filesystem);
-    }
-
     public function testActivateModule () : void
     {
         $module = "InactiveModule";
@@ -32,20 +21,14 @@ class ActivateModuleCommandTest extends Test
 
         // The config should check for a module root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-        // And get other details to start the console application
-        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn($driver = "file");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data')
-        ]);
-        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
         // The cache should check the workbench
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
         // With a cache driver
         Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         // And there should be a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
+
+        // We should get the module tracker content
         $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])
             ->andReturn(json_encode(["modules" => [$module, "OtherModule"], "activeModules" =>  ["OtherModule"]]));
         // Which should be replaced with one that has added the module to the active key
@@ -54,6 +37,8 @@ class ActivateModuleCommandTest extends Test
             "modules" => [$module, "OtherModule"],
             "activeModules" => ["OtherModule", $module]
         ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)]);
+
+        // And I expect some feedback
         $response->expectsOutput("The module \"$strtolowModule\" has been activated and put in your workbench.");
 
         // And the module should be put in the workbench
@@ -71,15 +56,8 @@ class ActivateModuleCommandTest extends Test
         // The configuration should know its root
         $root = "Root";
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn(null);
-        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn($driver = "file");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data')
-        ]);
-        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
-        // We should have a tracker file
+        // We should not have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
 
         $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
@@ -94,13 +72,6 @@ class ActivateModuleCommandTest extends Test
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn($driver = "file");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data')
-        ]);
-        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
@@ -121,13 +92,6 @@ class ActivateModuleCommandTest extends Test
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn($driver = "file");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data')
-        ]);
-        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);

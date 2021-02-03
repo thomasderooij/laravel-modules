@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -23,7 +25,7 @@ class ActivateModuleCommand extends ModuleCommand
      */
     protected $description = 'Activate a module in your project';
 
-    public function handle()
+    public function handle() : void
     {
         $module = $this->argument('name');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -47,7 +49,7 @@ class DeactivateModuleCommand extends ModuleCommand
      */
     protected function displayModuleAlreadyDeactivatedWarning (string $module) : void
     {
-        $this->warn("The module $module is already deactivated.");
+        $this->warn("The module \"$module\" is already deactivated.");
     }
 
     /**
@@ -57,6 +59,6 @@ class DeactivateModuleCommand extends ModuleCommand
      */
     protected function displayConfirmationMessage(string $module) : void
     {
-        $this->info("The module $module has been deactivated.");
+        $this->info("The module \"$module\" has been deactivated.");
     }
 }

@@ -7,12 +7,9 @@ namespace Thomasderooij\LaravelModules\Tests\Commands;
 use Illuminate\Support\Facades\Config;
 use Mockery;
 use Thomasderooij\LaravelModules\Factories\ModuleFactory;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Tests\Test;
 
-class NewModuleCommandTest extends Test
+class NewModuleCommandTest extends CommandTest
 {
-    private $moduleManager;
     private $moduleFactory;
 
     protected function setUp(): void
@@ -21,8 +18,9 @@ class NewModuleCommandTest extends Test
 
         $this->moduleFactory = Mockery::mock(ModuleFactory::class);
         $this->instance("module.factory.module", $this->moduleFactory);
-        $this->moduleManager = Mockery::mock(ModuleManager::class);
-        $this->instance("module.service.manager", $this->moduleManager);
+
+        // This is for the kernels
+        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
     }
 
     public function testMakeNewModule () : void
@@ -30,10 +28,8 @@ class NewModuleCommandTest extends Test
         $newModule = "NewModule";
         $response = $this->artisan("module:new", ["name" => $newModule]);
 
-        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(true);
         $this->moduleManager->shouldReceive("hasModule")->withArgs([$newModule])->andReturn(false);
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
 
         $this->moduleFactory->shouldReceive("create")->withArgs([$newModule]);
         $this->moduleManager->shouldReceive("addModule")->withArgs([$newModule]);
@@ -57,8 +53,6 @@ class NewModuleCommandTest extends Test
         $newModule = "NewModule";
         $response = $this->artisan("module:new", ["name" => $newModule]);
 
-        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(false);
         $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
         $response->run();
@@ -69,8 +63,6 @@ class NewModuleCommandTest extends Test
         $newModule = "NewModule";
         $response = $this->artisan("module:new", ["name" => $newModule]);
 
-        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(true);
         $this->moduleManager->shouldReceive("hasModule")->withArgs([$newModule])->andReturn(true);
 

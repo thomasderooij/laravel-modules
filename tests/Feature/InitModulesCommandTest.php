@@ -7,21 +7,10 @@ namespace Thomasderooij\LaravelModules\Tests\Feature;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
 use Mockery;
-use Thomasderooij\LaravelModules\Tests\Test;
 
-class InitModulesCommandTest extends Test
+class InitModulesCommandTest extends CommandTest
 {
-    private $filesystem;
     private $root = "MyModules";
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->filesystem = Mockery::mock(Filesystem::class);
-        $this->instance("files", $this->filesystem);
-        $this->instance(Filesystem::class, $this->filesystem);
-    }
 
     public function testInitModules () : void
     {
@@ -33,13 +22,6 @@ class InitModulesCommandTest extends Test
 
         // We config should check for a modules root, and return null
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn(null);
-        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn("file");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data')
-        ]);
-        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
         // Building the app bootstrap file
         $this->filesystem->shouldReceive("move")->withArgs([base_path("bootstrap/app.php"), base_path("bootstrap/app_orig.php")])->once();
@@ -99,13 +81,6 @@ class InitModulesCommandTest extends Test
 
         // We config should check for a modules root, and return a root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn("Modules");
-        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn("file");
-        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data')
-        ]);
-        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
         // And the file system should check for a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("Modules/.tracker")])->andReturn(true);

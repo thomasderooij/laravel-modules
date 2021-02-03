@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
 use Exception;
@@ -112,7 +114,7 @@ class InitModuleCommand extends Command
     /**
      * Handle the module initialisation
      */
-    public function handle()
+    public function handle() : void
     {
         // Check if the module is already initialised
         if ($this->moduleManager->isInitialised() === true) {

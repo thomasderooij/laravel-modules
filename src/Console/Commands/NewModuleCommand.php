@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
@@ -33,7 +35,7 @@ class NewModuleCommand extends ModuleCommand
         $this->factory = $moduleFactory;
     }
 
-    public function handle()
+    public function handle() : void
     {
         // standardise module name
         $name = $this->getNameArgument();

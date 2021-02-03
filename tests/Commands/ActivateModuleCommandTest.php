@@ -1,23 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Tests\Commands;
 
-use Mockery;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Tests\Test;
-
-class ActivateModuleCommandTest extends Test
+class ActivateModuleCommandTest extends CommandTest
 {
-    private $moduleManager;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->moduleManager = Mockery::mock(ModuleManager::class);
-        $this->instance("module.service.manager", $this->moduleManager);
-    }
-
     public function testActivateModule(): void
     {
         $module = "MyModule";
@@ -25,8 +13,6 @@ class ActivateModuleCommandTest extends Test
         // If I activate a module
         $response = $this->artisan("module:activate", ["name" => $module]);
 
-        // Get the active modules for the kernel
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         // Check if the modules are initialised
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(true);
         // Check if the module exists
@@ -52,8 +38,6 @@ class ActivateModuleCommandTest extends Test
         // If I activate a module
         $response = $this->artisan("module:activate", ["name" => $module]);
 
-        // Get the active modules for the kernel
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         // Check if the modules are initialised
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(true);
         // Check if the module is already active
@@ -77,8 +61,6 @@ class ActivateModuleCommandTest extends Test
         // If I activate a module
         $response = $this->artisan("module:activate", ["name" => $module]);
 
-        // Get the active modules for the kernel
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         // Get the workbench to change the artisan command descriptions
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn("OtherModule");
         // Check if the modules are initialised
@@ -96,8 +78,6 @@ class ActivateModuleCommandTest extends Test
         // If I activate a module
         $response = $this->artisan("module:activate", ["name" => $module]);
 
-        // Get the active modules for the kernel
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         // Get the workbench to change the artisan command descriptions
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn("OtherModule");
         // Check if the modules are initialised
@@ -119,8 +99,6 @@ class ActivateModuleCommandTest extends Test
         // If I activate a module
         $response = $this->artisan("module:activate", ["name" => $module]);
 
-        // Get the active modules for the kernel
-        $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         // Get the workbench to change the artisan command descriptions
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn("OtherModule");
         // Check if the modules are initialised
