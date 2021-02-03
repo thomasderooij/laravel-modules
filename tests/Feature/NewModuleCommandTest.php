@@ -171,11 +171,51 @@ class NewModuleCommandTest extends Test
 
     public function testModulesNotInitialised () : void
     {
+        $newModule = "NewModule";
+        // In order to create a new module
+        $response = $this->artisan("module:new", ["name" => $newModule]);
 
+        // The configuration should know its root
+        $root = "Root";
+        Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn(null);
+        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
+        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn($driver = "file");
+        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
+            'driver' => 'file',
+            'path' => storage_path('framework/cache/data')
+        ]);
+        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
+
+        // We should have a tracker file
+        $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
+
+        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->run();
     }
 
     public function testModuleAlreadyExists () : void
     {
+        $newModule = "NewModule";
+        // In order to create a new module
+        $response = $this->artisan("module:new", ["name" => $newModule]);
 
+        // The configuration should know its root
+        Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
+        Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn($driver = "file");
+        Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
+            'driver' => 'file',
+            'path' => storage_path('framework/cache/data')
+        ]);
+        Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
+
+        // We should have a tracker file
+        $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
+        $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])->andReturn(
+            json_encode(["modules" => [$newModule], "activeModules" => []])
+        );
+
+        $response->expectsOutput("Module $newModule already exists.");
+        $response->run();
     }
 }

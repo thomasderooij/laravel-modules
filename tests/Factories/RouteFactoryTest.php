@@ -66,9 +66,6 @@ class RouteFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    /**
-     * @group uut
-     */
     public function testCreateRouteFile () : void
     {
         $routeSource = Mockery::mock(RouteSource::class);
