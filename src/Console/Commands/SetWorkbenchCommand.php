@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
-class SetWorkbenchModuleCommand extends ModuleCommand
+class SetWorkbenchCommand extends ModuleCommand
 {
     /**
      * The name and signature of the console command.
@@ -40,6 +40,6 @@ class SetWorkbenchModuleCommand extends ModuleCommand
      */
     protected function displayConfirmationMessage (string $module) : void
     {
-        $this->info("The module $module is now set to your workbench.");
+        $this->info("The module \"$module\" is now set to your workbench.");
     }
 }

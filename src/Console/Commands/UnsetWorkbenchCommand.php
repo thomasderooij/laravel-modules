@@ -31,6 +31,11 @@ class UnsetWorkbenchCommand extends ModuleCommand
      */
     public function handle ()
     {
+        if (!$this->moduleManager->isInitialised()) {
+            $this->displayInitialisationError();
+            return false;
+        }
+
         $this->moduleManager->clearWorkbench();
 
         $this->displayConfirmationMessage();

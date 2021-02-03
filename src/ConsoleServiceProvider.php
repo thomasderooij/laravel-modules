@@ -12,7 +12,7 @@ use Thomasderooij\LaravelModules\Console\Commands\DeactivateModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeleteModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\InitModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\NewModuleCommand;
-use Thomasderooij\LaravelModules\Console\Commands\SetWorkbenchModuleCommand;
+use Thomasderooij\LaravelModules\Console\Commands\SetWorkbenchCommand;
 use Thomasderooij\LaravelModules\Console\Commands\UnsetWorkbenchCommand;
 
 class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -108,7 +108,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     protected function createSetCommand () : void
     {
         $this->app->singleton($this->moduleCommands["Set"], function ($app) {
-            return new SetWorkbenchModuleCommand(
+            return new SetWorkbenchCommand(
                 $app["module.service.manager"]
             );
         });
