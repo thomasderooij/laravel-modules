@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
@@ -54,7 +56,7 @@ class DeleteModuleCommand extends ModuleCommand
 
     protected function askConfirmation (string $module) : string
     {
-        return $this->choice("This will delete your module $module and all of the code within it. Are you sure you want to do this?", $this->getConfirmationOptions());
+        return $this->choice("This will delete your module \"$module\" and all of the code within it. Are you sure you want to do this?", $this->getConfirmationOptions());
     }
 
     protected function getConfirmationOptions () : array
