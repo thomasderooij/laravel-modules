@@ -42,11 +42,11 @@ class ActivateModuleCommand extends ModuleCommand
         $this->moduleManager->activateModule($module);
 
         // if the workbench is empty, set the activated module to the workbench
-        if ($this->moduleManager->getWorkbench() === null) {
+        if ($setToBench = ($this->moduleManager->getWorkbench() === null)) {
             $this->moduleManager->setWorkbench($module);
         }
 
-        $this->displayConfirmationMessage($module);
+        $this->displayConfirmationMessage($module, $setToBench);
     }
 
     /**
@@ -56,7 +56,7 @@ class ActivateModuleCommand extends ModuleCommand
      */
     protected function displayModuleAlreadyActiveWarning (string $module) : void
     {
-        $this->warn("The module $module is already active.");
+        $this->warn("The module \"$module\" is already active.");
     }
 
     /**
@@ -64,8 +64,14 @@ class ActivateModuleCommand extends ModuleCommand
      *
      * @param string $module
      */
-    protected function displayConfirmationMessage (string $module) : void
+    protected function displayConfirmationMessage (string $module, bool $isSetToBench) : void
     {
-        $this->info("The module $module has been activated.");
+        $message = "The module \"$module\" has been activated";
+        if ($isSetToBench) {
+            $message.= " and put in your workbench";
+        }
+        $message.= ".";
+
+        $this->info($message);
     }
 }

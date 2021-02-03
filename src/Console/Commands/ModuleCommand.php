@@ -63,7 +63,7 @@ abstract class ModuleCommand extends Command
      */
     protected function displayModuleNotFoundError (string $module) : void
     {
-        $this->error("There is no module named $module.");
+        $this->error("There is no module named \"$module\".");
     }
 
     /**
