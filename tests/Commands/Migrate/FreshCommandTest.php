@@ -54,7 +54,7 @@ class FreshCommandTest extends MigrateTest
     public function testMigrateFreshWithModulesOption () : void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
-        $command = Mockery::mock(FreshCommand::class."[parentCall, call, getModules]", [$this->moduleManager]);
+        $command = Mockery::mock(FreshCommand::class."[parentCall, call]", [$this->moduleManager]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate.fresh", $command);
 
@@ -72,8 +72,6 @@ class FreshCommandTest extends MigrateTest
 
         // It should call its parent handle function
         $command->shouldReceive("parentCall")->withArgs(["handle"]);
-        // It should try to get the modules, and return 2 modules
-        $command->shouldReceive("getModules")->andReturn([$module1, $module2]);
 
         // It should then set modules to the workbench, one by one
         $this->moduleManager->shouldReceive("setWorkbench")->withArgs([$module1]);
