@@ -15,7 +15,7 @@ class FreshCommandTest extends MigrateTest
         parent::setUp();
     }
 
-    public function testMigrateFreshWithTheModulesArgument () : void
+    public function testMigrateFreshWithoutTheModulesOption () : void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&FreshCommand $command */
@@ -48,7 +48,10 @@ class FreshCommandTest extends MigrateTest
         $response->run();
     }
 
-    public function testMigrateFreshWithoutArgumentsAndWithoutModules () : void
+    /**
+     * @group uut
+     */
+    public function testMigrateFreshWithModulesOption () : void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         $command = Mockery::mock(FreshCommand::class."[parentCall, call, getModules]", [$this->moduleManager]);
@@ -60,9 +63,7 @@ class FreshCommandTest extends MigrateTest
         // If I want to do a good old fashioned migrate:fresh
         $module1 = "Module_1";
         $module2 = "Module_2";
-        // So, apparently orchestra does not support options for the migrate fresh call, I guess. I don't know why, but we just need to make sure
-        //  the getModules function returns our modules for this test, so this is kind of a workaround
-        $response = $this->artisan("migrate:fresh");
+        $response = $this->artisan("migrate:fresh", ["--modules" => "$module1,$module2"]);
 
         // The workbench should return something
         $this->moduleManager->shouldReceive('getWorkbench')->andReturn($module = "Module");

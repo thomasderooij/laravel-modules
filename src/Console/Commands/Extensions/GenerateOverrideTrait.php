@@ -97,7 +97,7 @@ trait GenerateOverrideTrait
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions () : array
     {
         $options = parent::getOptions();
         $options[] = ["module", null, InputOption::VALUE_OPTIONAL, "Apply to this module."];
