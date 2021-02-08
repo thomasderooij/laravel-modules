@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
+use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 trait GenerateOverrideTrait
 {
@@ -39,12 +42,11 @@ trait GenerateOverrideTrait
         }
 
         // If there is not module, or the module is vanilla, or the modules are not initialised, go for the default
-        if ($module === null || $this->isVanilla($module) || !$this->moduleManager::isInitialised()) {
-            return parent::getPath($name);
+        if ($module === null || $this->isVanilla($module) || !$this->moduleManager->isInitialised()) {
+            return $this->parentCall("getPath", [$name]);
         }
 
         // Parse the namespace to a directory location
-        $name = lcfirst($name);
         return base_path().'/'.str_replace('\\', '/', $name).'.php';
     }
 
@@ -89,7 +91,7 @@ trait GenerateOverrideTrait
         }
 
         // If there is no module, return default namespace
-        return parent::rootNameSpace();
+        return $this->parentCall("rootNameSpace");
     }
 
     /**
@@ -99,9 +101,21 @@ trait GenerateOverrideTrait
      */
     protected function getOptions () : array
     {
-        $options = parent::getOptions();
+        $options = $this->parentCall("getOptions");
         $options[] = ["module", null, InputOption::VALUE_OPTIONAL, "Apply to this module."];
 
         return $options;
+    }
+
+    /**
+     * Call the parent with a function and arguments
+     *
+     * @param string $function
+     * @param array $args
+     * @return mixed
+     */
+    protected function parentCall (string $function, array $args = [])
+    {
+        return parent::$function(...$args);
     }
 }

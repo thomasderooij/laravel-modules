@@ -55,16 +55,17 @@ abstract class Test extends TestCase
         $app->singleton('Illuminate\Contracts\Http\Kernel', HttpKernel::class);
     }
 
-    protected function getMockableClassMethods (string $class, string $method, bool $excludeConstructor = true) : array
+    protected function getMockableClassMethods (string $class, string $method, array $exclude = ["__construct"]) : array
     {
         $reflection = new \ReflectionClass($class);
         // Get all the methods from out module manager
         $methods = $reflection->getMethods();
         $mockFunctions = array_map(function (\ReflectionMethod $method) { return $method->getName(); }, $methods);
-        if ($excludeConstructor) {
-            // Remove the constructor
-            $constructorPosition = array_search("__construct", $mockFunctions);
-            unset($mockFunctions[$constructorPosition]);
+
+        // Exclude methods you don't want to mock
+        foreach ($exclude as $excludeMethod) {
+            $methodPosition = array_search($excludeMethod, $mockFunctions);
+            unset($mockFunctions[$methodPosition]);
         }
 
         // And remove the function we want to test
@@ -74,7 +75,7 @@ abstract class Test extends TestCase
         }
         unset($mockFunctions[$testUnitPosition]);
 
-        return $mockFunctions;
+        return array_values($mockFunctions);
     }
 
     protected function getMethodFromClass (string $method, string $class) : \ReflectionMethod

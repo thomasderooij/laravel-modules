@@ -20,6 +20,8 @@ class GetModuleNamespaceTest extends ModuleManagerTest
 
         // We should check if there is a configuration file
         $uut->shouldReceive("hasConfig")->andReturn(true);
+        // And we should get the sanitised module name
+        $uut->shouldReceive("sanitiseModuleName")->andReturn($module);
 
         // I should get the module root from the configuration
         $moduleRoot = "module_root";

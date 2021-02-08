@@ -190,7 +190,7 @@ class ModuleManager implements Contract
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
         }
 
-        $namespace = ucfirst(config("modules.root")) . "\\" . ucfirst($module);
+        $namespace = ucfirst(config("modules.root")) . "\\" . ucfirst($this->sanitiseModuleName($module));
         if ($includeBackslash) {
             $namespace.= "\\";
         }

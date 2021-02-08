@@ -19,7 +19,7 @@ class FreshCommandTest extends MigrateTest
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&FreshCommand $command */
-        $command = Mockery::mock(FreshCommand::class."[parentCall, getModules]", [$this->moduleManager]);
+        $command = Mockery::mock(FreshCommand::class."[parentCall]", [$this->moduleManager]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate.fresh", $command);
 
@@ -27,7 +27,7 @@ class FreshCommandTest extends MigrateTest
         $response = $this->artisan("migrate:fresh");
 
         // The workbench should return something
-        $this->moduleManager->shouldReceive('getWorkbench')->andReturn($module = "Module");
+        $this->moduleManager->shouldReceive('getWorkbench')->andReturn(null);
         // It should clear the workbench
         $this->moduleManager->shouldReceive("clearWorkbench");
 
@@ -39,18 +39,10 @@ class FreshCommandTest extends MigrateTest
             ["modules", null, InputOption::VALUE_OPTIONAL, "The modules you want included in this migration."]
         ]);
         $command->shouldReceive("parentCall")->withArgs(["handle"]);
-        // It should try to get the modules, but receive nothing
-        $command->shouldReceive("getModules")->andReturn([]);
-
-        // And then it should set the workbench back
-        $this->moduleManager->shouldReceive("setWorkbench")->withArgs([$module]);
 
         $response->run();
     }
 
-    /**
-     * @group uut
-     */
     public function testMigrateFreshWithModulesOption () : void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
