@@ -4,12 +4,25 @@ namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
+
 trait ModulesCommandTrait
 {
     /**
      * @var ModuleManager
      */
     protected $moduleManager;
+
+    /**
+     * Call the parent with a function and arguments
+     *
+     * @param string $function
+     * @param array $args
+     * @return mixed
+     */
+    protected function parentCall (string $function, array $args = [])
+    {
+        return parent::$function(...$args);
+    }
 
     /**
      * Get modules from either a command option, or return your workbench module, or return an empty array

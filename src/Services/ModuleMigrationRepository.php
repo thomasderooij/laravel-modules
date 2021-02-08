@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Services;
 
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;

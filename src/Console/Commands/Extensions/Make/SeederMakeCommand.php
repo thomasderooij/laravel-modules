@@ -16,7 +16,7 @@ class SeederMakeCommand extends OriginalCommand
     {
         $this->moduleManager = $moduleManager;
 
-        if (($module = $moduleManager->getWorkBench()) !== null) {
+        if ($moduleManager->isInitialised() && ($module = $moduleManager->getWorkBench()) !== null) {
             $this->description = $this->description . " for " . ucfirst($module);
         }
 

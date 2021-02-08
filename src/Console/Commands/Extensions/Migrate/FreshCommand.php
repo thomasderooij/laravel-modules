@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate;
 
 use Illuminate\Database\Console\Migrations\FreshCommand as OriginalCommand;
@@ -7,9 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrait;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class FreshCommand extends OriginalCommand
@@ -38,13 +38,13 @@ class FreshCommand extends OriginalCommand
             $workbench = $this->moduleManager->getWorkBench();
             $this->moduleManager->clearWorkbench();
         } catch (ModulesNotInitialisedException $e) {
-            parent::handle();
+            $this->parentCall("handle");
             return;
         }
 
         $database = $this->input->getOption('database');
         // Run the normal fresh command
-        parent::handle();
+        $this->parentCall("handle");
 
         // Foreach module specified in the modules command, run a migration
         foreach ($this->getModules() as $module) {
@@ -70,9 +70,9 @@ class FreshCommand extends OriginalCommand
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions() : array
     {
-        $options = parent::getOptions();
+        $options = $this->parentCall("getOptions");
         $options[] = ["modules", null, InputOption::VALUE_OPTIONAL, "The modules you want included in this migration."];
 
         return $options;

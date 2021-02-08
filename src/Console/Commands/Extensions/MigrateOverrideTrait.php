@@ -3,7 +3,6 @@
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 
 trait MigrateOverrideTrait
 {

@@ -74,7 +74,16 @@ class InitModulesCommandTest extends CommandTest
         $this->migrationFactory->shouldReceive('create')->once();
 
         // And the module manager should be asked if its initialised
-        $this->moduleManager->shouldReceive('isInitialised')->andReturn(false)->once();
+        $this->moduleManager->shouldReceive('isInitialised')->andReturn(false);
+        $this->moduleManager->shouldReceive('isInitialised')->andReturnUsing(function () {
+            static $i = 0;
+            $i++;
+
+            switch ($i) {
+                case 1: return "woep";
+                default: return "wop";
+            }
+        });
 
         // And the module editor should add the namespace to the autoload section in the composer file
         $this->composerEditor->shouldReceive('addNamespaceToAutoload')->once();
@@ -97,7 +106,7 @@ class InitModulesCommandTest extends CommandTest
         $response = $this->artisan("module:init");
 
         // If the modules are already initialised
-        $this->moduleManager->shouldReceive('isInitialised')->andReturn(true)->once();
+        $this->moduleManager->shouldReceive('isInitialised')->andReturn(true);
         // I expect to be told the modules are already initialised
         $response->expectsOutput("Modules are already initiated.");
 
@@ -112,7 +121,7 @@ class InitModulesCommandTest extends CommandTest
         $response->expectsQuestion("What will be the root directory of your modules?", $this->root);
 
         // And the module manager should be asked if its initialised
-        $this->moduleManager->shouldReceive('isInitialised')->andReturn(false)->once();
+        $this->moduleManager->shouldReceive('isInitialised')->andReturn(false);
         // I expect the bootstrap factory to call the create function
         $this->bootstrapFactory->shouldReceive("create");
 

@@ -18,16 +18,6 @@ abstract class Test extends TestCase
 {
     use MatchesSnapshots;
 
-    protected function setUp (): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown () : void
-    {
-        parent::tearDown();
-    }
-
     protected function getPackageProviders ($app) : array
     {
         return [

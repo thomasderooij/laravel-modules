@@ -19,7 +19,7 @@ trait GenerateOverrideTrait
         $this->moduleManager = $moduleManager;
 
         // If there is a module in the workbench, change the command description to include the module name
-        if (($module = $moduleManager->getWorkBench()) !== null) {
+        if ($moduleManager->isInitialised() && ($module = $moduleManager->getWorkBench()) !== null) {
             $this->attachDescriptionSuffix($module);
         }
 
