@@ -7,9 +7,9 @@ namespace Thomasderooij\LaravelModules\Tests\Commands\Migrate;
 use Mockery;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Services\ModuleMigrator;
-use Thomasderooij\LaravelModules\Tests\Commands\InitialisedModulesTest;
+use Thomasderooij\LaravelModules\Tests\Test;
 
-abstract class MigrateTest extends InitialisedModulesTest
+abstract class MigrateTest extends Test
 {
     protected $moduleManager;
     protected $migrator;

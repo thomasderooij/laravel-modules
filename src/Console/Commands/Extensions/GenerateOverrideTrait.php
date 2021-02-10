@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Illuminate\Filesystem\Filesystem;
@@ -30,10 +28,12 @@ trait GenerateOverrideTrait
     }
 
     /**
+     * This provides a namespace as an argument
+     *
      * @param $name
      * @return string
      */
-    protected function getPath($name) : string
+    protected function getPath($name)
     {
         // If there is no module, return default values
         $module = $this->option("module");
@@ -77,7 +77,7 @@ trait GenerateOverrideTrait
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    protected function rootNamespace()
+    protected function rootNamespace () : string
     {
         // If there is no module option provided, grab the workbench module
         $module = $this->option("module");
