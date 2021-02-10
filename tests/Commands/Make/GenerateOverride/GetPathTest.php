@@ -4,40 +4,27 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Commands\Make\GenerateOverride;
 
+use Mockery\MockInterface;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class GetPathTest extends GenerateOverrideTest
 {
-    private $method = "getPath";
+    protected $moduleManager;
 
-    /**
-     * @group uut
-     */
+    protected function setUp () : void
+    {
+        parent::setUp();
+
+        $this->method = "getPath";
+    }
+
     public function testGetPathWithModules () : void
     {
+        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
+
         // We iterate over all the commands implementing this function, since they should all display the same behaviour
         foreach ($this->commands as $class) {
-            // First we mock the module manager
-            $moduleManager = \Mockery::mock(ModuleManager::class);
-            $this->instance("module.service.manager", $moduleManager);
-
-            // These calls are made in the command constructor, so we need to place them above the command mock
-            $moduleManager->shouldReceive("isInitialised")->andReturn(true);
-            $moduleManager->shouldReceive("getWorkbench")->andReturn(null);
-
-            // We mock all the functions that are not our unit under test, and we exclude the constructor and option function from these mocks
-            $mockableFunctions = $this->getMockableClassMethods($class, $this->method, [
-                // We don't want to mock these methods
-                "__construct", "__call", "__callStatic",
-                // We also don't mock these, since these are taken from the command class itself
-                "setName", "setDescription", "setHelp", "isHidden", "setHidden", "addArgument", "addOption"
-            ]);
-            $functionString = implode(",", $mockableFunctions);
-            $command = \Mockery::mock($class."[$functionString]", [
-                $this->app->make('files'),
-                $moduleManager
-            ]);
-            $command->shouldAllowMockingProtectedMethods();
+            $command = $this->getCommand($class);
 
             // The module should return that its module argument is TestModule
             $command->shouldReceive("option")->withArgs(["module"])->andReturn($module = "TestModule");
@@ -55,16 +42,71 @@ class GetPathTest extends GenerateOverrideTest
 
     public function testGetPathWithoutModules () : void
     {
-        $class = $this->commands[0];
+        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
+
+        foreach ($this->commands as $class) {
+            $command = $this->getCommand($class);
+
+            // The module should return that there is no module
+            $command->shouldReceive("option")->withArgs(["module"])->andReturn(null);
+            // It should then make its parent call
+            $name = "App\Broadcasting\NewChannel";
+            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn($parentResult = base_path("App/Broadcasting/NewChannel.php"));
+
+            // When I call the getPath method from out class, it should return its parent call results to me
+            $uut = $this->getMethodFromClass($this->method, $class);
+            $result = $uut->invoke($command, $name);
+            $expected = $parentResult;
+
+            $this->assertSame($expected, $result);
+        }
     }
 
     public function testGetPathWithWorkbench () : void
     {
+        $this->moduleManager->shouldReceive("getWorkbench")->andReturn($module = "MyModule");
 
+        foreach ($this->commands as $class) {
+            $command = $this->getCommand($class);
+
+            // The module should return that there is no module
+            $command->shouldReceive("option")->withArgs(["module"])->andReturn(null);
+            // The module should not be the vanilla module
+            $command->shouldReceive("isVanilla")->withArgs([$module])->andReturn(true);
+
+            // It should then make its parent call
+            $name = "App\Broadcasting\NewChannel";
+            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn($parentResult = base_path("App/Broadcasting/NewChannel.php"));
+
+            // When I call the getPath method from out class, it should return its parent call results to me
+            $uut = $this->getMethodFromClass($this->method, $class);
+            $result = $uut->invoke($command, $name);
+            $expected = $parentResult;
+
+            $this->assertSame($expected, $result);
+        }
     }
 
     public function testGetPathWithVanillaModule () : void
     {
+        $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
 
+        foreach ($this->commands as $class) {
+            $command = $this->getCommand($class);
+
+            // The module should return that there is no module
+            $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
+            $command->shouldReceive("option")->withArgs(["module"])->andReturn(null);
+            // It should then make its parent call
+            $name = "App\Broadcasting\NewChannel";
+            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn($parentResult = base_path("App/Broadcasting/NewChannel.php"));
+
+            // When I call the getPath method from out class, it should return its parent call results to me
+            $uut = $this->getMethodFromClass($this->method, $class);
+            $result = $uut->invoke($command, $name);
+            $expected = $parentResult;
+
+            $this->assertSame($expected, $result);
+        }
     }
 }

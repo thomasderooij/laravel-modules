@@ -86,12 +86,12 @@ trait GenerateOverrideTrait
         }
 
         // If we have modules, and a module can be found, return the module namespace
-        if ($this->moduleManager->isInitialised() && $module !== null) {
+        if ($this->moduleManager->isInitialised() && $module !== null && !$this->isVanilla($module)) {
             return $this->moduleManager->getModuleNamespace($module);
         }
 
         // If there is no module, return default namespace
-        return $this->parentCall("rootNameSpace");
+        return $this->parentCall("rootNamespace");
     }
 
     /**
