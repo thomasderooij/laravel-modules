@@ -7,9 +7,12 @@ namespace Thomasderooij\LaravelModules\Services;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\MigrationsStarted;
 use Illuminate\Database\Migrations\Migrator;
+use Thomasderooij\LaravelModules\ParentCallTrait;
 
 class ModuleMigrator extends Migrator
 {
+    use ParentCallTrait;
+
     /**
      * Run an array of migrations.
      *
@@ -65,7 +68,7 @@ class ModuleMigrator extends Migrator
     public function runUp($file, $batch, $pretend, string $module = null) : void
     {
         if ($module === null) {
-            parent::runUp($file, $batch, $pretend);
+            $this->parentCall("runUp", [$file, $batch, $pretend]);
             return;
         }
 
@@ -85,7 +88,7 @@ class ModuleMigrator extends Migrator
         );
 
         if ($pretend) {
-            return $this->pretendToRun($migration, 'up');
+            $this->pretendToRun($migration, 'up');
         }
 
         $this->note("<comment>Migrating:</comment> {$name}");
@@ -119,21 +122,5 @@ class ModuleMigrator extends Migrator
         }
 
         $this->repository->log($name, $batch, $module);
-    }
-
-    /**
-     * Get the migrations for a rollback operation.
-     *
-     * @param  array  $options
-     * @return array
-     */
-    protected function getMigrationsForRollback(array $options)
-    {
-        $module = $options["module"] ?? null;
-        if (($steps = $options['step'] ?? 0) > 0) {
-            return $this->repository->getMigrations($steps);
-        }
-
-        return $this->repository->getLast();
     }
 }
