@@ -4,12 +4,14 @@ namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
+use Thomasderooij\LaravelModules\ParentCallTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 trait GenerateOverrideTrait
 {
+    use ParentCallTrait;
+
     /**
      * @var ModuleManager
      */
@@ -105,17 +107,5 @@ trait GenerateOverrideTrait
         $options[] = ["module", null, InputOption::VALUE_OPTIONAL, "Apply to this module."];
 
         return $options;
-    }
-
-    /**
-     * Call the parent with a function and arguments
-     *
-     * @param string $function
-     * @param array $args
-     * @return mixed
-     */
-    protected function parentCall (string $function, array $args = [])
-    {
-        return parent::$function(...$args);
     }
 }
