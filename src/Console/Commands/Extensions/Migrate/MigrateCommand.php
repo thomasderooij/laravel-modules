@@ -35,7 +35,7 @@ class MigrateCommand extends OriginalCommand
      */
     public function handle()
     {
-        if (! $this->confirmToProceed()) {
+        if (!$this->confirmToProceed()) {
             return;
         }
 
@@ -43,7 +43,7 @@ class MigrateCommand extends OriginalCommand
         $modules = $this->getModules();
 
         if (empty($modules)) {
-            parent::handle();
+            $this->parentCall("handle");
             return;
         }
 

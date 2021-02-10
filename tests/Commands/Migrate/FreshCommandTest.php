@@ -10,11 +10,6 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate\FreshComman
 
 class FreshCommandTest extends MigrateTest
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testMigrateFreshWithoutTheModulesOption () : void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
