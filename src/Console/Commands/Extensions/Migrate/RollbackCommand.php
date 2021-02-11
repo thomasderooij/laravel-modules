@@ -4,6 +4,7 @@ namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate;
 
 use Illuminate\Database\Console\Migrations\RollbackCommand as OriginalCommand;
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrait;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait;
@@ -48,7 +49,7 @@ class RollbackCommand extends OriginalCommand
             return null;
         }
 
-        $result = \DB::table("migrations")->select(["module", "batch"])->groupBy(["module", "batch"])->orderBy("batch")->get()->last();
+        $result = DB::table("migrations")->select(["module", "batch"])->groupBy(["module", "batch"])->orderBy("batch")->get()->last();
         return $result->module;
     }
 }
