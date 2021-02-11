@@ -33,7 +33,7 @@ class GetLastBatchNumberTest extends ModuleMigrationRepositoryTest
 
         // I expect the builder to filter for the module
         $this->repository->shouldReceive("table")->andReturn($this->builder);
-        $this->builder->shouldReceive("where")->withArgs(["module", "=", $module])->andReturn($this->builder);
+        $this->builder->shouldReceive("where")->withArgs(["module", "=", $module])->andReturnSelf();
         // And then to fetch the highest
         $this->builder->shouldReceive("max")->andReturn($expected = 107);
 

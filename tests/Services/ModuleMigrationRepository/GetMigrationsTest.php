@@ -40,9 +40,9 @@ class GetMigrationsTest extends ModuleMigrationRepositoryTest
 
         // Setup sorting
         $steps = 1;
-        $this->builder->shouldReceive("orderBy")->withArgs(["batch", "desc"])->andReturn($this->builder);
-        $this->builder->shouldReceive("orderBy")->withArgs(["migration", "desc"])->andReturn($this->builder);
-        $this->builder->shouldReceive("take")->withArgs([$steps])->andReturn($this->builder);
+        $this->builder->shouldReceive("orderBy")->withArgs(["batch", "desc"])->andReturnSelf();
+        $this->builder->shouldReceive("orderBy")->withArgs(["migration", "desc"])->andReturnSelf();
+        $this->builder->shouldReceive("take")->withArgs([$steps])->andReturnSelf();
         $this->builder->shouldReceive("get")->andReturn(collect($expected = ["content"]));
 
         // And this should be returned by the function

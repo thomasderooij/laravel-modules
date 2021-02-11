@@ -39,8 +39,8 @@ class GetLastTest extends ModuleMigrationRepositoryTest
         $this->builder->shouldReceive("where")->withArgs([[
             ['batch', "=", $lastBatchNumber],
             ["module", "=", $module]
-        ]])->andReturn($this->builder);
-        $this->builder->shouldReceive("orderBy")->withArgs(["migration", "desc"])->andReturn($this->builder);
+        ]])->andReturnSelf();
+        $this->builder->shouldReceive("orderBy")->withArgs(["migration", "desc"])->andReturnSelf();
         $this->builder->shouldReceive("get")->andReturn(collect($expected = ["expected", "result"]));
 
         // We expect to get an array of results
