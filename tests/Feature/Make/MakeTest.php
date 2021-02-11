@@ -52,20 +52,22 @@ abstract class MakeTest extends CommandTest
         Config::shouldReceive("get")->withArgs(["modules.vanilla", null])->andReturn($vanilla);
     }
 
-    protected function setFileExpectations (string $fileDirectory, string $fileName, bool $module = true, string $base = null, bool $checkIfFileExists = true)
+    protected function setFileExpectations (?string $fileDirectory, string $fileName, bool $module = true, string $base = null, bool $checkIfFileExists = true)
     {
         if ($base === null) {
             $base = $module ? "{$this->modulesDir}/{$this->module}" : "app";
         }
 
+        $directory = $fileDirectory === null ? "$base" : "$base/$fileDirectory";
+
         if ($checkIfFileExists) {
-            $this->filesystem->shouldReceive("exists")->withArgs([base_path("$base/$fileDirectory/$fileName")])->andReturn(false)->once();
+            $this->filesystem->shouldReceive("exists")->withArgs([base_path("$directory/$fileName")])->andReturn(false)->once();
         }
 
         // We should then check if the directory exists
-        $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$base/$fileDirectory")])->andReturn(false);
+        $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$directory")])->andReturn(false);
         // And create the directory if needed
-        $this->filesystem->shouldReceive("makeDirectory")->withArgs([base_path("$base/$fileDirectory"), 0777, true, true]);
+        $this->filesystem->shouldReceive("makeDirectory")->withArgs([base_path("$directory"), 0777, true, true]);
     }
 
     abstract protected function fetchStub () : void;
