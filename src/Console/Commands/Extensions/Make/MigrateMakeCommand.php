@@ -40,11 +40,16 @@ class MigrateMakeCommand extends OriginalCommand
 
         // If there is a module in the options or workbench, apply it to the module path
         $module = $this->option("module");
+
         if ($module === null) {
             $module = $this->moduleManager->getWorkBench();
         }
 
         if ($module !== null) {
+            if (strtolower($module) === strtolower(config("modules.vanilla"))) {
+                return parent::getMigrationPath();
+            }
+
             return $this->getModuleMigrationPath($module);
         }
 
@@ -60,7 +65,7 @@ class MigrateMakeCommand extends OriginalCommand
     protected function getModuleMigrationPath (string $module)
     {
         // Get the base directory where migrations should go
-        $dir = $this->laravel->basePath().'/'.config("modules.root")."/$module/database/migrations";
+        $dir = $this->moduleManager->getModuleDirectory($module)."/database/migrations";
 
         // If the directory does not exist, create it with rwrwr access
         if (!is_dir($dir)) {

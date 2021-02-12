@@ -21,6 +21,7 @@ class GetModuleDirectoryTest extends ModuleManagerTest
         // I should get the module root
         $moduleRoot = base_path("module_root");
         $uut->shouldReceive("getModulesDirectory")->andReturn($moduleRoot);
+        $uut->shouldReceive("sanitiseModuleName")->andReturn($module);
 
         // I should get a relative module directory
         $expected = "$moduleRoot/$module";

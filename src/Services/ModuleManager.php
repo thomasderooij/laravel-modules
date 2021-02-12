@@ -173,7 +173,7 @@ class ModuleManager implements Contract
      */
     public function getModuleDirectory (string $module) : string
     {
-        return $this->getModulesDirectory() . "/" . $module;
+        return $this->getModulesDirectory() . "/" . $this->sanitiseModuleName($module);
     }
 
     /**

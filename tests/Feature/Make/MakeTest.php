@@ -52,13 +52,13 @@ abstract class MakeTest extends CommandTest
         Config::shouldReceive("get")->withArgs(["modules.vanilla", null])->andReturn($vanilla);
     }
 
-    protected function setFileExpectations (?string $fileDirectory, string $fileName, bool $module = true, string $base = null, bool $checkIfFileExists = true)
+    protected function setFileExpectations (?string $appFileDirectory, string $fileName, bool $module = true, string $base = null, bool $checkIfFileExists = true)
     {
         if ($base === null) {
             $base = $module ? "{$this->modulesDir}/{$this->module}" : "app";
         }
 
-        $directory = $fileDirectory === null ? "$base" : "$base/$fileDirectory";
+        $directory = $appFileDirectory === null ? "$base" : "$base/$appFileDirectory";
 
         if ($checkIfFileExists) {
             $this->filesystem->shouldReceive("exists")->withArgs([base_path("$directory/$fileName")])->andReturn(false)->once();
