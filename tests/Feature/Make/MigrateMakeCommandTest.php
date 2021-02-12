@@ -10,18 +10,16 @@ use Mockery;
 
 class MigrateMakeCommandTest extends MakeTest
 {
-    private $composer;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->composer = Mockery::mock(Composer::class);
-        $this->instance("composer", $this->composer);
+        $composer = Mockery::mock(Composer::class);
+        $this->instance("composer", $composer);
 
         // Autoloads should be dumped
         $this->filesystem->shouldReceive("exists")->withArgs([realpath(__DIR__ . "/../../../vendor/orchestra/testbench-core/laravel") . "/composer.phar"])->andReturn(false);
-        $this->composer->shouldReceive("dumpAutoloads");
+        $composer->shouldReceive("dumpAutoloads");
 
         // A stub should exist
         $orchestraPath = realpath(__DIR__ . "/../../../vendor/orchestra/testbench-core/laravel") . "/stubs/migration.create.stub";

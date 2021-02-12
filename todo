@@ -1,5 +1,3 @@
-make everything strict typed
-name the default tracker file name .tracker
 make the tracker file name configurable in the config
-look at the getModuleDirectory function in the moduleManager. This might break in a linux filesystem.
-create feature tests for every command that is supposed to create something
+implement kernel tests
+implement seeders in the modules

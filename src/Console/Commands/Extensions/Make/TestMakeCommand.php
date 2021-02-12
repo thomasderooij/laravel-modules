@@ -6,6 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Console\TestMakeCommand as OriginalCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\GenerateOverrideTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
+use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 class TestMakeCommand extends OriginalCommand
 {
@@ -22,7 +23,7 @@ class TestMakeCommand extends OriginalCommand
             $this->attachDescriptionSuffix($module);
         }
 
-        parent::__construct($files, $moduleManager);
+        parent::__construct($files);
     }
 
     /**
@@ -40,8 +41,8 @@ class TestMakeCommand extends OriginalCommand
         }
 
         // If there is not module, or the module is vanilla, or the modules are not initialised, go for the default
-        if ($module === null || $this->isVanilla($module) || !$this->moduleManager::isInitialised()) {
-            return parent::getPath("\\$name");
+        if ($module === null || $this->isVanilla($module) || !$this->moduleManager->isInitialised()) {
+            return parent::getPath($name);
         }
 
         $name = str_replace(
@@ -51,5 +52,28 @@ class TestMakeCommand extends OriginalCommand
         $isUnit = $this->option("unit");
 
         return $this->moduleManager->getModuleDirectory($module)."/tests/" . ($isUnit ? "Unit" : "Feature") . "/{$name}.php";
+    }
+
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     * @throws ConfigFileNotFoundException
+     */
+    protected function rootNamespace () : string
+    {
+        // If there is no module option provided, grab the workbench module
+        $module = $this->option("module");
+        if ($module === null) {
+            $module = $this->moduleManager->getWorkBench();
+        }
+
+        // If we have modules, and a module can be found, return the module namespace
+        if ($this->moduleManager->isInitialised() && $module !== null && !$this->isVanilla($module)) {
+            return $this->moduleManager->getModuleNamespace($module) . "Tests";
+        }
+
+        // If there is no module, return default namespace
+        return $this->parentCall("rootNamespace");
     }
 }
