@@ -45,7 +45,7 @@ class FreshCommandTest extends MigrateTest
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate.fresh", $command);
 
-        $response = $this->instance("command.migrate.fresh", $command);
+        $this->instance("command.migrate.fresh", $command);
 
         // If I want to do a good old fashioned migrate:fresh
         $module1 = "Module_1";

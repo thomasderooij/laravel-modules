@@ -35,7 +35,7 @@ class RollbackCommand extends OriginalCommand
             return $this->getMigrationPathByModule($module);
         }
 
-        return parent::getMigrationPaths();
+        return $this->parentCall("getMigrationPaths");
     }
 
     /**
@@ -45,11 +45,12 @@ class RollbackCommand extends OriginalCommand
      */
     protected function getLastMigrationModule ()
     {
-        if (!Schema::hasColumn("migrations", "module")) {
+        if (Schema::hasColumn("migrations", "module") === false) {
             return null;
         }
 
-        $result = DB::table("migrations")->select(["module", "batch"])->groupBy(["module", "batch"])->orderBy("batch")->get()->last();
-        return $result->module;
+        $result = DB::table("migrations")->select(["module", "batch"])->groupBy(["module", "batch"])->orderBy("batch")->get("module")->last();
+
+        return $result;
     }
 }
