@@ -88,7 +88,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      */
     protected function getKernelNamespace (string $module) : string
     {
-        return $this->moduleManager->getModuleNamespace($module) . "\\" . $this->getConsoleDirectory();
+        return $this->moduleManager->getModuleNamespace($module) . $this->getConsoleDirectory();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php return '<?php
 
-namespace Root\\NewModule\\\\Console;
+namespace Root\\NewModule\\Console;
 
 use Illuminate\\Console\\Scheduling\\Schedule;
 use Thomasderooij\\LaravelModules\\Console\\Kernel as ConsoleKernel;

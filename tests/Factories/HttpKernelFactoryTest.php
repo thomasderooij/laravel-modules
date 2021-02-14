@@ -84,11 +84,11 @@ class HttpKernelFactoryTest extends Test
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
-        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace = "Modules\\$module");
+        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace = "Modules\\$module\\");
 
         $factory->shouldReceive("getHttpDirectory")->andReturn($dir = "directory");
 
-        $this->assertSame("$namespace\\$dir", $uut->invoke($factory, $module));
+        $this->assertSame("$namespace$dir", $uut->invoke($factory, $module));
     }
 
     public function testGetModuleKernelPlaceholder () : void

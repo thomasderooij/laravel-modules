@@ -1,6 +1,6 @@
 <?php return '<?php
 
-namespace Root\\NewModule\\\\Http;
+namespace Root\\NewModule\\Http;
 
 use Thomasderooij\\LaravelModules\\Http\\CompositeKernel as HttpKernel;
 
