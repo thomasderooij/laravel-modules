@@ -4,8 +4,16 @@
     "keywords": [
         "framework",
         "laravel",
+        "thomasderooij",
         "modules",
-        "modular"
+        "module"
+    ],
+    "authors": [
+        {
+            "name": "Thomas de Rooij",
+            "email": "thomasderooij@gmail.com",
+            "role": "developer"
+        }
     ],
     "license": "MIT",
     "require": {
@@ -13,7 +21,7 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "laravel/framework": "^7.30",
+        "laravel/framework": "^7",
         "phpunit/phpunit": "^8.5",
         "mockery/mockery": "^1.3",
         "orchestra/testbench": "^5.14",

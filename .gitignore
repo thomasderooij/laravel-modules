@@ -6,9 +6,12 @@
 .env
 .env.backup
 .phpunit.result.cache
+Dockerfile
+docker-composer.json
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
 .styleci.yml
+.dockerignore

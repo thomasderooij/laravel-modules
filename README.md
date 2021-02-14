@@ -135,6 +135,7 @@ change it in the config/modules file, or add 'MODULES_VANILLA={your prefered nam
 The following things will be applied before moving to a 1.x stage:
  * Broadcast service provider composite functionality
  * module dependency tracking
+ * migrate:refresh command
  
 In that order. Probably.
 

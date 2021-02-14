@@ -7,6 +7,7 @@ namespace Thomasderooij\LaravelModules;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Thomasderooij\LaravelModules\Console\Commands\ActivateModuleCommand;
+use Thomasderooij\LaravelModules\Console\Commands\AddDependencyModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\CheckWorkbenchCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeactivateModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeleteModuleCommand;
@@ -19,6 +20,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
 {
     protected $moduleCommands = [
         "Activate"      => "module.command.activate",
+        "AddDependency" => "module.command.add_dependency",
         "Check"         => "module.command.check",
         "Deactivate"    => "module.command.deactivate",
         "Delete"        => "module.command.delete",
@@ -70,6 +72,53 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
      *
      * These commands should be triggered by the loop in the registerModuleCommands function
      */
+
+    protected function createActivateCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["Activate"], function ($app) {
+            return new ActivateModuleCommand(
+                $app["module.service.manager"]
+            );
+        });
+    }
+
+    protected function createAddDependencyCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["AddDependency"], function ($app) {
+            return new AddDependencyModuleCommand(
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
+            );
+        });
+    }
+
+    protected function createCheckCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["Check"], function ($app) {
+            return new CheckWorkbenchCommand(
+                $app["module.service.manager"]
+            );
+        });
+    }
+
+    protected function createDeactivateCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["Deactivate"], function ($app) {
+            return new DeactivateModuleCommand(
+                $app["module.service.manager"]
+            );
+        });
+    }
+
+    protected function createDeleteCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["Delete"], function ($app) {
+            return new DeleteModuleCommand(
+                $app["module.service.manager"]
+            );
+        });
+    }
+
     protected function createInitCommand () : void
     {
         $this->app->singleton($this->moduleCommands["Init"], function ($app) {
@@ -96,15 +145,6 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createDeleteCommand () : void
-    {
-        $this->app->singleton($this->moduleCommands["Delete"], function ($app) {
-            return new DeleteModuleCommand(
-                $app["module.service.manager"]
-            );
-        });
-    }
-
     protected function createSetCommand () : void
     {
         $this->app->singleton($this->moduleCommands["Set"], function ($app) {
@@ -118,33 +158,6 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($this->moduleCommands["Unset"], function ($app) {
             return new UnsetWorkbenchCommand(
-                $app["module.service.manager"]
-            );
-        });
-    }
-
-    protected function createCheckCommand () : void
-    {
-        $this->app->singleton($this->moduleCommands["Check"], function ($app) {
-            return new CheckWorkbenchCommand(
-                $app["module.service.manager"]
-            );
-        });
-    }
-
-    protected function createActivateCommand () : void
-    {
-        $this->app->singleton($this->moduleCommands["Activate"], function ($app) {
-            return new ActivateModuleCommand(
-                $app["module.service.manager"]
-            );
-        });
-    }
-
-    protected function createDeactivateCommand () : void
-    {
-        $this->app->singleton($this->moduleCommands["Deactivate"], function ($app) {
-            return new DeactivateModuleCommand(
                 $app["module.service.manager"]
             );
         });
