@@ -29,7 +29,7 @@ class NewModuleCommandTest extends CommandTest
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
         // Get its contents
         $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])->andReturn(
-            json_encode(["modules" => [], "activeModules" => []])
+            json_encode(["modules" => ["OtherModule"], "activeModules" => ["OtherModule"]])
         );
 
         // Creating the modules root directory
@@ -124,11 +124,11 @@ class NewModuleCommandTest extends CommandTest
         // We store the new module in the tracker file
         $this->filesystem->shouldReceive("put")->withArgs([
             base_path("$root/.tracker"),
-            json_encode(["modules" => [$newModule], "activeModules" => []], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
+            json_encode(["modules" => ["OtherModule", $newModule], "activeModules" => ["OtherModule"]], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
         ])->once();
         $this->filesystem->shouldReceive("put")->withArgs([
             base_path("$root/.tracker"),
-            json_encode(["modules" => [$newModule], "activeModules" => [$newModule]], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
+            json_encode(["modules" => ["OtherModule", $newModule], "activeModules" => ["OtherModule", $newModule]], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
         ])->once();
 
         // Add the module to our workbench

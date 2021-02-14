@@ -29,6 +29,18 @@ abstract class Test extends TestCase
         ];
     }
 
+    protected function getApplicationProviders($app)
+    {
+        $applicationProviders = parent::getApplicationProviders($app);
+        $key = array_search("Illuminate\Auth\AuthServiceProvider", $applicationProviders);
+
+        if ($key !== false) {
+            $applicationProviders[$key] = AuthCompositeServiceProvider::class;
+        }
+
+        return $applicationProviders;
+    }
+
     /**
      * Set up the environment
      *

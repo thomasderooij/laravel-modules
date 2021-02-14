@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Commands\Migrate;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Mockery;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate\RollbackCommand;
 use Thomasderooij\LaravelModules\Services\ModuleManager;

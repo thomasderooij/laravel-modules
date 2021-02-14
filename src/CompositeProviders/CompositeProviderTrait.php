@@ -31,13 +31,14 @@ trait CompositeProviderTrait
         }
 
         // Get all the active modules
-
         /** @var ModuleManager $moduleManager */
         $moduleManager = new \Thomasderooij\LaravelModules\Services\ModuleManager(new Filesystem());
+
         foreach ($moduleManager->getActiveModules(true) as $module) {
             // Check if the module has the expected provider. If so, add it to the list of providers
-            if (class_exists($this->getProvider($module, $this->name))) {
-                $providers[] = $this->getProvider($module, $this->name);
+            $providerClass = $moduleManager->getModuleNamespace($module) . "Providers\\{$this->name}";
+            if (class_exists($providerClass)) {
+                $providers[] = $providerClass;
             }
         }
 
@@ -46,18 +47,5 @@ trait CompositeProviderTrait
 
         // Continue business as per usual
         parent::__construct($app);
-    }
-
-    /**
-     * Get a provider qualified classname
-     *
-     * @param string $module
-     * @param string $name
-     * @return string
-     * @throws ConfigFileNotFoundException
-     */
-    protected function getProvider (string $module, string $name) : string
-    {
-        return ModuleManager::getModuleNamespace($module) . "Providers\\{$name}";
     }
 }
