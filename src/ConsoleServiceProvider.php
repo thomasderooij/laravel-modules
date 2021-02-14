@@ -171,8 +171,6 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
 
     public function provides() : array
     {
-        return array_merge(
-            array_values($this->moduleCommands)
-        );
+        return array_values($this->moduleCommands);
     }
 }

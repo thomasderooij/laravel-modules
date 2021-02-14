@@ -8,5 +8,13 @@ use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler as Contrac
 
 class DependencyHandler implements Contract
 {
+    public function getAvailableModules(string $module): array
+    {
+        // TODO: Implement getAvailableModules() method.
+    }
 
+    public function addDependency(string $downstream, string $upstream): void
+    {
+        // TODO: Implement addDependency() method.
+    }
 }
