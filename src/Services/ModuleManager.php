@@ -320,7 +320,8 @@ class ModuleManager implements Contract
             // Do nothing
         }
 
-        if (strtolower($this->getWorkbench()) === strtolower($module)) {
+        $workbench = $this->getWorkbench();
+        if ($workbench !== null && strtolower($workbench) === strtolower($module)) {
             $this->clearWorkbench();
         }
 
