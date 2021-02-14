@@ -335,7 +335,7 @@ class ModuleManager implements Contract
         $content[$this->getModulesTrackerKey()] = array_values($modules);
         $this->save($content);
 
-        $this->files->delete($this->getModuleDirectory($module));
+        $this->files->deleteDirectories($this->getModuleDirectory($module));
     }
 
     /**

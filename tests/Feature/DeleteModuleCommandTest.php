@@ -44,7 +44,7 @@ class DeleteModuleCommandTest extends CommandTest
             ["modules" => [], "activeModules" => []],
             JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT
         )]);
-        $this->filesystem->shouldReceive("delete")->withArgs([base_path("$root/$module")]);
+        $this->filesystem->shouldReceive("deleteDirectories")->withArgs([base_path("$root/$module")]);
 
         // And I expect some feedback
         $response->expectsOutput("Aaaaaand it's gone.");

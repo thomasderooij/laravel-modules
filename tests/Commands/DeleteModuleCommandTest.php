@@ -13,6 +13,9 @@ class DeleteModuleCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
     }
 
+    /**
+     * @group uut
+     */
     public function testDeleteModule () : void
     {
         // If I want to delete a module
