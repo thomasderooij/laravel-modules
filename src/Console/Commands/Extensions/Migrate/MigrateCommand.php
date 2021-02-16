@@ -3,6 +3,7 @@
 
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Console\Migrations\MigrateCommand as OriginalCommand;
 use Illuminate\Database\Migrations\Migrator;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrait;
@@ -17,13 +18,13 @@ class MigrateCommand extends OriginalCommand
     use ModulesCommandTrait;
     use MigrateOverrideTrait;
 
-    public function __construct(Migrator $migrator, ModuleManager $moduleManager)
+    public function __construct(Migrator $migrator, Dispatcher $dispatcher, ModuleManager $moduleManager)
     {
         // Add a modules option to the command signature
         $this->signature.= "\n                {--modules= : Migrate a only migrations in the scope of a given modules }";
         $this->moduleManager = $moduleManager;
 
-        parent::__construct($migrator);
+        parent::__construct($migrator, $dispatcher);
     }
 
     /**

@@ -308,6 +308,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         $this->app->singleton($this->migrateCommands["Migrate"], function ($app) {
             return new MigrateCommand(
                 $app["migrator"],
+                $app["events"],
                 $app["module.service.manager"]
             );
         });

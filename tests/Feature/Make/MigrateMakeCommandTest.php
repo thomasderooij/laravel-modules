@@ -42,6 +42,7 @@ class MigrateMakeCommandTest extends MakeTest
         $fileDirectory = "database/migrations";
         $fileName = "$migration.php";
         $this->setFileExpectations(null, $fileName, false,$fileDirectory, false);
+        $this->filesystem->shouldReceive("ensureDirectoryExists")->withArgs([base_path("$fileDirectory")]);
         $this->filesystem->shouldReceive("glob")->withArgs([base_path("$fileDirectory/*.php")])->andReturn([
             $migration1 = "migration_1.php",
         ]);
@@ -76,6 +77,7 @@ class MigrateMakeCommandTest extends MakeTest
         $fileDirectory = "database/migrations";
         $fileName = "$migration.php";
         $this->setFileExpectations($fileDirectory, $fileName, true, null, false);
+        $this->filesystem->shouldReceive("ensureDirectoryExists")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory")]);
         $this->filesystem->shouldReceive("glob")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/*.php")])->andReturn([
             $migration1 = "migration_1.php",
         ]);
@@ -110,6 +112,7 @@ class MigrateMakeCommandTest extends MakeTest
         $fileDirectory = "database/migrations";
         $fileName = "$migration.php";
         $this->setFileExpectations($fileDirectory, $fileName, true, null, false);
+        $this->filesystem->shouldReceive("ensureDirectoryExists")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory")]);
         $this->filesystem->shouldReceive("glob")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/*.php")])->andReturn([
             $migration1 = "migration_1.php",
         ]);
@@ -144,6 +147,7 @@ class MigrateMakeCommandTest extends MakeTest
         $fileDirectory = "database/migrations";
         $fileName = "$migration.php";
         $this->setFileExpectations(null, $fileName, false,$fileDirectory, false);
+        $this->filesystem->shouldReceive("ensureDirectoryExists")->withArgs([base_path("$fileDirectory")]);
         $this->filesystem->shouldReceive("glob")->withArgs([base_path("$fileDirectory/*.php")])->andReturn([
             $migration1 = "migration_1.php",
         ]);

@@ -1,1 +1,33 @@
-- "<?php\n\nuse Illuminate\\Database\\Migrations\\Migration;\nuse Illuminate\\Database\\Schema\\Blueprint;\nuse Illuminate\\Support\\Facades\\Schema;\n\nclass ModuleInitMigration extends Migration\n{\n    /**\n     * Run the migrations.\n     *\n     * @return void\n     */\n    public function up()\n    {\n        Schema::table(\"migrations\", function (Blueprint $table) {\n            $table->string(\"module\")->nullable();\n        });\n    }\n\n    /**\n     * Reverse the migrations.\n     *\n     * @return void\n     */\n    public function down()\n    {\n        Schema::table(\"migrations\", function (Blueprint $table) {\n            $table->dropColumn(\"module\");\n        });\n    }\n}\n"
+- |
+    <?php
+
+    use Illuminate\Database\Migrations\Migration;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    class ModuleInitMigration extends Migration
+    {
+        /**
+         * Run the migrations.
+         *
+         * @return void
+         */
+        public function up()
+        {
+            Schema::table("migrations", function (Blueprint $table) {
+                $table->string("module")->nullable();
+            });
+        }
+
+        /**
+         * Reverse the migrations.
+         *
+         * @return void
+         */
+        public function down()
+        {
+            Schema::table("migrations", function (Blueprint $table) {
+                $table->dropColumn("module");
+            });
+        }
+    }

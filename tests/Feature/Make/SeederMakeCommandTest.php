@@ -36,7 +36,7 @@ class SeederMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this seeder already exists
-        $fileDirectory = "database/seeds";
+        $fileDirectory = "database/seeders";
         $fileName = "$seeder.php";
         $this->setFileExpectations(null, $fileName, false,$fileDirectory);
 
@@ -127,7 +127,7 @@ class SeederMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this seeder already exists
-        $fileDirectory = "database/seeds";
+        $fileDirectory = "database/seeders";
         $fileName = "$seeder.php";
         $this->setFileExpectations(null, $fileName, false, $fileDirectory);
 

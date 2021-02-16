@@ -22,7 +22,7 @@ class ModelMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this model already exists
-        $fileDirectory = null;
+        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, false);
 
@@ -31,7 +31,7 @@ class ModelMakeCommandTest extends MakeTest
 
         // The model should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
 
         $response->run();
 
@@ -52,7 +52,7 @@ class ModelMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this model already exists
-        $fileDirectory = null;
+        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, true);
 
@@ -61,7 +61,7 @@ class ModelMakeCommandTest extends MakeTest
 
         // The model should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
 
         $response->run();
 
@@ -81,7 +81,7 @@ class ModelMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
 
         // We should then check if this model already exists
-        $fileDirectory = null;
+        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, true);
 
@@ -90,7 +90,7 @@ class ModelMakeCommandTest extends MakeTest
 
         // The model should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
 
         $response->run();
 
@@ -110,7 +110,7 @@ class ModelMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this model already exists
-        $fileDirectory = null;
+        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, false);
 
@@ -119,7 +119,7 @@ class ModelMakeCommandTest extends MakeTest
 
         // The model should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
 
         $response->run();
 

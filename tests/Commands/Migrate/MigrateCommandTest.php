@@ -23,8 +23,9 @@ class MigrateCommandTest extends MigrateTest
         $modules = [$module1 = "module_1", $module2 = "module_2"];
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&MigrateCommand $command */
-        $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths]", [
+        $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths,prepareDatabase]", [
             $this->migrator,
+            $this->dispatcher,
             $this->moduleManager
         ]);
         $command->shouldAllowMockingProtectedMethods();
@@ -66,8 +67,9 @@ class MigrateCommandTest extends MigrateTest
         $modules = [$module1 = "module_1", $module2 = "module_2"];
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&MigrateCommand $command */
-        $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths]", [
+        $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths,prepareDatabase]", [
             $this->migrator,
+            $this->dispatcher,
             $this->moduleManager
         ]);
         $command->shouldAllowMockingProtectedMethods();
