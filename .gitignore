@@ -9,6 +9,7 @@
 Homestead.json
 Homestead.yaml
 npm-debug.log
+phpunit.xml.bak
 yarn-error.log
 .idea
 .styleci.yml

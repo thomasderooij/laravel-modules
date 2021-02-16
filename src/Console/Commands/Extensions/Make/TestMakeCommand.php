@@ -14,8 +14,6 @@ class TestMakeCommand extends OriginalCommand
 
     public function __construct(Filesystem $files, ModuleManager $moduleManager)
     {
-        $this->signature.= "{--module= : The module to which to apply this.}";
-
         $this->moduleManager = $moduleManager;
 
         // If there is a module in the workbench, change the command description to include the module name
@@ -24,6 +22,8 @@ class TestMakeCommand extends OriginalCommand
         }
 
         parent::__construct($files);
+
+        $this->signature.= "{--module= : The module to which to apply this.}";
     }
 
     /**
