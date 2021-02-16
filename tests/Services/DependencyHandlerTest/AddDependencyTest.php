@@ -16,9 +16,12 @@ class AddDependencyTest extends DependencyHandlerTest
     {
         parent::setUp();
 
+        // We create a partial mock based on the dependency handler
         $mockableMethods = $this->getMockableClassMethods(DependencyHandler::class, $this->method);
         $string = implode(",", $mockableMethods);
         $this->methodHandler = \Mockery::mock(DependencyHandler::class . "[$string]", []);
+
+        // And our method will be the unit under test
         $this->uut = $this->getMethodFromClass($this->method, DependencyHandler::class);
     }
 
