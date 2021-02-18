@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
-class GetTrackerFileNameTest extends ModuleManagerTest
+class GetTrackerFileNameTest extends ModuleStateRepositoryTest
 {
     private $method = "getTrackerFileName";
 
     public function testGetTrackerFile () : void
     {
-        $uut = $this->getMockManager($this->method);
+        $uut = $this->getMockRepository($this->method);
 
         // I expect the tracker file name
         $expected = ".tracker";

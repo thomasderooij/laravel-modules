@@ -210,7 +210,9 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
     protected function registerDependencyHandler () : void
     {
         $this->app->singleton($this->moduleServices["DependencyHandler"], function ($app) {
-            return new DependencyHandler();
+            return new DependencyHandler(
+                $app["files"]
+            );
         });
     }
 

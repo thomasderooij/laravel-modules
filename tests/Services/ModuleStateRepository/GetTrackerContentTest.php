@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 
-class GetTrackerContentTest extends ModuleManagerTest
+class GetTrackerContentTest extends ModuleStateRepositoryTest
 {
     private $method = "getTrackerContent";
 
@@ -16,7 +16,7 @@ class GetTrackerContentTest extends ModuleManagerTest
         // If I have a method to ask for the modules tracker key
         $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
         // We have to check if there is a tracker file
         $moduleManager->shouldReceive("hasTrackerFile")->andReturn(true);
         // We get the modules directory
@@ -39,7 +39,7 @@ class GetTrackerContentTest extends ModuleManagerTest
         // If I have a method to ask for the modules tracker key
         $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
         // But I don't have a tracker file
         $moduleManager->shouldReceive("hasTrackerFile")->andReturn(false);
 

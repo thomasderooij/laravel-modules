@@ -7,7 +7,6 @@ namespace Thomasderooij\LaravelModules\Services;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as Contract;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
@@ -17,20 +16,8 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleCreationException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleNotActiveException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
-class ModuleManager implements Contract
+class ModuleManager extends ModuleStateRepository implements Contract
 {
-    /**
-     * @var Filesystem
-     */
-    protected $files;
-
-    private $tracker;
-
-    public function __construct(Filesystem $files)
-    {
-        $this->files = $files;
-    }
-
     /**
      * Set a module from inactive to active
      *
@@ -213,32 +200,6 @@ class ModuleManager implements Contract
     }
 
     /**
-     * Get the root modules directory
-     *
-     * @return string
-     *
-     * @throws ConfigFileNotFoundException
-     */
-    public function getModulesDirectory () : string
-    {
-        if (!$this->hasConfig()) {
-            throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
-        }
-
-        return base_path(config("modules.root"));
-    }
-
-    /**
-     * Get the tracker file name
-     *
-     * @return string
-     */
-    public function getTrackerFileName () : string
-    {
-        return ".tracker";
-    }
-
-    /**
      * Get the content of your workbench
      *
      * @return string|null
@@ -398,19 +359,6 @@ class ModuleManager implements Contract
     }
 
     /**
-     * Get the json options for storing json data to files
-     *
-     * @return array
-     */
-    protected function getJsonOptions () : array
-    {
-        return [
-            JSON_PRETTY_PRINT,
-            JSON_UNESCAPED_SLASHES,
-        ];
-    }
-
-    /**
      * Get a collection of your modules
      *
      * @return array
@@ -429,21 +377,6 @@ class ModuleManager implements Contract
     }
 
     /**
-     * Get the module storage directory relative path
-     *
-     * @return string
-     * @throws ConfigFileNotFoundException
-     */
-    protected function getModulesRoot () : string
-    {
-        if (!$this->hasConfig()) {
-            throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
-        }
-
-        return config("modules.root");
-    }
-
-    /**
      * Get the modules tracker key
      *
      * @return string
@@ -454,29 +387,6 @@ class ModuleManager implements Contract
     }
 
     /**
-     * Get the contents of the tracker file
-     *
-     * @return array
-     * @throws ConfigFileNotFoundException
-     * @throws TrackerFileNotFoundException
-     * @throws FileNotFoundException
-     */
-    protected function getTrackerContent () : array
-    {
-        if ($this->tracker !== null) {
-            return $this->tracker;
-        }
-
-        if (!$this->hasTrackerFile()) {
-            throw new TrackerFileNotFoundException("No tracker file has been located.");
-        }
-
-        $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
-
-        return json_decode($this->files->get($trackerFile), true);
-    }
-
-    /**
      * Get the workbench cache key
      *
      * @return string
@@ -484,27 +394,6 @@ class ModuleManager implements Contract
     protected function getWorkbenchKey () : string
     {
         return "workbench";
-    }
-
-    protected function hasConfig () : bool
-    {
-        return config("modules.root") !== null;
-    }
-
-    /**
-     * See if a tracker file exists
-     *
-     * @return bool
-     */
-    protected function hasTrackerFile () : bool
-    {
-        try {
-            $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
-        } catch (ConfigFileNotFoundException $e) {
-            return false;
-        }
-
-        return $this->files->isFile($trackerFile);
     }
 
     /**
@@ -530,29 +419,5 @@ class ModuleManager implements Contract
         }
 
         return $modules[$key];
-    }
-
-    /**
-     * Save tracker content to the tracker file
-     *
-     * @param array $trackerContent
-     * @throws ConfigFileNotFoundException
-     */
-    protected function save (array $trackerContent): void
-    {
-        // Get the qualified directory to store the tracker file in
-        $storageDir = $this->getModulesDirectory();
-
-        // Get the qualified file name
-        $trackerFile = $storageDir . "/" . $this->getTrackerFileName();
-
-        // If the directory does not exist, create it with rw rw r access
-        if (!$this->files->isDirectory($storageDir)) {
-            $this->files->makeDirectory($storageDir, 0755, true);
-        }
-
-        // store the tracker content as pretty print json
-        $this->tracker = $trackerContent;
-        $this->files->put($trackerFile, json_encode($trackerContent, array_sum($this->getJsonOptions())));
     }
 }

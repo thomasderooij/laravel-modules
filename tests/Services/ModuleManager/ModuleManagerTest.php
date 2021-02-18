@@ -7,22 +7,12 @@ namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
+use Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository\ModuleStateRepositoryTest;
 use Thomasderooij\LaravelModules\Tests\Test;
 
-abstract class ModuleManagerTest extends Test
+abstract class ModuleManagerTest extends ModuleStateRepositoryTest
 {
-    protected $filesystem;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->filesystem = Mockery::mock(Filesystem::class);
-        $this->instance('files', $this->filesystem);
-    }
-
     /**
-     * @param array $mockFunctions
      * @return Mockery\MockInterface&ModuleManager
      */
     protected function getMockManager (string $method) : Mockery\MockInterface
