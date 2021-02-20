@@ -7,6 +7,7 @@ namespace Thomasderooij\LaravelModules\Services;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
+use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 
 abstract class ModuleStateRepository
@@ -21,29 +22,6 @@ abstract class ModuleStateRepository
     public function __construct(Filesystem $files)
     {
         $this->files = $files;
-    }
-
-    /**
-     * Get the contents of the tracker file
-     *
-     * @return array
-     * @throws ConfigFileNotFoundException
-     * @throws TrackerFileNotFoundException
-     * @throws FileNotFoundException
-     */
-    protected function getTrackerContent () : array
-    {
-        if ($this->tracker !== null) {
-            return $this->tracker;
-        }
-
-        if (!$this->hasTrackerFile()) {
-            throw new TrackerFileNotFoundException("No tracker file has been located.");
-        }
-
-        $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
-
-        return json_decode($this->files->get($trackerFile), true);
     }
 
     /**
@@ -70,6 +48,82 @@ abstract class ModuleStateRepository
         }
 
         return base_path(config("modules.root"));
+    }
+    /**
+     * Check if a module exists
+     *
+     * @param string $module
+     * @return bool
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function hasModule (string $module) : bool
+    {
+        $sanitised = array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $this->getModules());
+
+        return array_search($this->sanitiseModuleName($module), $sanitised) !== false;
+    }
+
+    /**
+     * Check if modules are initialised
+     *
+     * @return bool
+     */
+    public function isInitialised () : bool
+    {
+        return $this->hasConfig() && $this->hasTrackerFile();
+    }
+
+    /**
+     * Get a collection of your modules
+     *
+     * @return array
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
+     */
+    protected function getModules(): array
+    {
+        if (!$this->isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+        }
+
+        return $this->getTrackerContent()[$this->getModulesTrackerKey()];
+    }
+
+    /**
+     * Get the modules tracker key
+     *
+     * @return string
+     */
+    protected function getModulesTrackerKey () : string
+    {
+        return "modules";
+    }
+
+    /**
+     * Get the contents of the tracker file
+     *
+     * @return array
+     * @throws ConfigFileNotFoundException
+     * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
+     */
+    protected function getTrackerContent () : array
+    {
+        if ($this->tracker !== null) {
+            return $this->tracker;
+        }
+
+        if (!$this->hasTrackerFile()) {
+            throw new TrackerFileNotFoundException("No tracker file has been located.");
+        }
+
+        $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
+
+        return json_decode($this->files->get($trackerFile), true);
     }
 
     /**
@@ -109,6 +163,31 @@ abstract class ModuleStateRepository
             JSON_PRETTY_PRINT,
             JSON_UNESCAPED_SLASHES,
         ];
+    }
+
+    /**
+     * Returns the module name as it was first given
+     *
+     * @param string $module
+     * @return string
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
+     *
+     */
+    protected function sanitiseModuleName (string $module) : string
+    {
+        $modules = $this->getModules();
+        $lower = array_map(function (string $mod) { return strtolower($mod); }, $modules);
+        $key = array_search(strtolower($module), $lower);
+
+        // If we don't have the module in the modules array, we assume its a new module
+        if ($key === false) {
+            return $module;
+        }
+
+        return $modules[$key];
     }
 
     /**

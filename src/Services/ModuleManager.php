@@ -218,32 +218,6 @@ class ModuleManager extends ModuleStateRepository implements Contract
     }
 
     /**
-     * Check if a module exists
-     *
-     * @param string $module
-     * @return bool
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     */
-    public function hasModule (string $module) : bool
-    {
-        $sanitised = array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $this->getModules());
-
-        return array_search($this->sanitiseModuleName($module), $sanitised) !== false;
-    }
-
-    /**
-     * Check if modules are initialised
-     *
-     * @return bool
-     */
-    public function isInitialised () : bool
-    {
-        return $this->hasConfig() && $this->hasTrackerFile();
-    }
-
-    /**
      * Check if a module is active
      *
      * @param string $module
@@ -359,34 +333,6 @@ class ModuleManager extends ModuleStateRepository implements Contract
     }
 
     /**
-     * Get a collection of your modules
-     *
-     * @return array
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     * @throws FileNotFoundException
-     */
-    protected function getModules(): array
-    {
-        if (!$this->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
-        }
-
-        return $this->getTrackerContent()[$this->getModulesTrackerKey()];
-    }
-
-    /**
-     * Get the modules tracker key
-     *
-     * @return string
-     */
-    protected function getModulesTrackerKey () : string
-    {
-        return "modules";
-    }
-
-    /**
      * Get the workbench cache key
      *
      * @return string
@@ -394,30 +340,5 @@ class ModuleManager extends ModuleStateRepository implements Contract
     protected function getWorkbenchKey () : string
     {
         return "workbench";
-    }
-
-    /**
-     * Returns the module name as it was first given
-     *
-     * @param string $module
-     * @return string
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     * @throws FileNotFoundException
-     *
-     */
-    protected function sanitiseModuleName (string $module) : string
-    {
-        $modules = $this->getModules();
-        $lower = array_map(function (string $mod) { return strtolower($mod); }, $modules);
-        $key = array_search(strtolower($module), $lower);
-
-        // If we don't have the module in the modules array, we assume its a new module
-        if ($key === false) {
-            return $module;
-        }
-
-        return $modules[$key];
     }
 }

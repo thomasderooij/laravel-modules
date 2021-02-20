@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
-class HasModuleTest extends ModuleManagerTest
+class HasModuleTest extends ModuleStateRepositoryTest
 {
     private $method = "hasModule";
 
     public function testHasModule () : void
     {
-        $uut = $this->getMockManager($this->method);
+        $uut = $this->getMockRepository($this->method);
 
         // If I have modules
         $modules = ["module_1", "other_module", "inactive_module"];
@@ -32,7 +32,7 @@ class HasModuleTest extends ModuleManagerTest
 
     public function testHasModuleWhenYouDoNotHaveTheModule () : void
     {
-        $uut = $this->getMockManager($this->method);
+        $uut = $this->getMockRepository($this->method);
 
         // If I have modules
         $modules = ["module_2", "other_module", "inactive_module"];

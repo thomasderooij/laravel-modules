@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 
-class GetModulesTest extends ModuleManagerTest
+class GetModulesTest extends ModuleStateRepositoryTest
 {
     private $method = "getModules";
 
@@ -16,7 +16,7 @@ class GetModulesTest extends ModuleManagerTest
         // If I have a method to get all the modules
         $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
 
         // I should check if the modules are initialised
         $moduleManager->expects("isInitialised")->andReturn(true);
@@ -41,7 +41,7 @@ class GetModulesTest extends ModuleManagerTest
         // If I have a method to get all the modules
         $uut = $this->getMethod($this->method);
 
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
 
         // And the modules are not initialised
         $moduleManager->expects("isInitialised")->andReturn(false);

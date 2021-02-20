@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-
-class GetModulesTrackerKeyTest extends ModuleManagerTest
+class GetModulesTrackerKeyTest extends ModuleStateRepositoryTest
 {
     private $method = "getModulesTrackerKey";
 
@@ -19,7 +17,7 @@ class GetModulesTrackerKeyTest extends ModuleManagerTest
         $expected = "modules";
 
         // When I ask the module manager for it
-        $modulesManager = $this->getMockManager($this->method);
+        $modulesManager = $this->getMockRepository($this->method);
         $this->assertSame($expected, $uut->invoke($modulesManager));
     }
 }

@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-
-class SaveTest extends ModuleManagerTest
+class SaveTest extends ModuleStateRepositoryTest
 {
     private $method = "save";
 
     public function testSave () : void
     {
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
 
         // If I have a save function
         $uut = $this->getMethod($this->method);
