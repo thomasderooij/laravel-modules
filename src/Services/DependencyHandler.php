@@ -70,16 +70,23 @@ class DependencyHandler extends ModuleStateRepository implements Contract
     protected function wouldCreateCircularReference (string $downstream, string $upstream) : bool
     {
         // A module can not be its down dependency
-        if (strtolower($downstream) === strtolower($upstream)) {
+        if ($downstream === $upstream) {
             return true;
         }
 
+        // get the tracker content
         $fileContent = $this->getTrackerContent();
 
         // Return false if the dependencies key is not set
         if (!isset($fileContent[$this->getDependenciesKey()])) { return false; }
 
+        // single out the dependencies
         $dependencies = $fileContent[$this->getDependenciesKey()];
+        // See what's upstream
+        $upstreamModules = $this->getUpstreamModules($downstream, $dependencies);
+
+        // And make sure that whatever we're adding is not already upstream somewhere 
+        return array_search($downstream, $upstreamModules) === false;
     }
 
     protected function getUpstreamModules (string $module, array $dependencies) : array

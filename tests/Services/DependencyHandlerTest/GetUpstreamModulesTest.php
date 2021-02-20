@@ -8,9 +8,6 @@ class GetUpstreamModulesTest extends DependencyHandlerTest
 {
     protected $method = "getUpstreamModules";
 
-    /**
-     * @group service
-     */
     public function testGettingUpstreamModules () : void
     {
         // If I have a bunch of dependencies
