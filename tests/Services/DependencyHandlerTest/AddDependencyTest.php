@@ -6,7 +6,9 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
+use Thomasderooij\LaravelModules\Exceptions\DependencyExceptions\CircularReferenceException;
 use Thomasderooij\LaravelModules\Exceptions\DependencyExceptions\DependencyAlreadyExistsException;
+use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 use Thomasderooij\LaravelModules\Services\DependencyHandler;
 
 class AddDependencyTest extends DependencyHandlerTest
@@ -65,19 +67,31 @@ class AddDependencyTest extends DependencyHandlerTest
             // modules needn't be active to set dependencies
             "activeModules" => [],
         ]);
+        // The modules should be checked and sanitised
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->upsteamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->upsteamModule)])->andReturn($this->upsteamModule);
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->downstreamModule)])->andReturn($this->downstreamModule);
+        $this->methodHandler->shouldReceive("getDependenciesKey")->andReturn($dependenciesKey = "dependencies");
+
+        // The dependency should be new
+        $this->methodHandler->shouldReceive("dependencyExists")->withArgs([$this->downstreamModule, $this->upsteamModule])->andReturn(false);
+
+        // And the module should not create a circular reference
+        $this->methodHandler->shouldReceive("wouldCreateCircularReference")->withArgs([$this->downstreamModule, $this->upsteamModule])->andReturn(false);
 
         // The tracker content should be updated
         $update = $trackerContent;
-        $update["dependencies"][] = ["up" => $this->upsteamModule, "down" => $this->downstreamModule];
+        $update[$dependenciesKey][] = ["up" => $this->upsteamModule, "down" => $this->downstreamModule];
 
         // And then it should be saved
         $this->methodHandler->shouldReceive("save")->withArgs([$update]);
 
         // After the method is invoked
-        $this->uut->invoke($this->methodHandler, $this->downstreamModule, $this->upsteamModule);
+        $this->uut->invoke($this->methodHandler, strtolower($this->downstreamModule), strtolower($this->upsteamModule));
     }
 
-    // todo: should this throw a dependency? probably. but go for the command test first
+    // todo: should this throw a dependency? probably.
     public function testAddingAnUpstreamDependency () : void
     {
 
@@ -98,6 +112,14 @@ class AddDependencyTest extends DependencyHandlerTest
                 ["up" => $this->upsteamModule, "down" => $this->downstreamModule]
             ]
         ]);
+        // The modules should be checked and sanitised
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->upsteamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->upsteamModule)])->andReturn($this->upsteamModule);
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->downstreamModule)])->andReturn($this->downstreamModule);
+
+        // The dependency should be new
+        $this->methodHandler->shouldReceive("dependencyExists")->withArgs([$this->downstreamModule, $this->upsteamModule])->andReturn(true);
 
         // The tracker content should be updated
         $this->expectException(DependencyAlreadyExistsException::class);
@@ -109,20 +131,64 @@ class AddDependencyTest extends DependencyHandlerTest
 
     public function testAddingCircularReference () : void
     {
+        // When I want to add a dependency between modules
+        // I should fetch the contents of the tracker file
+        $this->methodHandler->shouldReceive("getTrackerContent")->andReturn($trackerContent = [
+            "modules" => [$this->upsteamModule, $this->moduleInBetween, $this->blueCollarModule, $this->downstreamModule],
+            "activeModules" => [],
+            // And there is a dependency chain
+            $dependenciesKey = "dependencies" => [
+                ["up" => $this->upsteamModule, "down" => $this->moduleInBetween],
+                ["up" => $this->moduleInBetween, "down" => $this->downstreamModule],
+            ]
+        ]);
+        // The modules should be checked and sanitised
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->upsteamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->upsteamModule)])->andReturn($this->upsteamModule);
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->downstreamModule)])->andReturn($this->downstreamModule);
+        $this->methodHandler->shouldReceive("getDependenciesKey")->andReturn($dependenciesKey);
 
+        // The dependency should be new
+        $this->methodHandler->shouldReceive("dependencyExists")->withArgs([$this->upsteamModule, $this->downstreamModule])->andReturn(false);
+
+        // But if it created a circle argument, it should throw an exception
+        $this->methodHandler->shouldReceive("wouldCreateCircularReference")->withArgs([$this->upsteamModule, $this->downstreamModule])->andReturn(true);
+
+        // There should be an exception
+        $this->expectException(CircularReferenceException::class);
+        $this->expectExceptionMessage("module \"{$this->downstreamModule}\" is already upstream of \"{$this->upsteamModule}\".");
+
+        // If I try to close the circle
+        $this->uut->invoke($this->methodHandler, $this->upsteamModule, $this->downstreamModule);
     }
 
-    public function testAddingToANonExistingModule () : void
+    public function testAddingToANonExistingDownstreamModule () : void
     {
+        // When I add a non existing module
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(false);
 
+        // I should receive an exception
+        $this->expectException(ModuleNotFoundException::class);
+        $this->expectExceptionMessage("There is no module named \"{$this->downstreamModule}\".");
+
+        $this->uut->invoke($this->methodHandler, $this->downstreamModule, $this->upsteamModule);
     }
 
-    public function testAddingANonExistingModule () : void
+    public function testAddingToANonExistingUpstreamModule () : void
     {
+        // When I add a non existing module
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(true);
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->upsteamModule])->andReturn(false);
 
+        // I should receive an exception
+        $this->expectException(ModuleNotFoundException::class);
+        $this->expectExceptionMessage("There is no module named \"{$this->upsteamModule}\".");
+
+        $this->uut->invoke($this->methodHandler, $this->downstreamModule, $this->upsteamModule);
     }
 
-    public function testAddingADownstreamModule () : void
+    public function testAddingADepedencyToItself () : void
     {
 
     }
