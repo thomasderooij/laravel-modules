@@ -6,6 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
+use Thomasderooij\LaravelModules\Exceptions\DependencyExceptions\DependencyAlreadyExistsException;
 use Thomasderooij\LaravelModules\Services\DependencyHandler;
 
 class AddDependencyTest extends DependencyHandlerTest
@@ -54,13 +55,10 @@ class AddDependencyTest extends DependencyHandlerTest
 
     /**
      * Here is where we test adding a dependency in ideal conditions; i.e., its not upstream or downstream, and it's not already directly above us
-     *
-     * @group service
      */
     public function testAddDependency () : void
     {
         // When I want to add a dependency between modules
-
         // I should fetch the contents of the tracker file
         $this->methodHandler->shouldReceive("getTrackerContent")->andReturn($trackerContent = [
             "modules" => [$this->upsteamModule, $this->moduleInBetween, $this->blueCollarModule, $this->downstreamModule],
@@ -79,12 +77,37 @@ class AddDependencyTest extends DependencyHandlerTest
         $this->uut->invoke($this->methodHandler, $this->downstreamModule, $this->upsteamModule);
     }
 
+    // todo: should this throw a dependency? probably. but go for the command test first
     public function testAddingAnUpstreamDependency () : void
     {
 
     }
 
+    /**
+     * Here we test what happens if we try to add a direct dependency when it already exists
+     */
     public function testReAddingADirectDependency () : void
+    {
+        // When I want to add a dependency between modules
+        // I should fetch the contents of the tracker file
+        $this->methodHandler->shouldReceive("getTrackerContent")->andReturn($trackerContent = [
+            "modules" => [$this->upsteamModule, $this->moduleInBetween, $this->blueCollarModule, $this->downstreamModule],
+            "activeModules" => [],
+            // but discover this dependency already exists
+            "dependencies" => [
+                ["up" => $this->upsteamModule, "down" => $this->downstreamModule]
+            ]
+        ]);
+
+        // The tracker content should be updated
+        $this->expectException(DependencyAlreadyExistsException::class);
+        $this->expectExceptionMessage("module \"{$this->downstreamModule}\" is already dependent on \"{$this->upsteamModule}\".");
+
+        // After the method is invoked
+        $this->uut->invoke($this->methodHandler, $this->downstreamModule, $this->upsteamModule);
+    }
+
+    public function testAddingCircularReference () : void
     {
 
     }
