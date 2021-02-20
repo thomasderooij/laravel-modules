@@ -69,7 +69,6 @@ class DependencyHandler extends ModuleStateRepository implements Contract
 
     protected function wouldCreateCircularReference (string $downstream, string $upstream) : bool
     {
-        dd("here");
         // A module can not be its down dependency
         if (strtolower($downstream) === strtolower($upstream)) {
             return true;
@@ -81,19 +80,28 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         if (!isset($fileContent[$this->getDependenciesKey()])) { return false; }
 
         $dependencies = $fileContent[$this->getDependenciesKey()];
-        dd($this->getUpstreamModules($downstream, $dependencies));
     }
 
     protected function getUpstreamModules (string $module, array $dependencies) : array
     {
-        $dependencies = array_filter($dependencies, function (array $dependency) use ($module) {
+        // Filter the dependencies in which the module is downstream
+        $filtered = array_filter($dependencies, function (array $dependency) use ($module) {
             return $dependency["down"] === $module;
         });
 
-        foreach ($dependencies as $dependency) {
-            $dependencies = array_merge($dependencies, $this->getUpstreamModules($dependency["up"], $dependencies));
+        // Then we map everything that is upstream
+        $mapped = array_values(array_map(function (array $dependency) {
+            return $dependency["up"];
+        }, $filtered));
+
+        // Foreach of these, we take the module that is upstream
+        foreach ($mapped as $dependency) {
+            $furtherUp = $this->getUpstreamModules($dependency, $dependencies);
+            // this is pretty key, since array_merge passes a reference, and we don't want that. And I thought I was going crazy for a bit.
+            $clone = $furtherUp;
+            $mapped = array_merge($mapped, $clone);
         }
 
-        return $dependencies;
+        return array_unique($mapped);
     }
 }
