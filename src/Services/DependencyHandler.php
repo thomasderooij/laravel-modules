@@ -21,6 +21,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
             throw new ModuleNotFoundException("There is no module named \"$upstream\".");
         }
 
+        // Make sure there is not confusion about module names
         $downstream = $this->sanitiseModuleName($downstream);
         $upstream = $this->sanitiseModuleName($upstream);
 
@@ -29,11 +30,12 @@ class DependencyHandler extends ModuleStateRepository implements Contract
             throw new DependencyAlreadyExistsException($downstream, $upstream, "module \"{$downstream}\" is already dependent on \"{$upstream}\".");
         }
 
-        $fileContent = $this->getTrackerContent();
-
         if ($this->wouldCreateCircularReference($downstream, $upstream)) {
             throw new CircularReferenceException($downstream, $upstream, "module \"{$upstream}\" is already upstream of \"{$downstream}\".");
         }
+
+        // Get that sweet, sweet content
+        $fileContent = $this->getTrackerContent();
 
         // Set the dependencies key if it does not already exist
         if (!isset($fileContent[$key = $this->getDependenciesKey()])) {
@@ -85,7 +87,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         // See what's upstream
         $upstreamModules = $this->getUpstreamModules($downstream, $dependencies);
 
-        // And make sure that whatever we're adding is not already upstream somewhere 
+        // And make sure that whatever we're adding is not already upstream somewhere
         return array_search($downstream, $upstreamModules) === false;
     }
 

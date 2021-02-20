@@ -44,10 +44,6 @@ abstract class DependencyHandlerTest extends Test
     {
         parent::setUp();
 
-        // We're going to need the module manager for this
-        $this->moduleManager = Mockery::mock(ModuleManager::class);
-        $this->instance("module.service.manager", $this->moduleManager);
-
         // We create a partial mock based on the dependency handler
         $this->mockFilesystem = \Mockery::mock(Filesystem::class);
         $this->filesystem = $this->app->make(Filesystem::class);

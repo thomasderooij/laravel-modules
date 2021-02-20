@@ -9,7 +9,7 @@ class WouldCreateCircularReferenceTest extends DependencyHandlerTest
     protected $method = "wouldCreateCircularReference";
 
     /**
-     * @group service
+     * We only test the would, because the would not is already tested in the normal addDependencyTest
      */
     public function testWouldCreatedCircularReference () : void
     {

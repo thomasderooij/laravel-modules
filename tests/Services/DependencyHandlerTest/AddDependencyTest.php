@@ -72,7 +72,7 @@ class AddDependencyTest extends DependencyHandlerTest
             "activeModules" => [],
             // but discover this dependency already exists
             "dependencies" => [
-                ["up" => $this->upstreamModule, "down" => $this->downstreamModule]
+                [$this->upKey => $this->upstreamModule, $this->downKey => $this->downstreamModule]
             ]
         ]);
         // The modules should be checked and sanitised
@@ -101,8 +101,8 @@ class AddDependencyTest extends DependencyHandlerTest
             "activeModules" => [],
             // And there is a dependency chain
             $dependenciesKey = "dependencies" => [
-                ["up" => $this->upstreamModule, "down" => $this->moduleInBetween],
-                ["up" => $this->moduleInBetween, "down" => $this->downstreamModule],
+                [$this->upKey => $this->upstreamModule, $this->downKey => $this->moduleInBetween],
+                [$this->upKey => $this->moduleInBetween, "$this->downKey" => $this->downstreamModule],
             ]
         ]);
         // The modules should be checked and sanitised

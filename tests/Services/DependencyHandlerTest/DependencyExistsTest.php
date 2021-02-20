@@ -20,7 +20,7 @@ class DependencyExistsTest extends DependencyHandlerTest
             "modules" => [$this->upstreamModule, $this->moduleInBetween, $this->blueCollarModule, $this->downstreamModule],
             "activeModules" => [],
             $dependenciesKey = "dependencies" => [
-                ["up" => $this->upstreamModule, "down" => $this->downstreamModule]
+                [$this->upKey => $this->upstreamModule, $this->downKey => $this->downstreamModule]
             ]
         ]);
         // Then the dependencies key should be fetched
