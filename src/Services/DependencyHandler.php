@@ -49,7 +49,34 @@ class DependencyHandler extends ModuleStateRepository implements Contract
 
     public function getAvailableModules(string $module): array
     {
-        //
+        $fileContent = $this->getTrackerContent();
+        $modules = $this->getModules();
+
+        // Return all modules except this one if the dependencies key is not set
+        if (!isset($fileContent[$this->getDependenciesKey()])) {
+            return array_values(array_diff($modules, [$module]));
+        }
+
+        $dependencies = $fileContent[$this->getDependenciesKey()];
+        // Filter the dependencies in which the module is downstream
+        $filtered = array_filter($dependencies, function (array $dependency) use ($module) {
+            return $dependency[("down")] === $module;
+        });
+
+        // Then we map everything that is upstream
+        $directUpstream = array_values(array_map(function (array $dependency) {
+            return $dependency["up"];
+        }, $filtered));
+        $downstream = $this->getDownstreamModules($module, $dependencies);
+
+        // We remove direct upstream modules from the list
+        $modules = array_diff($modules, $directUpstream);
+        // We remove downstream modules from the list
+        $modules = array_diff($modules, $downstream);
+        // And we remove this module from the list
+        $modules = array_diff($modules, [$module]);
+
+        return array_values($modules);
     }
 
     protected function dependencyExists(string $downstream, string $upstream) : bool

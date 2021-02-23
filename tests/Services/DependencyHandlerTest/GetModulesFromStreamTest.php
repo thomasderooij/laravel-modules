@@ -8,9 +8,6 @@ class GetModulesFromStreamTest extends DependencyHandlerTest
 {
     protected $method = "getModulesFromStream";
 
-    /**
-     * @group service
-     */
     public function testGettingModulesFromStream () : void
     {
         // If I have a bunch of dependencies
@@ -37,17 +34,17 @@ class GetModulesFromStreamTest extends DependencyHandlerTest
 
         // This is a bit of a workaround, but there is no assertion to check if array contents match
         $this->assertSame(
-            collect([$this->upstreamModule, $this->moduleInBetween, $this->blueCollarModule])->sort()->values()->toArray(),
-            collect($this->uut->invoke($this->methodHandler, $this->downstreamModule, $dependencies, true))->sort()->values()->toArray()
+            $this->alphabeticalByValues([$this->upstreamModule, $this->moduleInBetween, $this->blueCollarModule]),
+            $this->alphabeticalByValues($this->uut->invoke($this->methodHandler, $this->downstreamModule, $dependencies, true))
         );
         $this->assertSame(
-            collect([$this->upstreamModule, $this->moduleInBetween])->sort()->values()->toArray(),
-            collect($this->uut->invoke($this->methodHandler, $this->blueCollarModule, $dependencies, true))->sort()->values()->toArray()
+            $this->alphabeticalByValues([$this->upstreamModule, $this->moduleInBetween]),
+            $this->alphabeticalByValues($this->uut->invoke($this->methodHandler, $this->blueCollarModule, $dependencies, true))
         );
 
         $this->assertSame(
-            collect([$this->blueCollarModule, $this->downstreamModule])->sort()->values()->toArray(),
-            collect($this->uut->invoke($this->methodHandler, $this->upstreamModule, $dependencies, false))->sort()->values()->toArray()
+            $this->alphabeticalByValues([$this->blueCollarModule, $this->downstreamModule]),
+            $this->alphabeticalByValues($this->uut->invoke($this->methodHandler, $this->upstreamModule, $dependencies, false))
         );
     }
 }
