@@ -41,7 +41,9 @@ class AddDependencyModuleCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("hasModule")->withArgs([$salesDomain])->andReturn(true);
 
         $this->dependencyHandler->shouldReceive("getAvailableModules")->withArgs([$salesDomain])->andReturnValues([
+            // first iteration (see expectsChoice below)
             [$auth, $adminDomain, $webshopDomain],
+            // second iteration
             [$adminDomain, $webshopDomain],
         ])->twice();
 
