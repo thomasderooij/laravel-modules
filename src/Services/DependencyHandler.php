@@ -7,6 +7,7 @@ namespace Thomasderooij\LaravelModules\Services;
 use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler as Contract;
 use Thomasderooij\LaravelModules\Exceptions\DependencyExceptions\CircularReferenceException;
 use Thomasderooij\LaravelModules\Exceptions\DependencyExceptions\DependencyAlreadyExistsException;
+use Thomasderooij\LaravelModules\Exceptions\DependencyExceptions\DependencyNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class DependencyHandler extends ModuleStateRepository implements Contract
@@ -79,6 +80,50 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_values($modules);
     }
 
+    public function removeDependency (string $downstream, string $upstream) : void
+    {
+        // Throw an exception if a module does not exist
+        if (!$this->hasModule($downstream)) {
+            throw new ModuleNotFoundException("There is no module named \"$downstream\".");
+        }
+        if (!$this->hasModule($upstream)) {
+            throw new ModuleNotFoundException("There is no module named \"$upstream\".");
+        }
+
+        // Make sure there is not confusion about module names
+        $downstream = $this->sanitiseModuleName($downstream);
+        $upstream = $this->sanitiseModuleName($upstream);
+
+        // Get the tracker content first
+        $fileContent = $this->getTrackerContent();
+
+        // If there is no dependencies key, there are no dependencies
+        if (!$this->dependencyExists($downstream, $upstream)) {
+            throw new DependencyNotFoundException($downstream, $upstream, "No such dependency exists.");
+        }
+
+        // Fish out our dependency
+        $dependenciesKey = $this->getDependenciesKey();
+        $dependencies = $fileContent[$dependenciesKey];
+        $filtered = array_filter($dependencies, function (array $dependency) use ($downstream, $upstream) {
+            return $dependency["up"] === $upstream && $dependency["down"] === $downstream;
+        });
+
+        // If you can't find it, throw an exception
+        if (empty($filtered)) {
+            throw new DependencyNotFoundException($downstream, $upstream, "No such dependency exists.");
+        }
+
+        $newContent = array_filter($dependencies, function (array $dependency) use ($upstream, $downstream) {
+            return $dependency["up"] !== $upstream && $dependency["down"] !== $downstream;
+        });
+
+        // Add it to the tracker file
+        $fileContent[$dependenciesKey] = $newContent;
+        // And save it
+        $this->save($fileContent);
+    }
+
     protected function dependencyExists(string $downstream, string $upstream) : bool
     {
         $fileContent = $this->getTrackerContent();
@@ -97,9 +142,6 @@ class DependencyHandler extends ModuleStateRepository implements Contract
     }
 
     /**
-     * Check if adding a relation between modules would create a circular reference
-     * e.g., module 1 depends on module 2, and module 2 depends on module 1, that's no bueno, and suggests they should be just 1 module
-     *
      * @param string $downstream
      * @param string $upstream
      * @return bool

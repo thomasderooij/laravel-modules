@@ -29,26 +29,26 @@ class AddDependencyTest extends DependencyHandlerTest
             "modules" => [$this->upstreamModule, $this->moduleInBetween, $this->blueCollarModule, $this->downstreamModule],
             // modules needn't be active to set dependencies
             "activeModules" => [],
-        ]);
+        ])->once();
         // The modules should be checked and sanitised
-        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(true);
-        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->upstreamModule])->andReturn(true);
-        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->upstreamModule)])->andReturn($this->upstreamModule);
-        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->downstreamModule)])->andReturn($this->downstreamModule);
-        $this->methodHandler->shouldReceive("getDependenciesKey")->andReturn($dependenciesKey = "dependencies");
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->downstreamModule])->andReturn(true)->once();
+        $this->methodHandler->shouldReceive("hasModule")->withArgs([$this->upstreamModule])->andReturn(true)->once();
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->upstreamModule)])->andReturn($this->upstreamModule)->once();
+        $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->downstreamModule)])->andReturn($this->downstreamModule)->once();
+        $this->methodHandler->shouldReceive("getDependenciesKey")->andReturn($dependenciesKey = "dependencies")->once();
 
         // The dependency should be new
-        $this->methodHandler->shouldReceive("dependencyExists")->withArgs([$this->downstreamModule, $this->upstreamModule])->andReturn(false);
+        $this->methodHandler->shouldReceive("dependencyExists")->withArgs([$this->downstreamModule, $this->upstreamModule])->andReturn(false)->once();
 
         // And the module should not create a circular reference
-        $this->methodHandler->shouldReceive("wouldCreateCircularReference")->withArgs([$this->downstreamModule, $this->upstreamModule])->andReturn(false);
+        $this->methodHandler->shouldReceive("wouldCreateCircularReference")->withArgs([$this->downstreamModule, $this->upstreamModule])->andReturn(false)->once();
 
         // The tracker content should be updated
         $update = $trackerContent;
         $update[$dependenciesKey][] = ["up" => $this->upstreamModule, "down" => $this->downstreamModule];
 
         // And then it should be saved
-        $this->methodHandler->shouldReceive("save")->withArgs([$update]);
+        $this->methodHandler->shouldReceive("save")->withArgs([$update])->once();
 
         // After the method is invoked
         $this->uut->invoke($this->methodHandler, strtolower($this->downstreamModule), strtolower($this->upstreamModule));
