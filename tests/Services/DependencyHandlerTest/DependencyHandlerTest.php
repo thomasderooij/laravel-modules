@@ -35,9 +35,9 @@ abstract class DependencyHandlerTest extends Test
     protected $upKey = "up";
     protected $downKey = "down";
 
-    protected $upstreamModule = "master_module";
+    protected $upstreamModule = "upstream";
     protected $moduleInBetween = "middle_manager";
-    protected $downstreamModule = "proletariat";
+    protected $downstreamModule = "downstream";
     protected $blueCollarModule = "blue_collar";
 
     protected function setUp(): void

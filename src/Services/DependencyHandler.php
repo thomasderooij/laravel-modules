@@ -49,7 +49,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
 
     public function getAvailableModules(string $module): array
     {
-        // TODO: Implement getAvailableModules() method.
+        //
     }
 
     protected function dependencyExists(string $downstream, string $upstream) : bool
@@ -69,6 +69,14 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return "dependencies";
     }
 
+    /**
+     * Check if adding a relation between modules would create a circular reference
+     * e.g., module 1 depends on module 2, and module 2 depends on module 1, that's no bueno, and suggests they should be just 1 module
+     *
+     * @param string $downstream
+     * @param string $upstream
+     * @return bool
+     */
     protected function wouldCreateCircularReference (string $downstream, string $upstream) : bool
     {
         // A module can not be its down dependency
@@ -91,21 +99,45 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_search($downstream, $upstreamModules) === false;
     }
 
+    /**
+     * Fetch all the modules upstream of the one provided
+     *
+     * @param string $module
+     * @param array $dependencies
+     * @return array
+     */
     protected function getUpstreamModules (string $module, array $dependencies) : array
     {
+        return $this->getModulesFromStream($module, $dependencies, true);
+    }
+
+    /**
+     * Fetch all the modules downstream of the one provided
+     *
+     * @param string $module
+     * @param array $dependencies
+     * @return array
+     */
+    protected function getDownstreamModules (string $module, array $dependencies) : array
+    {
+        return $this->getModulesFromStream($module, $dependencies, false);
+    }
+
+    protected function getModulesFromStream (string $module, array $dependencies, bool $up = true) : array
+    {
         // Filter the dependencies in which the module is downstream
-        $filtered = array_filter($dependencies, function (array $dependency) use ($module) {
-            return $dependency["down"] === $module;
+        $filtered = array_filter($dependencies, function (array $dependency) use ($module, $up) {
+            return $dependency[($up ? "down" : "up")] === $module;
         });
 
         // Then we map everything that is upstream
-        $mapped = array_values(array_map(function (array $dependency) {
-            return $dependency["up"];
+        $mapped = array_values(array_map(function (array $dependency) use ($up) {
+            return $dependency[($up ? "up" : "down")];
         }, $filtered));
 
         // Foreach of these, we take the module that is upstream
         foreach ($mapped as $dependency) {
-            $furtherUp = $this->getUpstreamModules($dependency, $dependencies);
+            $furtherUp = $this->getModulesFromStream($dependency, $dependencies, $up);
             // this is pretty key, since array_merge passes a reference, and we don't want that. And I thought I was going crazy for a bit.
             $clone = $furtherUp;
             $mapped = array_merge($mapped, $clone);

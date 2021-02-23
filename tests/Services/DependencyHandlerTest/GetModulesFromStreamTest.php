@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
-class GetUpstreamModulesTest extends DependencyHandlerTest
+class GetModulesFromStreamTest extends DependencyHandlerTest
 {
-    protected $method = "getUpstreamModules";
+    protected $method = "getModulesFromStream";
 
-    public function testGettingUpstreamModules () : void
+    /**
+     * @group service
+     */
+    public function testGettingModulesFromStream () : void
     {
         // If I have a bunch of dependencies
         // I should fetch the contents of the tracker file
@@ -27,17 +30,24 @@ class GetUpstreamModulesTest extends DependencyHandlerTest
 
         // And I want to fetch the upstream
         // It should give me all others for the downstream module
-        $this->assertEquals([], $this->uut->invoke($this->methodHandler, $this->upstreamModule, $dependencies));
-        $this->assertSame([], $this->uut->invoke($this->methodHandler, $this->moduleInBetween, $dependencies));
+        $this->assertEquals([], $this->uut->invoke($this->methodHandler, $this->upstreamModule, $dependencies, true));
+        $this->assertEquals([], $this->uut->invoke($this->methodHandler, $this->moduleInBetween, $dependencies, true));
+        // And if I want to fetch the downstream
+        $this->assertEquals([], $this->uut->invoke($this->methodHandler, $this->downstreamModule, $dependencies, false));
 
         // This is a bit of a workaround, but there is no assertion to check if array contents match
         $this->assertSame(
             collect([$this->upstreamModule, $this->moduleInBetween, $this->blueCollarModule])->sort()->values()->toArray(),
-            collect($this->uut->invoke($this->methodHandler, $this->downstreamModule, $dependencies))->sort()->values()->toArray()
+            collect($this->uut->invoke($this->methodHandler, $this->downstreamModule, $dependencies, true))->sort()->values()->toArray()
         );
         $this->assertSame(
             collect([$this->upstreamModule, $this->moduleInBetween])->sort()->values()->toArray(),
-            collect($this->uut->invoke($this->methodHandler, $this->blueCollarModule, $dependencies))->sort()->values()->toArray()
+            collect($this->uut->invoke($this->methodHandler, $this->blueCollarModule, $dependencies, true))->sort()->values()->toArray()
+        );
+
+        $this->assertSame(
+            collect([$this->blueCollarModule, $this->downstreamModule])->sort()->values()->toArray(),
+            collect($this->uut->invoke($this->methodHandler, $this->upstreamModule, $dependencies, false))->sort()->values()->toArray()
         );
     }
 }
