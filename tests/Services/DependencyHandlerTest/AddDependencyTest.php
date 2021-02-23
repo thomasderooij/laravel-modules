@@ -54,12 +54,6 @@ class AddDependencyTest extends DependencyHandlerTest
         $this->uut->invoke($this->methodHandler, strtolower($this->downstreamModule), strtolower($this->upstreamModule));
     }
 
-    // todo: should this throw a dependency? probably.
-    public function testAddingAnUpstreamDependency () : void
-    {
-
-    }
-
     /**
      * Here we test what happens if we try to add a direct dependency when it already exists
      */

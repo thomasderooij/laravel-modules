@@ -20,9 +20,6 @@ class AddDependencyModuleCommandTest extends CommandTest
         $this->instance("module.service.dependency_handler", $this->dependencyHandler);
     }
 
-    /**
-     * @group command
-     */
     public function testAddingADependency () : void
     {
         // If I have a few modules

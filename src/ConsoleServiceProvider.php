@@ -10,6 +10,7 @@ use Thomasderooij\LaravelModules\Console\Commands\ActivateModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\AddDependencyModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\CheckWorkbenchCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeactivateModuleCommand;
+use Thomasderooij\LaravelModules\Console\Commands\DeleteDependencyModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeleteModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\InitModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\NewModuleCommand;
@@ -19,15 +20,16 @@ use Thomasderooij\LaravelModules\Console\Commands\UnsetWorkbenchCommand;
 class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     protected $moduleCommands = [
-        "Activate"      => "module.command.activate",
-        "AddDependency" => "module.command.add_dependency",
-        "Check"         => "module.command.check",
-        "Deactivate"    => "module.command.deactivate",
-        "Delete"        => "module.command.delete",
-        "Init"          => "module.command.init",
-        "New"           => "module.command.new",
-        "Set"           => "module.command.set",
-        "Unset"         => "module.command.unset",
+        "Activate"          => "module.command.activate",
+        "AddDependency"     => "module.command.add_dependency",
+        "Check"             => "module.command.check",
+        "Deactivate"        => "module.command.deactivate",
+        "Delete"            => "module.command.delete",
+        "DeleteDependency"  => "module.command.delete_dependency",
+        "Init"              => "module.command.init",
+        "New"               => "module.command.new",
+        "Set"               => "module.command.set",
+        "Unset"             => "module.command.unset",
     ];
 
     /**
@@ -115,6 +117,16 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         $this->app->singleton($this->moduleCommands["Delete"], function ($app) {
             return new DeleteModuleCommand(
                 $app["module.service.manager"]
+            );
+        });
+    }
+
+    protected function createDeleteDependencyCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["DeleteDependency"], function ($app) {
+            return new DeleteDependencyModuleCommand(
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
             );
         });
     }
