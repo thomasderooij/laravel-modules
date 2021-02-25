@@ -19,6 +19,7 @@ phpunit.xml     export-ignore
 composer.lock           export-ignore
 todo                    export-ignore
 ./todo                  export-ignore
+./ignoreme              export-ignore
 ./ignore                export-ignore
 ignoremetoo             export-ignore
 
