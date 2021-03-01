@@ -70,7 +70,12 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
      */
     public function __construct(Application $app, Router $router)
     {
-        $vanilla = "App\\Http\\CompositeKernel";
+        // If the instance class is not the class of the composite kernel, call the parents
+        if (static::class !== self::class) {
+            return parent::__construct($app, $router);
+        }
+
+        $vanilla = "App\\Http\\Kernel";
         if (class_exists($vanilla)) {
             $this->kernels[] = new $vanilla($app, $router);
         }
@@ -78,7 +83,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
         /** @var ModuleManager $moduleManager */
         $moduleManager = $app->make("module.service.manager");
         foreach ($moduleManager->getActiveModules(true) as $module) {
-            $className = $moduleManager->getModuleNamespace($module) . "Http\\CompositeKernel";
+            $className = $moduleManager->getModuleNamespace($module) . "Http\\Kernel";
 
             // Check if the module has the standard kernel, and add it to the kernel list if it exists
             if (class_exists($className)) {
