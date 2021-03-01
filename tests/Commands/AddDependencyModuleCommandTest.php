@@ -20,9 +20,6 @@ class AddDependencyModuleCommandTest extends CommandTest
         $this->instance("module.service.dependency_handler", $this->dependencyHandler);
     }
 
-    /**
-     * @group command
-     */
     public function testAddingADependency () : void
     {
         // If I have a few modules
@@ -41,7 +38,9 @@ class AddDependencyModuleCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("hasModule")->withArgs([$salesDomain])->andReturn(true);
 
         $this->dependencyHandler->shouldReceive("getAvailableModules")->withArgs([$salesDomain])->andReturnValues([
+            // first iteration (see expectsChoice below)
             [$auth, $adminDomain, $webshopDomain],
+            // second iteration
             [$adminDomain, $webshopDomain],
         ])->twice();
 

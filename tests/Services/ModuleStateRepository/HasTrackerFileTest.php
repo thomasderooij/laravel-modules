@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-
-class HasTrackerFileTest extends ModuleManagerTest
+class HasTrackerFileTest extends ModuleStateRepositoryTest
 {
     private $method = "hasTrackerFile";
 
@@ -14,7 +12,7 @@ class HasTrackerFileTest extends ModuleManagerTest
     {
         // If want to know if there is a tracker file
         $uut = $this->getMethod($this->method);
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
 
         // I first fetch the modules directory
         $root = base_path("root_dir");
@@ -35,7 +33,7 @@ class HasTrackerFileTest extends ModuleManagerTest
     {
         // If want to know if there is a tracker file
         $uut = $this->getMethod($this->method);
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
 
         // I first fetch the modules directory
         $root = base_path("root_dir");

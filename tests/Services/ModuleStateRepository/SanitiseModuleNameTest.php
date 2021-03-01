@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-
-class SanitiseModuleNameTest extends ModuleManagerTest
+class SanitiseModuleNameTest extends ModuleStateRepositoryTest
 {
     private $method = "sanitiseModuleName";
 
@@ -15,7 +13,7 @@ class SanitiseModuleNameTest extends ModuleManagerTest
      */
     public function testSanitiseModuleName () : void
     {
-        $moduleManager = $this->getMockManager($this->method);
+        $moduleManager = $this->getMockRepository($this->method);
         $uut = $this->getMethod($this->method);
 
         // If I have modules
