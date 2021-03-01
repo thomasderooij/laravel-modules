@@ -80,16 +80,21 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
             $this->kernels[] = new $vanilla($app, $router);
         }
 
-        /** @var ModuleManager $moduleManager */
-        $moduleManager = $app->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);
-        foreach ($moduleManager->getActiveModules(true) as $module) {
-            $className = $moduleManager->getModuleNamespace($module) . "Http\\Kernel";
+        $app->booted(function (Application $application) use ($router) {
+            /** @var ModuleManager $moduleManager */
+            $moduleManager = $application->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);
 
-            // Check if the module has the standard kernel, and add it to the kernel list if it exists
-            if (class_exists($className)) {
-                $this->kernels[] = new $className($app, $router);
+            foreach ($moduleManager->getActiveModules(true) as $module) {
+                $className = $moduleManager->getModuleNamespace($module) . "Http\\Kernel";
+
+                // Check if the module has the standard kernel, and add it to the kernel list if it exists
+                if (class_exists($className)) {
+                    $this->kernels[] = new $className($application, $router);
+                }
             }
-        }
+
+            $this->resolveProperties();
+        });
 
         $this->resolveProperties();
 
