@@ -113,7 +113,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
             foreach ($this->getPropNames() as $propName) {
                 $reflectionProperty = $reflection->getProperty($propName);
                 $reflectionProperty->setAccessible(true);
-                $this->{$propName}[] = $reflectionProperty->getValue($kernel);
+                $this->{$propName} = array_merge($this->{$propName}, $reflectionProperty->getValue($kernel));
             }
         }
     }
