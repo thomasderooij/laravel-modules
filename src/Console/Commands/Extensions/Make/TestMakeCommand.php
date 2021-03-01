@@ -51,7 +51,7 @@ class TestMakeCommand extends OriginalCommand
 
         $isUnit = $this->option("unit");
 
-        return $this->moduleManager->getModuleDirectory($module)."/tests/" . ($isUnit ? "Unit" : "Feature") . "/{$name}.php";
+        return $this->moduleManager->getModuleDirectory($module)."/Tests/" . ($isUnit ? "Unit" : "Feature") . "/{$name}.php";
     }
 
     /**

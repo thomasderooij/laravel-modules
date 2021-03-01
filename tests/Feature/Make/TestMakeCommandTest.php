@@ -52,7 +52,7 @@ class TestMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this test already exists
-        $fileDirectory = "tests/Feature";
+        $fileDirectory = "Tests/Feature";
         $fileName = "$test.php";
         $this->setFileExpectations($fileDirectory, $fileName, true, null);
 
@@ -81,7 +81,7 @@ class TestMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
 
         // We should then check if this test already exists
-        $fileDirectory = "tests/Feature";
+        $fileDirectory = "Tests/Feature";
         $fileName = "$test.php";
         $this->setFileExpectations($fileDirectory, $fileName, true, null);
 
