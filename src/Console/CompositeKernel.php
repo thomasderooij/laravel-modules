@@ -25,7 +25,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
     {
         // If the instance class is not the class of the composite kernel, call the parents
         if (static::class !== self::class) {
-            return parent::__construct($app, $router);
+            return parent::__construct($app, $events);
         }
 
         // Once the app is booted, compile the kernels we want to manage
