@@ -81,7 +81,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
         }
 
         /** @var ModuleManager $moduleManager */
-        $moduleManager = $app->make("module.service.manager");
+        $moduleManager = $app->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);
         foreach ($moduleManager->getActiveModules(true) as $module) {
             $className = $moduleManager->getModuleNamespace($module) . "Http\\Kernel";
 
