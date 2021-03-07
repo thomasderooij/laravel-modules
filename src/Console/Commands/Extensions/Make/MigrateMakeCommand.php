@@ -65,7 +65,7 @@ class MigrateMakeCommand extends OriginalCommand
     protected function getModuleMigrationPath (string $module)
     {
         // Get the base directory where migrations should go
-        $dir = $this->moduleManager->getModuleDirectory($module)."/database/migrations";
+        $dir = $this->moduleManager->getModuleDirectory($module)."/Database/Migrations";
 
         // If the directory does not exist, create it with rwrwr access
         if (!is_dir($dir)) {

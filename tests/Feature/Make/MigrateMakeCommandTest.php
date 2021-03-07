@@ -74,7 +74,7 @@ class MigrateMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this factory already exists
-        $fileDirectory = "database/migrations";
+        $fileDirectory = "Database/Migrations";
         $fileName = "$migration.php";
         $this->setFileExpectations($fileDirectory, $fileName, true, null, false);
         $this->filesystem->shouldReceive("ensureDirectoryExists")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory")]);
@@ -109,7 +109,7 @@ class MigrateMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
 
         // We should then check if this factory already exists
-        $fileDirectory = "database/migrations";
+        $fileDirectory = "Database/Migrations";
         $fileName = "$migration.php";
         $this->setFileExpectations($fileDirectory, $fileName, true, null, false);
         $this->filesystem->shouldReceive("ensureDirectoryExists")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory")]);
