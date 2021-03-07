@@ -284,7 +284,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         $this->app->singleton($this->makeCommands["Seeder"], function ($app) {
             return new SeederMakeCommand(
                 $app["files"],
-                $app["composer"],
                 $app["module.service.manager"]
             );
         });
