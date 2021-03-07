@@ -52,7 +52,7 @@ class FactoryMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
 
         // We should then check if this factory already exists
-        $fileDirectory = "database/factories";
+        $fileDirectory = "Database/Factories";
         $fileName = "$factory.php";
         $this->setFileExpectations($fileDirectory, $fileName, true);
 
@@ -81,7 +81,7 @@ class FactoryMakeCommandTest extends MakeTest
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
 
         // We should then check if this factory already exists
-        $fileDirectory = "database/factories";
+        $fileDirectory = "Database/Factories";
         $fileName = "$factory.php";
         $this->setFileExpectations($fileDirectory, $fileName, true);
 

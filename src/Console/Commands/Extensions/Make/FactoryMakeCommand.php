@@ -31,6 +31,6 @@ class FactoryMakeCommand extends OriginalCommand
             ['\\', '/'], '', $this->argument('name')
         );
 
-        return $this->moduleManager->getModuleDirectory($module)."/database/factories/{$name}.php";
+        return $this->moduleManager->getModuleDirectory($module)."/Database/Factories/{$name}.php";
     }
 }
