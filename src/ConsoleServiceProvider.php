@@ -12,6 +12,7 @@ use Thomasderooij\LaravelModules\Console\Commands\CheckWorkbenchCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeactivateModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeleteDependencyModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeleteModuleCommand;
+use Thomasderooij\LaravelModules\Console\Commands\DependenciesCommand;
 use Thomasderooij\LaravelModules\Console\Commands\InitModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\NewModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\SetWorkbenchCommand;
@@ -26,6 +27,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         "Deactivate"        => "module.command.deactivate",
         "Delete"            => "module.command.delete",
         "DeleteDependency"  => "module.command.delete_dependency",
+        "Dependencies"      => "module.command.dependencies",
         "Init"              => "module.command.init",
         "New"               => "module.command.new",
         "Set"               => "module.command.set",
@@ -125,6 +127,16 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($this->moduleCommands["DeleteDependency"], function ($app) {
             return new DeleteDependencyModuleCommand(
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
+            );
+        });
+    }
+
+    protected function createDependenciesCommand () : void
+    {
+        $this->app->singleton($this->moduleCommands["Dependencies"], function ($app) {
+            return new DependenciesCommand(
                 $app["module.service.manager"],
                 $app["module.service.dependency_handler"]
             );

@@ -7,7 +7,7 @@ namespace Thomasderooij\LaravelModules\Console\Commands;
 use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 
-class DependenciesModuleCommand extends ModuleCommand
+class DependenciesCommand extends ModuleCommand
 {
     /**
      * The name and signature of the console command.
@@ -37,8 +37,13 @@ class DependenciesModuleCommand extends ModuleCommand
         // Get the module from the options
         $module = $this->option("module");
 
+        if (!$this->moduleManager->isInitialised()) {
+            $this->displayInitialisationError();
+            return false;
+        }
+
         // If the option is not used, use the workbench
-        if ($module === null) {
+        if ($module === false) {
             $module = $this->moduleManager->getWorkbench();
         }
 
@@ -46,6 +51,12 @@ class DependenciesModuleCommand extends ModuleCommand
         if ($module === null) {
             $this->noModuleProvidedResponse();
             return;
+        }
+
+        // And if the module does not exist, I should also get an error message
+        if (!$this->moduleManager->hasModule($module)) {
+            $this->displayModuleNotFoundError($module);
+            return false;
         }
 
         // Split the modules into groups and display them
@@ -64,21 +75,27 @@ class DependenciesModuleCommand extends ModuleCommand
 
     protected function displayUpstreamModules (array $modules) : void
     {
-
+        foreach ($modules as $module) {
+            $this->info("$module (upstream)");
+        }
     }
 
     protected function displayCurrentModule (string $module) : void
     {
-
+        $this->info("$module (current)");
     }
 
     protected function displayDownstreamModules (array $modules) : void
     {
-
+        foreach ($modules as $module) {
+            $this->info("$module (downstream)");
+        }
     }
 
     protected function displayUnrelatedModules (array $modules) : void
     {
-
+        foreach ($modules as $module) {
+            $this->info("$module (unrelated)");
+        }
     }
 }
