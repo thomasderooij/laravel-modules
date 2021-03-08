@@ -172,10 +172,10 @@ class DependencyHandler extends ModuleStateRepository implements Contract
      * Fetch all the modules upstream of the one provided
      *
      * @param string $module
-     * @param array $dependencies
+     * @param array|null $dependencies
      * @return array
      */
-    protected function getUpstreamModules (string $module, array $dependencies) : array
+    public function getUpstreamModules (string $module, array $dependencies = null) : array
     {
         return $this->getModulesFromStream($module, $dependencies, true);
     }
@@ -184,16 +184,24 @@ class DependencyHandler extends ModuleStateRepository implements Contract
      * Fetch all the modules downstream of the one provided
      *
      * @param string $module
-     * @param array $dependencies
+     * @param array|null $dependencies
      * @return array
      */
-    protected function getDownstreamModules (string $module, array $dependencies) : array
+    public function getDownstreamModules (string $module, array $dependencies = null) : array
     {
         return $this->getModulesFromStream($module, $dependencies, false);
     }
 
-    protected function getModulesFromStream (string $module, array $dependencies, bool $up = true) : array
+    protected function getModulesFromStream (string $module, array $dependencies = null, bool $up = true) : array
     {
+        if ($dependencies === null) {
+            // get the tracker content
+            $fileContent = $this->getTrackerContent();
+
+            // single out the dependencies
+            $dependencies = $fileContent[$this->getDependenciesKey()];
+        }
+
         // Filter the dependencies in which the module is downstream
         $filtered = array_filter($dependencies, function (array $dependency) use ($module, $up) {
             return $dependency[($up ? "down" : "up")] === $module;
