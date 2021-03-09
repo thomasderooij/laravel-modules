@@ -7,6 +7,7 @@ namespace Thomasderooij\LaravelModules\Tests\Commands;
 use Illuminate\Support\Facades\Config;
 use Mockery;
 use Thomasderooij\LaravelModules\Factories\ModuleFactory;
+use Thomasderooij\LaravelModules\Services\DependencyHandler;
 
 class NewModuleCommandTest extends CommandTest
 {
@@ -25,12 +26,16 @@ class NewModuleCommandTest extends CommandTest
 
     public function testMakeNewModule () : void
     {
+        // When I make a new module
         $newModule = "NewModule";
         $response = $this->artisan("module:new", ["name" => $newModule]);
 
+        // Modules should be initialised
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(true);
+        // And we should not have this module yet
         $this->moduleManager->shouldReceive("hasModule")->withArgs([$newModule])->andReturn(false);
 
+        // We then call create, add, and set the module to the workbench
         $this->moduleFactory->shouldReceive("create")->withArgs([$newModule]);
         $this->moduleManager->shouldReceive("addModule")->withArgs([$newModule]);
         $this->moduleManager->shouldReceive("setWorkbench")->withArgs([$newModule]);
@@ -44,7 +49,9 @@ class NewModuleCommandTest extends CommandTest
         ]);
         Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
+        // We then expect to be told where we can find our brand new module
         $response->expectsOutput("Your module has been created in the $root/$newModule directory.");
+
         $response->run();
     }
 

@@ -7,7 +7,7 @@ namespace Thomasderooij\LaravelModules\Console\Commands;
 use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
-class DeleteDependencyModuleCommand extends ModuleCommand
+class DeleteDependencyCommand extends ModuleCommand
 {
     protected $dependencyHandler;
 

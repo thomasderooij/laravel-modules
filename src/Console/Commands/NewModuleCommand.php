@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
+use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleFactory;
 
@@ -28,11 +29,17 @@ class NewModuleCommand extends ModuleCommand
      */
     protected $factory;
 
-    public function __construct(ModuleFactory $moduleFactory, ModuleManager $manager)
+    /**
+     * @var DependencyHandler $handler
+     */
+    protected $handler;
+
+    public function __construct(ModuleFactory $moduleFactory, ModuleManager $manager, DependencyHandler $handler)
     {
         parent::__construct($manager);
 
         $this->factory = $moduleFactory;
+        $this->handler = $handler;
     }
 
     public function handle() : void
@@ -48,6 +55,7 @@ class NewModuleCommand extends ModuleCommand
 
         // Then check if there already is a module with the same name
         if ($this->moduleManager->hasModule($name)) {
+            dd("here");
             $this->displayModuleAlreadyExistsWarning($name);
             return;
         }
@@ -63,6 +71,9 @@ class NewModuleCommand extends ModuleCommand
 
         // Give feedback
         $this->displayModuleCreatedMessage($name);
+
+        // Ask which modules this bad boy depends on
+        $this->call("module:add-dependency", ["name" => $name]);
     }
 
     /**

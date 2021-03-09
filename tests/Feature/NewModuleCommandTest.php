@@ -13,6 +13,9 @@ use Mockery;
 
 class NewModuleCommandTest extends CommandTest
 {
+    /**
+     * @group feature
+     */
     public function testCreateNewModule () : void
     {
         $filesystem = new Filesystem();
@@ -29,7 +32,7 @@ class NewModuleCommandTest extends CommandTest
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
         // Get its contents
         $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])->andReturn(
-            json_encode(["modules" => ["OtherModule"], "activeModules" => ["OtherModule"]])
+            json_encode(["modules" => [$otherModule = "OtherModule"], "activeModules" => [$otherModule]])
         );
 
         // Creating the modules root directory
@@ -137,6 +140,18 @@ class NewModuleCommandTest extends CommandTest
         Cache::shouldReceive("put")->withArgs(["modules-cache", Mockery::capture($cacheInput), 604800]);
 
         $response->expectsOutput("Your module has been created in the $root/$newModule directory.");
+
+        // Next we expect to be asked which modules this module depends on, and we answer on the other module
+        $response->expectsChoice("Which module is \"$newModule\" dependent on?", $otherModule, [
+            "0" => "None. I'm done here.",
+            "1" => $otherModule
+        ]);
+
+        // Next we expect to be asked which other module this module depends on
+        $response->expectsChoice("Alright. I've added it. What other module is \"$newModule\" dependent on?", "None. I'm done here.", ["0" => "None. I'm done here."]);
+
+        // After that, we expect to have another confirmation
+        $response->expectsOutput("Roger that.");
 
         $response->run();
         $this->assertMatchesSnapshot($webFile);

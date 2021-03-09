@@ -12,6 +12,9 @@ use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundEx
 
 abstract class ModuleStateRepository
 {
+    /**
+     * @var array|null
+     */
     protected $tracker;
 
     /**
@@ -123,7 +126,8 @@ abstract class ModuleStateRepository
 
         $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
 
-        return json_decode($this->files->get($trackerFile), true);
+        $this->tracker = json_decode($this->files->get($trackerFile), true);
+        return $this->tracker;
     }
 
     /**

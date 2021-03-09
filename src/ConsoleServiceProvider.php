@@ -7,10 +7,10 @@ namespace Thomasderooij\LaravelModules;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Thomasderooij\LaravelModules\Console\Commands\ActivateModuleCommand;
-use Thomasderooij\LaravelModules\Console\Commands\AddDependencyModuleCommand;
+use Thomasderooij\LaravelModules\Console\Commands\AddDependencyCommand;
 use Thomasderooij\LaravelModules\Console\Commands\CheckWorkbenchCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeactivateModuleCommand;
-use Thomasderooij\LaravelModules\Console\Commands\DeleteDependencyModuleCommand;
+use Thomasderooij\LaravelModules\Console\Commands\DeleteDependencyCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DeleteModuleCommand;
 use Thomasderooij\LaravelModules\Console\Commands\DependenciesCommand;
 use Thomasderooij\LaravelModules\Console\Commands\InitModuleCommand;
@@ -89,7 +89,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     protected function createAddDependencyCommand () : void
     {
         $this->app->singleton($this->moduleCommands["AddDependency"], function ($app) {
-            return new AddDependencyModuleCommand(
+            return new AddDependencyCommand(
                 $app["module.service.manager"],
                 $app["module.service.dependency_handler"]
             );
@@ -126,7 +126,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     protected function createDeleteDependencyCommand () : void
     {
         $this->app->singleton($this->moduleCommands["DeleteDependency"], function ($app) {
-            return new DeleteDependencyModuleCommand(
+            return new DeleteDependencyCommand(
                 $app["module.service.manager"],
                 $app["module.service.dependency_handler"]
             );
@@ -164,7 +164,8 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         $this->app->singleton($this->moduleCommands["New"], function ($app) {
             return new NewModuleCommand(
                 $app["module.factory.module"],
-                $app["module.service.manager"]
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
             );
         });
     }

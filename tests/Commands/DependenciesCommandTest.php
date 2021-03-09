@@ -149,9 +149,6 @@ class DependenciesCommandTest extends Test
         $response->run();
     }
 
-    /**
-     * @group uut
-     */
     public function testListingModulesWithNonExistingModule () : void
     {
         // If I have a bunch of modules

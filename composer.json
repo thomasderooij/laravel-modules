@@ -45,6 +45,14 @@
             ]
         }
     },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4.0"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
