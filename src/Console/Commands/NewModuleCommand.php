@@ -29,17 +29,11 @@ class NewModuleCommand extends ModuleCommand
      */
     protected $factory;
 
-    /**
-     * @var DependencyHandler $handler
-     */
-    protected $handler;
-
-    public function __construct(ModuleFactory $moduleFactory, ModuleManager $manager, DependencyHandler $handler)
+    public function __construct(ModuleFactory $moduleFactory, ModuleManager $manager)
     {
         parent::__construct($manager);
 
         $this->factory = $moduleFactory;
-        $this->handler = $handler;
     }
 
     public function handle() : void
@@ -55,7 +49,6 @@ class NewModuleCommand extends ModuleCommand
 
         // Then check if there already is a module with the same name
         if ($this->moduleManager->hasModule($name)) {
-            dd("here");
             $this->displayModuleAlreadyExistsWarning($name);
             return;
         }
