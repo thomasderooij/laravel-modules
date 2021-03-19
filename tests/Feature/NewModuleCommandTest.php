@@ -13,9 +13,6 @@ use Mockery;
 
 class NewModuleCommandTest extends CommandTest
 {
-    /**
-     * @group feature
-     */
     public function testCreateNewModule () : void
     {
         $filesystem = new Filesystem();

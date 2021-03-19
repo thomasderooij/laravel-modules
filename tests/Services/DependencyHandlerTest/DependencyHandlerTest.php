@@ -6,6 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
+use Mockery\MockInterface;
 use ReflectionMethod;
 use Thomasderooij\LaravelModules\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
@@ -15,30 +16,26 @@ abstract class DependencyHandlerTest extends Test
 {
     /**
      * The method we're testing
-     *
-     * @var string
      */
-    protected $method;
+    protected string $method;
 
     /**
      * Our method, abstracted
-     *
-     * @var ReflectionMethod
      */
-    protected $uut;
+    protected ReflectionMethod $uut;
 
-    protected $moduleManager;
-    protected $methodHandler;
-    protected $mockFilesystem;
-    protected $filesystem;
+    protected MockInterface $moduleManager;
+    protected MockInterface $methodHandler;
+    protected MockInterface $mockFilesystem;
+    protected Filesystem $filesystem;
 
-    protected $upKey = "up";
-    protected $downKey = "down";
+    protected string $upKey = "up";
+    protected string $downKey = "down";
 
-    protected $upstreamModule = "upstream";
-    protected $moduleInBetween = "middle_manager";
-    protected $downstreamModule = "downstream";
-    protected $blueCollarModule = "blue_collar";
+    protected string $upstreamModule = "upstream";
+    protected string $moduleInBetween = "middle_manager";
+    protected string $downstreamModule = "downstream";
+    protected string $blueCollarModule = "blue_collar";
 
     protected function setUp(): void
     {

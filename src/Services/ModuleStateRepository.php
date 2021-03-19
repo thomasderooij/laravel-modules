@@ -97,6 +97,36 @@ abstract class ModuleStateRepository
     }
 
     /**
+     * Get a collection of your currently active modules
+     *
+     * @param bool $skipCheck
+     * @return array
+     * @throws ConfigFileNotFoundException
+     * @throws ModulesNotInitialisedException
+     * @throws TrackerFileNotFoundException
+     */
+    public function getActiveModules (bool $skipCheck = false) : array
+    {
+        if (!$skipCheck && !$this->isInitialised()) {
+            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+        } elseif ($skipCheck && !$this->hasTrackerFile()) {
+            return [];
+        }
+
+        return $this->getTrackerContent()[$this->getActiveModulesTrackerKey()];
+    }
+
+    /**
+     * Get the active modules tracker key
+     *
+     * @return string
+     */
+    protected function getActiveModulesTrackerKey () : string
+    {
+        return "activeModules";
+    }
+
+    /**
      * Get the modules tracker key
      *
      * @return string

@@ -6,7 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 class GetModulesFromStreamTest extends DependencyHandlerTest
 {
-    protected $method = "getModulesFromStream";
+    protected string $method = "getModulesFromStream";
 
     public function testGettingModulesFromStream () : void
     {

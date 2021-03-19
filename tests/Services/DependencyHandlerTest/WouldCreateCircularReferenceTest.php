@@ -6,7 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 class WouldCreateCircularReferenceTest extends DependencyHandlerTest
 {
-    protected $method = "wouldCreateCircularReference";
+    protected string $method = "wouldCreateCircularReference";
 
     /**
      * We only test the would, because the would not is already tested in the normal addDependencyTest

@@ -25,7 +25,8 @@ class MigrateCommandTest extends MigrateTest
         /** @var Mockery\MockInterface&MigrateCommand $command */
         $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths]", [
             $this->migrator,
-            $this->moduleManager
+            $this->moduleManager,
+            $this->dependencyHandler,
         ]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate", $command);
@@ -68,7 +69,8 @@ class MigrateCommandTest extends MigrateTest
         /** @var Mockery\MockInterface&MigrateCommand $command */
         $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths]", [
             $this->migrator,
-            $this->moduleManager
+            $this->moduleManager,
+            $this->dependencyHandler,
         ]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate", $command);

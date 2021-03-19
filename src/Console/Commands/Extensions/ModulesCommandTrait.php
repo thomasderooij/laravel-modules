@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
+use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\ParentCallTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
@@ -17,6 +18,11 @@ trait ModulesCommandTrait
     protected $moduleManager;
 
     /**
+     * @var DependencyHandler
+     */
+    protected $dependencyHandler;
+
+    /**
      * Get modules from either a command option, or return your workbench module, or return an empty array
      *
      * @return array
@@ -28,11 +34,13 @@ trait ModulesCommandTrait
             return $this->parseModulesString($modulesString);
         }
 
+        $this->dependencyHandler->getModulesInMigrationOrder();
+
         if (($module = $this->moduleManager->getWorkBench()) !== null) {
             return [$module];
         }
 
-        return [];
+        return [config("modules.vanilla")];
     }
 
     /**

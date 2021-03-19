@@ -11,11 +11,6 @@ interface ServiceProviderFactory
 {
     /**
      * Create a new file based on a stub
-     *
-     * @param string $module
-     * @throws FileNotFoundException
-     * @throws ConfigFileNotFoundException
-     * @return void
      */
     public function create (string $module) : void;
 }

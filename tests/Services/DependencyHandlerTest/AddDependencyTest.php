@@ -11,12 +11,7 @@ use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class AddDependencyTest extends DependencyHandlerTest
 {
-    /**
-     * The method we're testing
-     *
-     * @var string
-     */
-    protected $method = "addDependency";
+    protected string $method = "addDependency";
 
     /**
      * Here is where we test adding a dependency in ideal conditions; i.e., its not upstream or downstream, and it's not already directly above us

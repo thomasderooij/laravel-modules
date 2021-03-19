@@ -14,7 +14,7 @@ class FreshCommandTest extends MigrateTest
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&FreshCommand $command */
-        $command = Mockery::mock(FreshCommand::class."[parentCall]", [$this->moduleManager]);
+        $command = Mockery::mock(FreshCommand::class."[parentCall]", [$this->moduleManager, $this->dependencyHandler]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate.fresh", $command);
 
@@ -41,7 +41,7 @@ class FreshCommandTest extends MigrateTest
     public function testMigrateFreshWithModulesOption () : void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
-        $command = Mockery::mock(FreshCommand::class."[parentCall, call]", [$this->moduleManager]);
+        $command = Mockery::mock(FreshCommand::class."[parentCall, call]", [$this->moduleManager, $this->dependencyHandler]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate.fresh", $command);
 

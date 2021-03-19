@@ -308,7 +308,8 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         $this->app->singleton($this->migrateCommands["Migrate"], function ($app) {
             return new MigrateCommand(
                 $app["migrator"],
-                $app["module.service.manager"]
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
             );
         });
     }
@@ -317,7 +318,8 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($this->migrateCommands["Fresh"], function ($app) {
             return new FreshCommand(
-                $app["module.service.manager"]
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
             );
         });
     }

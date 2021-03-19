@@ -6,7 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 class GetDependenciesKeyTest extends DependencyHandlerTest
 {
-    protected $method = "getDependenciesKey";
+    protected string $method = "getDependenciesKey";
 
     public function testGetDependenciesKey () : void
     {

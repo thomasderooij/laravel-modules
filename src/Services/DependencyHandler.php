@@ -80,6 +80,56 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_values($modules);
     }
 
+    public function getModulesInMigrationOrder (): array
+    {
+        // We get the tracker content, and the active modules
+        $trackerContent = $this->getTrackerContent();
+        $modules = $this->getActiveModules();
+
+        // If there are no dependencies, all modules act as independent pieces of software, and their migrations
+        //  should not refer to one another
+        $vanilla = config("modules.vanilla");
+        if (!isset($trackerContent[$this->getDependenciesKey()])) {
+            return array_merge([$vanilla], $modules);
+        }
+
+        // If there are dependencies, we separate them into layers, starting with ones that have no dependencies
+        //  Next layer are the ones whose only dependencies are the ones in the first layer
+        //  Third is modules whose only dependencies are in the 2nd layer, etc
+        $dependencies = $trackerContent[$this->getDependenciesKey()];
+        $sorted = [$vanilla];
+        $tier = [$vanilla];
+        while ($tier !== []) {
+            $tier = $this->getModulesDependentOnTier($tier, $dependencies);
+            $sorted = array_merge($sorted, $tier);
+        }
+
+        // We check which modules are not in the dependencies, and add those to the already sorted dependencies
+        $unrelatedModules = array_diff($modules, $sorted);
+
+        // And then we return all of the modules, in migratable order
+        return array_merge($sorted, $unrelatedModules);
+    }
+
+    protected function getModulesDependentOnTier (array $tier, array $dependencies) : array
+    {
+        $upReferences = [];
+        $downReferences = [];
+        foreach ($dependencies as $dependency) {
+            // If the up reference is found in the previous tier, it's allowed to be downstream
+            if (array_search($dependency["up"], $tier) !== false) {
+                $upReferences[] = $dependency["down"];
+                continue;
+            }
+            // Otherwise, we just add the references to thier respective arrays
+            $upReferences[] = $dependency["up"];
+            $downReferences[] = $dependency["down"];
+        }
+
+        // Next we return the upstream references which are not found the downstream references or in the previous tier
+        return array_diff(array_unique($upReferences), array_unique($downReferences), $tier);
+    }
+
     public function removeDependency (string $downstream, string $upstream) : void
     {
         // Throw an exception if a module does not exist

@@ -6,7 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 class RemoveDependencyTest extends DependencyHandlerTest
 {
-    protected $method = "removeDependency";
+    protected string $method = "removeDependency";
 
     /**
      * @group service

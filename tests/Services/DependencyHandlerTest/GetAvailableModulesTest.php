@@ -6,10 +6,10 @@ namespace Thomasderooij\LaravelModules\Tests\Services\DependencyHandlerTest;
 
 class GetAvailableModulesTest extends DependencyHandlerTest
 {
-    protected $method = "getAvailableModules";
+    protected string $method = "getAvailableModules";
 
-    private $unrelatedModule = "unrelated_module";
-    private $unrelatedModule2 = "unrelatedModule";
+    private string $unrelatedModule = "unrelated_module";
+    private string $unrelatedModule2 = "unrelatedModule";
 
     public function testGettingAvailableModulesForUpstream () : void
     {

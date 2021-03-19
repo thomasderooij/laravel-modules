@@ -32,6 +32,13 @@ interface DependencyHandler
     public function getDownstreamModules (string $module, array $dependencies = null) : array;
 
     /**
+     * Get the modules in an order that is safe to migrate, as indicated by their dependencies
+     *
+     * @return array
+     */
+    public function getModulesInMigrationOrder () : array;
+
+    /**
      * Fetch all the modules upstream of the one provided
      *
      * @param string $module

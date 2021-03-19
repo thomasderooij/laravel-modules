@@ -11,7 +11,7 @@ class DependencyExistsTest extends DependencyHandlerTest
      *
      * @var string
      */
-    protected $method = "dependencyExists";
+    protected string $method = "dependencyExists";
 
     public function testCheckingExistingMethod () : void
     {
