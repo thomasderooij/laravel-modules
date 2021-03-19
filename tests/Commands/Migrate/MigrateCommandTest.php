@@ -75,6 +75,9 @@ class MigrateCommandTest extends MigrateTest
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate", $command);
 
+        // When we ask for modules, we should receive nothing
+        $this->dependencyHandler->shouldReceive("getModulesInMigrationOrder")->andReturn([]);
+
         // The database should be prepped
         $command->shouldReceive("prepareDatabase");
 

@@ -25,6 +25,7 @@ class FreshCommandTest extends MigrateTest
         $this->moduleManager->shouldReceive('getWorkbench')->andReturn(null);
         // It should clear the workbench
         $this->moduleManager->shouldReceive("clearWorkbench");
+        $this->dependencyHandler->shouldReceive("getModulesInMigrationOrder")->andReturn([]);
 
         // It should call its parent handle function
         $command->shouldReceive("parentCall")->withArgs(["getOptions"])->andReturn([

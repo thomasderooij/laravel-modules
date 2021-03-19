@@ -34,13 +34,14 @@ trait ModulesCommandTrait
             return $this->parseModulesString($modulesString);
         }
 
-        $this->dependencyHandler->getModulesInMigrationOrder();
+        $modules = $this->dependencyHandler->getModulesInMigrationOrder();
+        array_unshift($modules, config("modules.vanilla"));
 
-        if (($module = $this->moduleManager->getWorkBench()) !== null) {
-            return [$module];
-        }
+        if ($modules === [null]) {
+            return [];
+        };
 
-        return [config("modules.vanilla")];
+        return $modules;
     }
 
     /**
