@@ -101,9 +101,6 @@ class getModulesMigratableAfterListTest extends DependencyHandlerTest
         ];
     }
 
-    /**
-     * @group order
-     */
     public function testMigratableModulesAfterList () : void
     {
         // If I have a whole bunch of modules with dependencies

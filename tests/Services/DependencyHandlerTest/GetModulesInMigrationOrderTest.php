@@ -31,14 +31,11 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
         $this->assertSame($expected, $this->uut->invoke($this->methodHandler));
     }
 
-    /**
-     * @group uut
-     */
     public function testGetMigrationOrderWhenSomeDependenciesHaveBeenSpecified () : void
     {
         // If I ask for the modules in migration order
         $this->methodHandler->shouldReceive("getTrackerContent")->andReturn([
-            $dependenciesKey = "dependenciesKey" => [
+            $dependenciesKey = "dependenciesKey" => $dependencies = [
                 ["up" => $topModule = "topModule", "down" => $layer1Module = "layer1Module"],
                 ["up" => $topModule2 = "topModule2", "down" => $layer1Module],
                 ["up" => $layer1Module, "down" => $layer2Module = "layer2Module"],
@@ -55,6 +52,17 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
             $topModule, $module1 = "module_1", $layer2Module, $layer2Module2,
             $module2 = "module_2", $topModule2, $layer1Module,
         ]);
+
+        // Then it should ask which modules are safe to migrate
+        $list = [$vanilla];
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn($firstIteration = [$topModule, $topModule2]);
+        // Then it should ask again which modules are safe to migrate
+        $list = array_merge($list, $firstIteration);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn($secondIteration = [$layer1Module]);
+        $list = array_merge($list, $secondIteration);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn($thirdIteration = [$layer2Module, $layer2Module2]);
+        $list = array_merge($list, $thirdIteration);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn([]);
 
         // And return a array containing vanilla, and the active modules
         $expected = [$vanilla, $topModule, $topModule2, $layer1Module, $layer2Module, $layer2Module2, $module1, $module2];

@@ -125,7 +125,6 @@ class DependencyHandler extends ModuleStateRepository implements Contract
             $upReferences[] = $dependency["up"];
             $downReferences[] = $dependency["down"];
         }
-//        dd(array_unique($upReferences), array_unique($downReferences), $list, array_diff(array_unique($upReferences), array_unique($downReferences), $list));
 
         // Next we return the upstream references which are not found the downstream references or in the previous tier
         return array_values(array_diff(array_unique($upReferences), array_unique($downReferences), $list));
