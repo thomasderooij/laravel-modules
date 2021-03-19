@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Thomasderooij\LaravelModules\Contracts\Factories\BroadcastServiceProviderFactory as Contract;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
-class BroadcastServiceProviderFactory extends ServiceProviderFactory implements Contract
+class BroadcastServiceProviderFactory extends ServiceProviderFactory
 {
     /**
      * @param string $module

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Factories;
 
-use Thomasderooij\LaravelModules\Contracts\Factories\AuthServiceProviderFactory as Contract;
-
-class AuthServiceProviderFactory extends ServiceProviderFactory implements Contract
+class AuthServiceProviderFactory extends ServiceProviderFactory
 {
     /**
      * Get the route service provider stub

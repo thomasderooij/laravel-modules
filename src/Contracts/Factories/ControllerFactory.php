@@ -1,26 +1,18 @@
 <?php
 
-namespace Thomasderooij\LaravelModules\Contracts\Factories;
+declare(strict_types=1);
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
+namespace Thomasderooij\LaravelModules\Contracts\Factories;
 
 interface ControllerFactory
 {
     /**
      * Create a base controller for a new module
-     *
-     * @param string $module
-     * @throws FileNotFoundException
-     * @throws ModulesNotInitialisedException
      */
     public function create (string $module) : void;
 
     /**
      * Get the qualified classname of the base controller for a given module
-     *
-     * @param string $module
-     * @return string
      */
     public function getQualifiedClassName (string $module) : string;
 }

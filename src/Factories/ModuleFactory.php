@@ -6,15 +6,12 @@ namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
-use Thomasderooij\LaravelModules\Contracts\Factories\ConsoleKernelFactory as ConsoleKernelFactoryContract;
-use Thomasderooij\LaravelModules\Contracts\Factories\ControllerFactory as ControllerFactoryContract;
+use Thomasderooij\LaravelModules\Contracts\Factories\ConsoleKernelFactory;
+use Thomasderooij\LaravelModules\Contracts\Factories\ControllerFactory;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleFactory as Contract;
-use Thomasderooij\LaravelModules\Contracts\Factories\RouteFactory as RouteFactoryContract;
-use Thomasderooij\LaravelModules\Contracts\Factories\RouteServiceProviderFactory as RouteServiceProviderFactoryContract;
-use Thomasderooij\LaravelModules\Contracts\Factories\AuthServiceProviderFactory as AuthServiceProviderFactoryContract;
-use Thomasderooij\LaravelModules\Contracts\Factories\BroadcastServiceProviderFactory as BroadcastServiceProviderFactoryContract;
-use Thomasderooij\LaravelModules\Contracts\Factories\EventServiceProviderFactory as EventServiceProviderFactoryContract;
-use Thomasderooij\LaravelModules\Contracts\Factories\HttpKernelFactory as HttpKernelFactoryContract;
+use Thomasderooij\LaravelModules\Contracts\Factories\RouteFactory;
+use Thomasderooij\LaravelModules\Contracts\Factories\HttpKernelFactory;
+use Thomasderooij\LaravelModules\Contracts\Factories\ServiceProviderFactory;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
@@ -25,59 +22,43 @@ class ModuleFactory implements Contract
 {
     /**
      * The route factory
-     *
-     * @var RouteFactoryContract
      */
-    protected $routeFactory;
+    protected RouteFactory $routeFactory;
 
     /**
      * The auth service provider factory
-     *
-     * @var AuthServiceProviderFactoryContract
      */
-    protected $authServiceProviderFactory;
+    protected ServiceProviderFactory $authServiceProviderFactory;
 
     /**
      * The broadcast service provider factory
-     *
-     * @var BroadcastServiceProviderFactoryContract
      */
-    protected $broadcastServiceProviderFactory;
+    protected ServiceProviderFactory $broadcastServiceProviderFactory;
 
     /**
      * The event service provider factory
-     *
-     * @var BroadcastServiceProviderFactoryContract
      */
-    protected $eventServiceProviderFactory;
+    protected ServiceProviderFactory $eventServiceProviderFactory;
 
     /**
      * The route service provider factory
-     *
-     * @var RouteServiceProviderFactoryContract
      */
-    protected $routeServiceProviderFactory;
+    protected ServiceProviderFactory $routeServiceProviderFactory;
 
     /**
      * The console kernel factory
-     *
-     * @var ConsoleKernelFactoryContract
      */
-    protected $consoleKernelFactory;
+    protected ConsoleKernelFactory $consoleKernelFactory;
 
     /**
      * The http kernel factory
-     *
-     * @var HttpKernelFactoryContract
      */
-    protected $httpKernelFactory;
+    protected HttpKernelFactory $httpKernelFactory;
 
     /**
      * The base controller factory
-     *
-     * @var ControllerFactoryContract
      */
-    protected $controllerFactory;
+    protected ControllerFactory $controllerFactory;
 
     /**
      * The module managing service
@@ -93,14 +74,14 @@ class ModuleFactory implements Contract
 
     public function __construct(
         Filesystem $files,
-        RouteFactoryContract $routeFactory,
-        RouteServiceProviderFactoryContract $routeServiceProviderFactory,
-        ConsoleKernelFactoryContract $consoleKernelFactory,
-        HttpKernelFactoryContract $httpKernelFactory,
-        ControllerFactoryContract $controllerFactory,
-        AuthServiceProviderFactoryContract $authServiceProviderFactory,
-        BroadcastServiceProviderFactoryContract $broadcastServiceProviderFactory,
-        EventServiceProviderFactoryContract $eventServiceProviderFactory,
+        RouteFactory $routeFactory,
+        ServiceProviderFactory $routeServiceProviderFactory,
+        ConsoleKernelFactory $consoleKernelFactory,
+        HttpKernelFactory $httpKernelFactory,
+        ControllerFactory $controllerFactory,
+        ServiceProviderFactory $authServiceProviderFactory,
+        ServiceProviderFactory $broadcastServiceProviderFactory,
+        ServiceProviderFactory $eventServiceProviderFactory,
         ModuleManager $moduleManager
     )
     {
@@ -120,7 +101,6 @@ class ModuleFactory implements Contract
      * Create a new module
      *
      * @param string $module
-     * @throws FileNotFoundException
      * @throws ModuleCreationException
      * @throws ConfigFileNotFoundException
      * @throws ModulesNotInitialisedException
