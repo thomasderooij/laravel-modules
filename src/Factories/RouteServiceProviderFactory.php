@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Thomasderooij\LaravelModules\Contracts\Factories\RouteServiceProviderFactory as Contract;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
-class RouteServiceProviderFactory extends ServiceProviderFactory implements Contract
+class RouteServiceProviderFactory extends ServiceProviderFactory
 {
     /**
      * Create a route service provider for your module

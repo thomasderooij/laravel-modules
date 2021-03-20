@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Factories;
 
-use Thomasderooij\LaravelModules\Contracts\Factories\EventServiceProviderFactory as Contract;
-
-class EventServiceProviderFactory extends ServiceProviderFactory implements Contract
+class EventServiceProviderFactory extends ServiceProviderFactory
 {
     /**
      * Get the route service provider stub

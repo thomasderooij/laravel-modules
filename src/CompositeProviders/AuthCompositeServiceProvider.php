@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\CompositeProviders;
 
 use Illuminate\Support\AggregateServiceProvider;
 
-class AuthCompositeServiceProvider  extends AggregateServiceProvider
+class AuthCompositeServiceProvider extends AggregateServiceProvider
 {
     use CompositeProviderTrait;
 
-    protected $name = "AuthServiceProvider";
+    protected string $name = "AuthServiceProvider";
 }

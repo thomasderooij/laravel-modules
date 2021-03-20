@@ -10,15 +10,8 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 abstract class FileFactory
 {
-    /**
-     * @var Filesystem $filesystem
-     */
-    protected $filesystem;
-
-    /**
-     * @var ModuleManager $moduleManager
-     */
-    protected $moduleManager;
+    protected Filesystem $filesystem;
+    protected ModuleManager $moduleManager;
 
     public function __construct (Filesystem $filesystem, ModuleManager $moduleManager)
     {

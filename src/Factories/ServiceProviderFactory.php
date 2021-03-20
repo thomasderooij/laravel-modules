@@ -15,17 +15,13 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
 {
     /**
      * The module manager service
-     *
-     * @var ModuleManager
      */
-    protected $moduleManager;
+    protected ModuleManager $moduleManager;
 
     /**
      * The route source information service
-     *
-     * @var RouteSource
      */
-    protected $routeSource;
+    protected RouteSource $routeSource;
 
     public function __construct(Filesystem $filesystem, ModuleManager $moduleManager, RouteSource $routeSource)
     {
