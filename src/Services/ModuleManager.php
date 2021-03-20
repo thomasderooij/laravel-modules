@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Services;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as Contract;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
@@ -205,6 +204,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws ConfigFileNotFoundException
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
      */
     public function moduleIsActive (string $module) : bool
     {
@@ -261,6 +261,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws ModuleNotFoundException
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
+     * @throws FileNotFoundException
      */
     public function setWorkbench (string $module) : void
     {

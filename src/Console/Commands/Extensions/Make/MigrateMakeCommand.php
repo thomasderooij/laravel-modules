@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Make;
 
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand as OriginalCommand;
@@ -10,8 +12,8 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class MigrateMakeCommand extends OriginalCommand
 {
-    protected $moduleManager;
-    protected $files;
+    protected ModuleManager $moduleManager;
+    protected Filesystem $files;
 
     public function __construct (Filesystem $files, MigrationCreator $creator, Composer $composer, ModuleManager $moduleManager)
     {
@@ -62,7 +64,7 @@ class MigrateMakeCommand extends OriginalCommand
      * @param string $module
      * @return string
      */
-    protected function getModuleMigrationPath (string $module)
+    protected function getModuleMigrationPath (string $module) : string
     {
         // Get the base directory where migrations should go
         $dir = $this->moduleManager->getModuleDirectory($module)."/Database/Migrations";

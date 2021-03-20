@@ -11,7 +11,6 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait
 use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
 
 class FreshCommand extends OriginalCommand
 {
@@ -30,8 +29,6 @@ class FreshCommand extends OriginalCommand
      * Execute the console command.
      *
      * @return void
-     * @throws ModulesNotInitialisedException
-     * @throws ModuleNotFoundException
      */
     public function handle () : void
     {

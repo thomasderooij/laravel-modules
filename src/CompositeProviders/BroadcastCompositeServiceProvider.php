@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\CompositeProviders;
 
@@ -9,5 +10,5 @@ class BroadcastCompositeServiceProvider extends ServiceProvider
 {
     use CompositeProviderTrait;
 
-    protected $name = "BroadcaseServiceProvider";
+    protected string $name = "BroadcastServiceProvider";
 }

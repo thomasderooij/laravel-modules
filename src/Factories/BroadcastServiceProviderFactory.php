@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 class BroadcastServiceProviderFactory extends ServiceProviderFactory
 {
     /**
      * @param string $module
      * @throws FileNotFoundException
-     * @throws ConfigFileNotFoundException
      */
     public function create (string $module) : void
     {

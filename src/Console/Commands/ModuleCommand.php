@@ -12,10 +12,7 @@ use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundEx
 
 abstract class ModuleCommand extends Command
 {
-    /**
-     * @var ModuleManager $manager
-     */
-    protected $moduleManager;
+    protected ModuleManager $moduleManager;
 
     public function __construct (ModuleManager $moduleManager)
     {
@@ -29,9 +26,6 @@ abstract class ModuleCommand extends Command
      *
      * @param string $module
      * @return bool
-     * @throws ModulesNotInitialisedException
-     * @throws ConfigFileNotFoundException
-     * @throws TrackerFileNotFoundException
      */
     protected function passesCheck (string $module) : bool
     {

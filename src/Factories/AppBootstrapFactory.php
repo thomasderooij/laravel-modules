@@ -13,8 +13,8 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class AppBootstrapFactory extends FileFactory implements Contract
 {
-    protected $compositeConsoleKernelClassName;
-    protected $compositeHttpKernelClassName;
+    protected string $compositeConsoleKernelClassName;
+    protected string $compositeHttpKernelClassName;
 
     public function __construct(Filesystem $filesystem, ConsoleCompositeKernel $consoleCompositeKernel, HttpCompositeKernel $httpCompositeKernel, ModuleManager $moduleManager)
     {

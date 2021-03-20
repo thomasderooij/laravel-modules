@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Contracts\Services;
 
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-
 interface ModuleManager
 {
     /**
@@ -20,8 +18,6 @@ interface ModuleManager
 
     /**
      * Clear your workbench
-     *
-     * @throws ModulesNotInitialisedException
      */
     public function clearWorkbench () : void;
 

@@ -7,13 +7,11 @@ namespace Thomasderooij\LaravelModules\Factories;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Thomasderooij\LaravelModules\Http\CompositeKernel;
 use Thomasderooij\LaravelModules\Contracts\Factories\HttpKernelFactory as Contract;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 class HttpKernelFactory extends FileFactory implements Contract
 {
     /**
      * @param string $module
-     * @throws ConfigFileNotFoundException
      * @throws FileNotFoundException
      */
     public function create(string $module): void
@@ -60,7 +58,6 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @return string
-     * @throws ConfigFileNotFoundException
      */
     protected function getKernelNamespace (string $module) : string
     {

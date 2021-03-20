@@ -1,21 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
 use Thomasderooij\LaravelModules\ParentCallTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 trait GenerateOverrideTrait
 {
     use ParentCallTrait;
 
-    /**
-     * @var ModuleManager
-     */
-    protected $moduleManager;
+    protected ModuleManager $moduleManager;
 
     public function __construct (Filesystem $files, ModuleManager $moduleManager)
     {
@@ -35,7 +33,7 @@ trait GenerateOverrideTrait
      * @param $name
      * @return string
      */
-    protected function getPath($name)
+    protected function getPath($name) : string
     {
         // If there is no module, return default values
         $module = $this->option("module");
@@ -77,7 +75,6 @@ trait GenerateOverrideTrait
      * Get the root namespace for the class.
      *
      * @return string
-     * @throws ConfigFileNotFoundException
      */
     protected function rootNamespace () : string
     {

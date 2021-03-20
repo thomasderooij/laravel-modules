@@ -59,7 +59,7 @@ abstract class ModuleStateRepository
      * @return bool
      * @throws ConfigFileNotFoundException
      * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
+     * @throws TrackerFileNotFoundException|FileNotFoundException
      */
     public function hasModule (string $module) : bool
     {

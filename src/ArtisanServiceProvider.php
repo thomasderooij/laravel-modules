@@ -33,7 +33,7 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate\RollbackCom
 
 class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    protected $makeCommands = [
+    protected array $makeCommands = [
         "Channel"       => "command.channel.make",
         "Controller"    => "command.controller.make",
         "Console"       => "command.console.make",
@@ -57,7 +57,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         "Test"          => "command.test.make",
     ];
 
-    protected $migrateCommands = [
+    protected array $migrateCommands = [
         "Migrate" => "command.migrate",
         "Fresh" => 'command.migrate.fresh',
 //        'MigrateRefresh' => 'command.migrate.refresh',

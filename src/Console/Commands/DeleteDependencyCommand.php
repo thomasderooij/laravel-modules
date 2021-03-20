@@ -9,7 +9,7 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class DeleteDependencyCommand extends ModuleCommand
 {
-    protected $dependencyHandler;
+    protected DependencyHandler $dependencyHandler;
 
     /**
      * The name and signature of the console command.

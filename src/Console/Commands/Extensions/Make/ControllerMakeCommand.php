@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Make;
 
 use Illuminate\Routing\Console\ControllerMakeCommand as OriginalCommand;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\GenerateOverrideTrait;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 class ControllerMakeCommand extends OriginalCommand
 {
@@ -17,13 +19,12 @@ class ControllerMakeCommand extends OriginalCommand
      * @param string $model
      * @return string
      *
-     * @throws \InvalidArgumentException
-     * @throws ConfigFileNotFoundException
+     * @throws InvalidArgumentException
      */
     protected function parseModel($model)
     {
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
-            throw new \InvalidArgumentException('Model name contains invalid characters.');
+            throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
         $model = trim(str_replace('/', '\\', $model), '\\');

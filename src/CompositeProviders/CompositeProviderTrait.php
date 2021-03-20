@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\CompositeProviders;
 
 use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 
 trait CompositeProviderTrait
 {
@@ -16,9 +15,6 @@ trait CompositeProviderTrait
      * CompositeProviderTrait constructor.
      *
      * @param $app
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
      */
     public function __construct($app)
     {

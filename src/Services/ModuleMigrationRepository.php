@@ -34,7 +34,7 @@ class ModuleMigrationRepository extends DatabaseMigrationRepository
      * @param string|null $module
      * @return array
      */
-    public function getMigrations($steps, string $module = null)
+    public function getMigrations($steps, string $module = null) : array
     {
         if ($module === null) {
             return $this->parentCall("getMigrations", [$steps]);
@@ -56,7 +56,7 @@ class ModuleMigrationRepository extends DatabaseMigrationRepository
      * @param string|null $module
      * @return array
      */
-    public function getLast(string $module = null)
+    public function getLast(string $module = null) : array
     {
         if ($module === null) {
             return $this->parentCall("getLast");

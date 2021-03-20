@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
-use Illuminate\Console\Command;
-use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-
 class UnsetWorkbenchCommand extends ModuleCommand
 {
     /**
@@ -26,8 +22,6 @@ class UnsetWorkbenchCommand extends ModuleCommand
 
     /**
      * Handle the workbench clearing
-     *
-     * @throws ModulesNotInitialisedException
      */
     public function handle ()
     {

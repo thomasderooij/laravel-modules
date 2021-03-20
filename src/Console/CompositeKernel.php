@@ -1,25 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use ReflectionException;
 use Thomasderooij\LaravelModules\Contracts\ConsoleCompositeKernel;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 
 class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
 {
     /**
      * An array of kernels present in the active modules
-     *
-     * @var array
      */
-    protected $kernels;
+    protected array $kernels;
 
     public function __construct(Application $app, Dispatcher $events)
     {
@@ -50,9 +49,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
      *
      * @param Application $app
      * @param Dispatcher $events
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
+     * @throws BindingResolutionException
      */
     protected function activeModulesToKernels (Application $app, Dispatcher $events) : void
     {
@@ -72,7 +69,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
      * Invoke the schedule function on all of the kernels
      *
      * @param Schedule $schedule
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function schedule(Schedule $schedule)
     {
@@ -88,7 +85,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
     /**
      * Invoke the commands function on all of the kernels
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function commands()
     {

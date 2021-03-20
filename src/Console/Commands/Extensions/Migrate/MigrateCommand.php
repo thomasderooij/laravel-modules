@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate;
 
@@ -9,9 +10,7 @@ use Illuminate\Database\Migrations\Migrator;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrait;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 use Thomasderooij\LaravelModules\Services\DependencyHandler;
 
 class MigrateCommand extends OriginalCommand
@@ -33,8 +32,6 @@ class MigrateCommand extends OriginalCommand
      * Execute the console command.
      *
      * @return void
-     * @throws ConfigFileNotFoundException
-     * @throws TrackerFileNotFoundException
      */
     public function handle()
     {
@@ -51,7 +48,7 @@ class MigrateCommand extends OriginalCommand
         try {
             foreach ($modules as $module) {
                 // If the vanilla laravel is called as a module, migrate normally.
-                if (strtolower($module) === strtolower(config("modules.vanilla"))) {
+                if (strtolower($module) === strtolower(config("modules.vanilla") ?? "")) {
                     parent::handle();
                     continue;
                 }

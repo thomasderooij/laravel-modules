@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Make;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Console\TestMakeCommand as OriginalCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\GenerateOverrideTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 class TestMakeCommand extends OriginalCommand
 {
@@ -32,7 +33,7 @@ class TestMakeCommand extends OriginalCommand
      * @param  string  $name
      * @return string
      */
-    protected function getPath($name)
+    protected function getPath($name) : string
     {
         // If there is no module, return default values
         $module = $this->option("module");
@@ -58,7 +59,6 @@ class TestMakeCommand extends OriginalCommand
      * Get the root namespace for the class.
      *
      * @return string
-     * @throws ConfigFileNotFoundException
      */
     protected function rootNamespace () : string
     {

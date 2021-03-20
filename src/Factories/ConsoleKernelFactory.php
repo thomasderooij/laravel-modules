@@ -9,17 +9,14 @@ use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Console\Kernel;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConsoleKernelFactory as Contract;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Services\RouteSource;
 
 class ConsoleKernelFactory extends FileFactory implements Contract
 {
     /**
      * The route source information service
-     *
-     * @var RouteSource
      */
-    protected $routeSource;
+    protected RouteSource $routeSource;
 
     public function __construct(Filesystem $filesystem, ModuleManager $moduleManager, RouteSource $routeSource)
     {
@@ -33,7 +30,6 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @throws FileNotFoundException
-     * @throws ConfigFileNotFoundException
      */
     public function create (string $module) : void
     {
@@ -84,7 +80,6 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @return string
-     * @throws ConfigFileNotFoundException
      */
     protected function getKernelNamespace (string $module) : string
     {

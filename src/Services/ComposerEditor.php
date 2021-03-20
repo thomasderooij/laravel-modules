@@ -12,10 +12,8 @@ class ComposerEditor implements Contract
 {
     /**
      * The laravel file system
-     *
-     * @var Filesystem
      */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     public function __construct (Filesystem $filesystem)
     {

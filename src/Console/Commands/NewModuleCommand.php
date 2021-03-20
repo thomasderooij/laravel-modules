@@ -24,10 +24,7 @@ class NewModuleCommand extends ModuleCommand
      */
     protected $description = "Create a new module for your project";
 
-    /**
-     * @var ModuleFactory $factory
-     */
-    protected $factory;
+    protected ModuleFactory $factory;
 
     public function __construct(ModuleFactory $moduleFactory, ModuleManager $manager)
     {

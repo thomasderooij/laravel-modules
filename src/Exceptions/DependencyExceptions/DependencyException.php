@@ -8,8 +8,8 @@ use Throwable;
 
 abstract class DependencyException extends \Exception
 {
-    protected $upstream;
-    protected $downstream;
+    protected string $upstream;
+    protected string $downstream;
 
     public function __construct(string $downstream, string $upstream, $message = "", $code = 0, Throwable $previous = null)
     {

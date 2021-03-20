@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console;
 
 use Illuminate\Console\Application as Artisan;
@@ -7,6 +9,7 @@ use Illuminate\Console\Command;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use ReflectionException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -17,7 +20,7 @@ class Kernel extends ConsoleKernel
      *
      * @param array|string $paths
      * @return void
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function load($paths) : void
     {

@@ -12,15 +12,9 @@ trait ModulesCommandTrait
 {
     use ParentCallTrait;
 
-    /**
-     * @var ModuleManager
-     */
-    protected $moduleManager;
+    protected ModuleManager $moduleManager;
 
-    /**
-     * @var DependencyHandler
-     */
-    protected $dependencyHandler;
+    protected DependencyHandler $dependencyHandler;
 
     /**
      * Get modules from either a command option, or return your workbench module, or return an empty array

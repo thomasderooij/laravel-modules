@@ -7,11 +7,10 @@ namespace Thomasderooij\LaravelModules\Http;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Router;
+use ReflectionClass;
+use ReflectionException;
 use Thomasderooij\LaravelModules\Contracts\HttpCompositeKernel;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
 
 class CompositeKernel extends HttpKernel implements HttpCompositeKernel
 {
@@ -56,7 +55,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
      *
      * @var array<CompositeKernel>
      */
-    private $kernels = [];
+    private array $kernels = [];
 
     /**
      * Create a new HTTP kernel instance.
@@ -96,12 +95,12 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function resolveProperties () : void
     {
         foreach ($this->kernels as $kernel) {
-            $reflection = new \ReflectionClass(get_class($kernel));
+            $reflection = new ReflectionClass(get_class($kernel));
 
             foreach ($this->getPropNames() as $propName) {
                 $reflectionProperty = $reflection->getProperty($propName);

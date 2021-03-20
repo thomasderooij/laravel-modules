@@ -14,10 +14,8 @@ class RouteFactory extends FileFactory implements Contract
 {
     /**
      * A route source object providing routing information
-     *
-     * @var RouteSource
      */
-    protected $routeSource;
+    protected RouteSource $routeSource;
 
     public function __construct(Filesystem $filesystem, ModuleManager $moduleManager, RouteSource $routeSource)
     {
@@ -29,12 +27,12 @@ class RouteFactory extends FileFactory implements Contract
     /**
      * Create route files
      *
-     * @param string $module
+     * @param string $moduleName
      * @throws FileNotFoundException
      */
-    public function create (string $module) : void
+    public function create (string $moduleName) : void
     {
-        $directory = $this->getRouteDirectory($module);
+        $directory = $this->getRouteDirectory($moduleName);
         if (!$this->filesystem->exists($directory)) {
             $this->filesystem->makeDirectory($directory, 0755, true);
         }

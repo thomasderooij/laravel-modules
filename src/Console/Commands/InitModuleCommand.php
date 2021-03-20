@@ -34,59 +34,43 @@ class InitModuleCommand extends Command
 
     /**
      * A factory to replace the application bootstrap file to use modular kernels
-     *
-     * @var AppBootstrapFactory
      */
-    protected $bootstrapFactory;
+    protected AppBootstrapFactory $bootstrapFactory;
 
     /**
      * The composer class
-     *
-     * @var Composer
      */
-    protected $composer;
+    protected Composer $composer;
 
     /**
      * A composer editor to update the composer.json file
-     *
-     * @var ComposerEditor
      */
-    protected $composerEditor;
+    protected ComposerEditor $composerEditor;
 
     /**
      * A factory to implement the config file, update composer.json and create a module tracking file
-     *
-     * @var ConfigFactory
      */
-    protected $configFactory;
+    protected ConfigFactory $configFactory;
 
     /**
      * The Laravel filesystem
-     *
-     * @var Filesystem
      */
-    protected $fileSystem;
+    protected Filesystem $fileSystem;
 
     /**
      * A module managing service to query and register module changes
-     *
-     * @var ModuleManager
      */
-    protected $moduleManager;
+    protected ModuleManager $moduleManager;
 
     /**
      * A factory to create the initial migration to for updating the migrations table
-     *
-     * @var ModuleMigrationFactory
      */
-    protected $moduleMigrationFactory;
+    protected ModuleMigrationFactory $moduleMigrationFactory;
 
     /**
      * A factory to create a tracker file
-     *
-     * @var TrackerFactory
      */
-    protected $trackerFactory;
+    protected TrackerFactory $trackerFactory;
 
     public function __construct(
         AppBootstrapFactory $bootstrapFactory,

@@ -38,7 +38,7 @@ class SeederMakeCommand extends OriginalCommand
      * @param $name
      * @return string
      */
-    protected function getPath($name)
+    protected function getPath ($name) : string
     {
         // If there is no module, return default values
         $module = $this->getModule();

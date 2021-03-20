@@ -23,7 +23,7 @@ class DependenciesCommand extends ModuleCommand
      */
     protected $description = 'See what modules are related to this module';
 
-    protected $handler;
+    protected DependencyHandler $handler;
 
     public function __construct (ModuleManager $manager, DependencyHandler $handler)
     {

@@ -9,7 +9,6 @@ use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\Contracts\Factories\ServiceProviderFactory as Contract;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Contracts\Services\RouteSource;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
 abstract class ServiceProviderFactory extends FileFactory implements Contract
 {
@@ -36,7 +35,6 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @throws FileNotFoundException
-     * @throws ConfigFileNotFoundException
      * @return void
      */
     public function create (string $module) : void

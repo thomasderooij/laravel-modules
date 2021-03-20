@@ -20,7 +20,7 @@ use Thomasderooij\LaravelModules\Console\Commands\UnsetWorkbenchCommand;
 
 class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    protected $moduleCommands = [
+    protected array $moduleCommands = [
         "Activate"          => "module.command.activate",
         "AddDependency"     => "module.command.add_dependency",
         "Check"             => "module.command.check",

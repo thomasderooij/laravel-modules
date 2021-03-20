@@ -62,10 +62,7 @@ class ModuleFactory implements Contract
      */
     protected ModuleManager $moduleManager;
 
-    /**
-     * @var Filesystem
-     */
-    protected $files;
+    protected Filesystem $files;
 
     public function __construct(
         Filesystem $files,

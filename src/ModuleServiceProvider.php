@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules;
 
-use Faker\Generator as FakerGenerator;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
 use Thomasderooij\LaravelModules\Console\CompositeKernel as ConsoleCompositeKernel;
-use Thomasderooij\LaravelModules\Database\Factories\EloquentModuleFactory;
 use Thomasderooij\LaravelModules\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Factories\AuthServiceProviderFactory;
 use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
@@ -33,7 +30,7 @@ use Thomasderooij\LaravelModules\Services\RouteSource;
 
 class ModuleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    protected $moduleServices = [
+    protected array $moduleServices = [
         "AuthServiceProviderFactory"        => "module.factory.service_provider.auth",
         "BootstrapFactory"                  => "module.factory.bootstrap",
         "BroadcastServiceProviderFactory"   => "module.factory.service_provider.broadcast",
@@ -109,7 +106,6 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
     protected function registerMicroServices () : void
     {
         $this->registerComposerEditor();
-        $this->registerEloquentFactory();
         $this->registerModuleManager();
         $this->registerModuleMigrationRepository();
         $this->registerModuleMigrator();
@@ -309,16 +305,6 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    protected function registerEloquentFactory () : void
-    {
-        $this->app->singleton(Factory::class, function ($app) {
-            return EloquentModuleFactory::construct(
-                $app[FakerGenerator::class],
-                $this->app->databasePath('factories')
-            );
-        });
-    }
-
     protected function registerModuleManager () : void
     {
         $this->app->singleton($this->moduleServices["ModuleManager"], function ($app) {
@@ -357,7 +343,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    public function provides()
+    public function provides(): array
     {
         return array_keys($this->moduleServices);
     }

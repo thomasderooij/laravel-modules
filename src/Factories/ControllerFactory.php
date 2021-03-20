@@ -6,8 +6,6 @@ namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException as FileNotFoundExceptionAlias;
 use Thomasderooij\LaravelModules\Contracts\Factories\ControllerFactory as Contract;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 
 class ControllerFactory extends FileFactory implements Contract
 {
@@ -16,7 +14,6 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @throws FileNotFoundExceptionAlias
-     * @throws ConfigFileNotFoundException
      */
     public function create (string $module) : void
     {
@@ -31,7 +28,6 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @return string
-     * @throws ConfigFileNotFoundException
      */
     public function getQualifiedClassName (string $module) : string
     {
@@ -53,7 +49,6 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @param string $module
      * @return string
-     * @throws ConfigFileNotFoundException
      */
     protected function getNamespace (string $module) : string
     {

@@ -8,10 +8,7 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 trait MigrateOverrideTrait
 {
-    /**
-     * @var ModuleManager
-     */
-    protected $moduleManager;
+    protected ModuleManager $moduleManager;
 
     /**
      * Get the migration paths

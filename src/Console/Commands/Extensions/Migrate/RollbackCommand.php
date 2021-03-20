@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate;
 
 use Illuminate\Database\Console\Migrations\RollbackCommand as OriginalCommand;

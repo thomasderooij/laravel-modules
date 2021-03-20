@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
-use Illuminate\Console\Command;
-use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-
 class CheckWorkbenchCommand extends ModuleCommand
 {
     /**
