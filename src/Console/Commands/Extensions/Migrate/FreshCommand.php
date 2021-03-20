@@ -8,6 +8,7 @@ use Illuminate\Database\Console\Migrations\FreshCommand as OriginalCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrait;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait;
+use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 use Thomasderooij\LaravelModules\Exceptions\ModuleNotFoundException;
@@ -17,11 +18,12 @@ class FreshCommand extends OriginalCommand
     use ModulesCommandTrait;
     use MigrateOverrideTrait;
 
-    public function __construct(ModuleManager $moduleManager)
+    public function __construct(ModuleManager $moduleManager, DependencyHandler $dependencyHandler)
     {
         parent::__construct();
 
         $this->moduleManager = $moduleManager;
+        $this->dependencyHandler = $dependencyHandler;
     }
 
     /**

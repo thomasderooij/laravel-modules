@@ -1,18 +1,13 @@
 <?php
 
-namespace Thomasderooij\LaravelModules\Contracts\Factories;
+declare(strict_types=1);
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Thomasderooij\LaravelModules\Exceptions\ModuleCreationException;
+namespace Thomasderooij\LaravelModules\Contracts\Factories;
 
 interface ModuleFactory
 {
     /**
      * Create a new module
-     *
-     * @param string $module
-     * @throws ModuleCreationException
-     * @throws FileNotFoundException
      */
     public function create (string $module) : void;
 }

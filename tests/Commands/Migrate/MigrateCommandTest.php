@@ -26,7 +26,8 @@ class MigrateCommandTest extends MigrateTest
         $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths,prepareDatabase]", [
             $this->migrator,
             $this->dispatcher,
-            $this->moduleManager
+            $this->moduleManager,
+            $this->dependencyHandler,
         ]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate", $command);
@@ -70,10 +71,14 @@ class MigrateCommandTest extends MigrateTest
         $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths,prepareDatabase]", [
             $this->migrator,
             $this->dispatcher,
-            $this->moduleManager
+            $this->moduleManager,
+            $this->dependencyHandler,
         ]);
         $command->shouldAllowMockingProtectedMethods();
         $this->instance("command.migrate", $command);
+
+        // When we ask for modules, we should receive nothing
+        $this->dependencyHandler->shouldReceive("getModulesInMigrationOrder")->andReturn([]);
 
         // The database should be prepped
         $command->shouldReceive("prepareDatabase");

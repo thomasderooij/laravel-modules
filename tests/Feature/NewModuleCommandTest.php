@@ -29,12 +29,21 @@ class NewModuleCommandTest extends CommandTest
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
         // Get its contents
         $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])->andReturn(
-            json_encode(["modules" => ["OtherModule"], "activeModules" => ["OtherModule"]])
+            // These 2 are for the composite and http kernel
+            json_encode(["modules" => [$otherModule = "OtherModule"], "activeModules" => [$otherModule]]),
+            json_encode(["modules" => [$otherModule = "OtherModule"], "activeModules" => [$otherModule]]),
+            // This one is from the new module command
+            json_encode(["modules" => [$otherModule = "OtherModule"], "activeModules" => [$otherModule]]),
+            // And this one from the add dependency command
+            json_encode([
+                "modules" => [$otherModule = "OtherModule", $newModule],
+                "activeModules" => [$otherModule, $newModule],
+            ])
         );
 
         // Creating the modules root directory
         // See if the module directory exists
-        $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$root")])->andReturn(false)->twice();
+        $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$root")])->times(3)->andReturn(false, false, true);
         $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$root/$newModule")])->andReturn(false)->once();
         // And if not, create it
         $this->filesystem->shouldReceive("makeDirectory")->withArgs([base_path("$root"), 0755, true]);
@@ -137,6 +146,30 @@ class NewModuleCommandTest extends CommandTest
         Cache::shouldReceive("put")->withArgs(["modules-cache", Mockery::capture($cacheInput), 604800]);
 
         $response->expectsOutput("Your module has been created in the $root/$newModule directory.");
+
+        // Next we expect to be asked which modules this module depends on, and we answer on the other module
+        $response->expectsChoice("Which module is \"$newModule\" dependent on?", $otherModule, [
+            "0" => "None. I'm done here.",
+            "1" => $otherModule
+        ]);
+
+        // We then expect the dependency to be saved
+        $this->filesystem->shouldReceive("put")->withArgs([
+            base_path("$root/.tracker"),
+            json_encode([
+                "modules" => ["OtherModule", $newModule],
+                "activeModules" => ["OtherModule", $newModule],
+                "dependencies" => [
+                    ["up" => $otherModule, "down" => $newModule]
+                ]
+            ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
+        ])->andReturn(null);
+
+        // Next we expect to be asked which other module this module depends on
+        $response->expectsChoice("Alright. I've added it. What other module is \"$newModule\" dependent on?", "None. I'm done here.", ["0" => "None. I'm done here."]);
+
+        // After that, we expect to have another confirmation
+        $response->expectsOutput("Roger that.");
 
         $response->run();
         $this->assertMatchesSnapshot($webFile);

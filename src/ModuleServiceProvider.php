@@ -25,6 +25,7 @@ use Thomasderooij\LaravelModules\Factories\ModuleMigrationFactory;
 use Thomasderooij\LaravelModules\Factories\RouteFactory;
 use Thomasderooij\LaravelModules\Factories\RouteServiceProviderFactory;
 use Thomasderooij\LaravelModules\Services\ComposerEditor;
+use Thomasderooij\LaravelModules\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Services\ModuleMigrationRepository;
 use Thomasderooij\LaravelModules\Services\ModuleMigrator;
@@ -41,6 +42,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         "ConsoleCompositeKernel"            => "module.kernel.console_composite_kernel",
         "ConsoleKernelFactory"              => "module.factory.console_kernel",
         "ControllerFactory"                 => "module.factory.controller",
+        "DependencyHandler"                 => "module.service.dependency_handler",
         "EloquentFactory"                   => "module.service.eloquent_factory",
         "EventServiceProviderFactory"       => "module.factory.service_provider.event",
         "HttpCompositeKernel"               => "module.kernel.http_composite_kernel",
@@ -94,6 +96,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         $this->registerConfigFactory();
         $this->registerConsoleKernelFactory();
         $this->registerControllerFactory();
+        $this->registerDependencyHandler();
         $this->registerEventServiceProviderFactory();
         $this->registerHttpKernelFactory();
         $this->registerModuleFactory();
@@ -200,6 +203,15 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
             return new ControllerFactory(
                 $app["files"],
                 $app[$this->moduleServices["ModuleManager"]]
+            );
+        });
+    }
+
+    protected function registerDependencyHandler () : void
+    {
+        $this->app->singleton($this->moduleServices["DependencyHandler"], function ($app) {
+            return new DependencyHandler(
+                $app["files"]
             );
         });
     }

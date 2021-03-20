@@ -4,8 +4,16 @@
     "keywords": [
         "framework",
         "laravel",
+        "thomasderooij",
         "modules",
-        "modular"
+        "module"
+    ],
+    "authors": [
+        {
+            "name": "Thomas de Rooij",
+            "email": "thomasderooij@gmail.com",
+            "role": "developer"
+        }
     ],
     "license": "MIT",
     "require": {
@@ -36,6 +44,11 @@
                 "Thomasderooij\\LaravelModules\\ConsoleSupportServiceProvider"
             ]
         }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -1,14 +1,13 @@
 <?php
 
-namespace Thomasderooij\LaravelModules\Contracts\Factories;
+declare(strict_types=1);
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+namespace Thomasderooij\LaravelModules\Contracts\Factories;
 
 interface ModuleMigrationFactory
 {
     /**
      * Create a new migration file
-     * @throws FileNotFoundException
      */
     public function create () : void;
 

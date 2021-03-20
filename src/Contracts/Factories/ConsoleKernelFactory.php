@@ -1,16 +1,13 @@
 <?php
 
-namespace Thomasderooij\LaravelModules\Contracts\Factories;
+declare(strict_types=1);
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+namespace Thomasderooij\LaravelModules\Contracts\Factories;
 
 interface ConsoleKernelFactory
 {
     /**
      * Create a console kernel
-     *
-     * @param string $module
-     * @throws FileNotFoundException
      */
     public function create (string $module) : void;
 }

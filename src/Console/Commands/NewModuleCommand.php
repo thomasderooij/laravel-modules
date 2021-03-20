@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
+use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleFactory;
 
@@ -63,6 +64,9 @@ class NewModuleCommand extends ModuleCommand
 
         // Give feedback
         $this->displayModuleCreatedMessage($name);
+
+        // Ask which modules this bad boy depends on
+        $this->call("module:add-dependency", ["name" => $name]);
     }
 
     /**

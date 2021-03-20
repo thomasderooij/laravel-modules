@@ -12,17 +12,19 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\TrackerFileNotFoundException;
+use Thomasderooij\LaravelModules\Services\DependencyHandler;
 
 class MigrateCommand extends OriginalCommand
 {
     use ModulesCommandTrait;
     use MigrateOverrideTrait;
 
-    public function __construct(Migrator $migrator, Dispatcher $dispatcher, ModuleManager $moduleManager)
+    public function __construct(Migrator $migrator, Dispatcher $dispatcher, ModuleManager $moduleManager, DependencyHandler $dependencyHandler)
     {
         // Add a modules option to the command signature
         $this->signature.= "\n                {--modules= : Migrate a only migrations in the scope of a given modules }";
         $this->moduleManager = $moduleManager;
+        $this->dependencyHandler = $dependencyHandler;
 
         parent::__construct($migrator, $dispatcher);
     }
@@ -42,11 +44,6 @@ class MigrateCommand extends OriginalCommand
 
         $this->prepareDatabase();
         $modules = $this->getModules();
-
-        if (empty($modules)) {
-            $this->parentCall("handle");
-            return;
-        }
 
         // Next, we will check to see if a path option has been defined. If it has
         // we will use the path relative to the root of this installation folder

@@ -6,6 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Commands\Migrate;
 
 use Illuminate\Events\Dispatcher;
 use Mockery;
+use Thomasderooij\LaravelModules\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Services\ModuleMigrator;
 use Thomasderooij\LaravelModules\Tests\Test;
@@ -13,6 +14,7 @@ use Thomasderooij\LaravelModules\Tests\Test;
 abstract class MigrateTest extends Test
 {
     protected $moduleManager;
+    protected $dependencyHandler;
     protected $migrator;
     protected $dispatcher;
 
@@ -22,6 +24,8 @@ abstract class MigrateTest extends Test
 
         $this->moduleManager = Mockery::mock(ModuleManager::class);
         $this->instance("module.service.manager", $this->moduleManager);
+        $this->dependencyHandler = Mockery::mock(DependencyHandler::class);
+        $this->instance("module.service.dependency_handler", $this->dependencyHandler);
         $this->migrator = Mockery::mock(ModuleMigrator::class);
         $this->instance("migrator", $this->migrator);
         $this->dispatcher = Mockery::mock(Dispatcher::class);

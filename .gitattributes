@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Normalize all non-binary files line endings to LF upon `git add`/`git commit.`
 * text=auto
 
@@ -18,4 +19,13 @@ phpunit.xml     export-ignore
 .editorconfig           export-ignore
 composer.lock           export-ignore
 todo                    export-ignore
+=======
+./tests             export-ignore
+./.editorconfig     export-ignore
+./.gitattributes    export-ignore
+./.travis.yml       export-ignore
+./composer.lock     export-ignore
+./phpunit.xml       export-ignore
+./todo              export-ignore
+>>>>>>> v1.7.0
 

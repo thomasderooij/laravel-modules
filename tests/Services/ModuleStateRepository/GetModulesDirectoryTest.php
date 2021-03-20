@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Services\ModuleManager;
+namespace Thomasderooij\LaravelModules\Tests\Services\ModuleStateRepository;
 
 use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ConfigFileNotFoundException;
 
-class GetModulesDirectoryTest extends ModuleManagerTest
+class GetModulesDirectoryTest extends ModuleStateRepositoryTest
 {
     private $method = "getModulesDirectory";
 
     public function testGetModulesDirectory () : void
     {
-        $uut = $this->getMockManager($this->method);
+        $uut = $this->getMockRepository($this->method);
 
         // I should check if there is a config file
         $uut->shouldReceive("hasConfig")->andReturn(true);
@@ -31,7 +31,7 @@ class GetModulesDirectoryTest extends ModuleManagerTest
 
     public function testGetModulesDirectoryWithoutConfig () : void
     {
-        $uut = $this->getMockManager($this->method);
+        $uut = $this->getMockRepository($this->method);
 
         // If I don't have a config file
         $uut->shouldReceive("hasConfig")->andReturn(false);

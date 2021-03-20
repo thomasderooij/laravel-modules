@@ -63,10 +63,6 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
      *
      * @param Application $app
      * @param Router $router
-     * @throws ConfigFileNotFoundException
-     * @throws ModulesNotInitialisedException
-     * @throws TrackerFileNotFoundException
-     * @throws \ReflectionException
      */
     public function __construct(Application $app, Router $router)
     {
@@ -96,8 +92,6 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
             $this->resolveProperties();
         });
 
-        $this->resolveProperties();
-
         parent::__construct($app, $router);
     }
 
@@ -106,7 +100,6 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
      */
     protected function resolveProperties () : void
     {
-        /** @var HttpKernel $kernel */
         foreach ($this->kernels as $kernel) {
             $reflection = new \ReflectionClass(get_class($kernel));
 
