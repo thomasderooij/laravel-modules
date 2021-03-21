@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules;
 
+use Faker\Generator as FakerGenerator;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Thomasderooij\LaravelModules\Console\CompositeKernel as ConsoleCompositeKernel;
+use Thomasderooij\LaravelModules\Database\Factories\EloquentModuleFactory;
 use Thomasderooij\LaravelModules\Factories\AppBootstrapFactory;
 use Thomasderooij\LaravelModules\Factories\AuthServiceProviderFactory;
 use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
@@ -106,6 +109,7 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
     protected function registerMicroServices () : void
     {
         $this->registerComposerEditor();
+        $this->registerEloquentFactory();
         $this->registerModuleManager();
         $this->registerModuleMigrationRepository();
         $this->registerModuleMigrator();
@@ -301,6 +305,16 @@ class ModuleServiceProvider extends ServiceProvider implements DeferrableProvide
         $this->app->singleton($this->moduleServices["ComposerEditor"], function ($app) {
             return new ComposerEditor(
                 $app["files"]
+            );
+        });
+    }
+
+    protected function registerEloquentFactory () : void
+    {
+        $this->app->singleton(Factory::class, function ($app) {
+            return EloquentModuleFactory::construct(
+                $app[FakerGenerator::class],
+                $this->app->databasePath('factories')
             );
         });
     }
