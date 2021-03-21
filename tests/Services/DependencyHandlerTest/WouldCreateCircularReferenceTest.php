@@ -8,9 +8,6 @@ class WouldCreateCircularReferenceTest extends DependencyHandlerTest
 {
     protected string $method = "wouldCreateCircularReference";
 
-    /**
-     * @group uut
-     */
     public function testWouldCreatedCircularReference () : void
     {
         // If I have a bunch of dependencies

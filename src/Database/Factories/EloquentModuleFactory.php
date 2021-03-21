@@ -19,11 +19,8 @@ abstract class EloquentModuleFactory extends Factory
         /** @var ModuleManager $moduleManager */
         $moduleManager = app()->make("module.service.manager");
         if ($moduleManager->isInitialised()) {
-            /** @var ModuleManager $manager */
-            $manager = app()->make("module.service.manager");
-
             foreach ($moduleManager->getActiveModules() as $module) {
-                $path = $manager->getModuleDirectory($module) . "/database/factories";
+                $path = $moduleManager->getModuleDirectory($module) . "/database/factories";
                 $instance->load($path);
             }
         }
@@ -40,7 +37,19 @@ abstract class EloquentModuleFactory extends Factory
     public static function resolveFactoryName(string $modelName)
     {
         $resolver = static::$factoryNameResolver ?: function (string $modelName) {
+            /** @var ModuleManager $moduleManager */
+            $moduleManager = app()->make("module.service.manager");
+            $modulesDirectory = $moduleManager->getModulesDirectory();
+
             $appNamespace = static::appNamespace();
+
+            if (Str::startsWith($modelName, $modulesDirectory)) {
+                $parts = explode("\\", $modelName);
+                $modelsKey = array_search("Models", $parts);
+                $parts[$modelsKey] = trim(static::$namespace, "\\");
+
+                return implode("\\", $parts) . "Factory";
+            }
 
             $modelName = Str::startsWith($modelName, $appNamespace.'Models\\')
                 ? Str::after($modelName, $appNamespace.'Models\\')

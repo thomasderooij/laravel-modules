@@ -12,6 +12,9 @@
     <testsuite name="Factories">
       <directory suffix="Test.php">./tests/Factories</directory>
     </testsuite>
+    <testsuite name="Database">
+      <directory suffix="Test.php">./tests/Database</directory>
+    </testsuite>
     <testsuite name="Services">
       <directory suffix="Test.php">./tests/Services</directory>
     </testsuite>
