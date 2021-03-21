@@ -104,7 +104,7 @@ class FactoryMakeCommandTest extends MakeTest
     public function testWithVanillaModule () : void
     {
         // If I want to make a factory for my module
-        $response = $this->artisan("make:factory", ["name" => $factory = "MyNewFactory", "--module" => $module = "MYMODULE"]);
+        $response = $this->artisan("make:factory", ["name" => $factory = "MyNewFactory", "--module" => $module = "Vanilla"]);
 
         // We make sure the modules are initialised
         $this->initialisedModulesSetup();
@@ -112,6 +112,7 @@ class FactoryMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.vanilla", null])->andReturn($module);
         Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Aggregates");
 
         // We should then check if this factory already exists
