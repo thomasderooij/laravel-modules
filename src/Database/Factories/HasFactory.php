@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Thomasderooij\LaravelModules\Tests\Database;
+namespace Thomasderooij\LaravelModules\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Thomasderooij\LaravelModules\Database\Factories\EloquentModuleFactory;
 
 trait HasFactory
 {
