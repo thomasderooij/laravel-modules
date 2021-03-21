@@ -47,7 +47,11 @@ class FreshCommand extends OriginalCommand
 
         // Foreach module specified in the modules command, run a migration
         foreach ($this->getModules() as $module) {
-            $this->moduleManager->setWorkbench($module);
+            if (strtolower($module) === strtolower(config("modules.vanilla") ?? "")) {
+                $this->moduleManager->clearWorkbench();
+            } else {
+                $this->moduleManager->setWorkbench($module);
+            }
 
             $this->call('migrate', array_filter([
                 '--database' => $database,
