@@ -212,10 +212,10 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         // single out the dependencies
         $dependencies = $fileContent[$this->getDependenciesKey()];
         // See what's upstream
-        $upstreamModules = $this->getUpstreamModules($downstream, $dependencies);
+        $downstreamModules = $this->getDownstreamModules($downstream, $dependencies);
 
-        // And make sure that whatever we're adding is not already upstream somewhere
-        return array_search($downstream, $upstreamModules) === false;
+        // And make sure that whatever we're adding is not already downstream somewhere
+        return array_search($upstream, $downstreamModules) !== false;
     }
 
     /**

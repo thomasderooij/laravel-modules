@@ -69,9 +69,6 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
         $this->assertSame($expected, $this->uut->invoke($this->methodHandler));
     }
 
-    /**
-     * @group uut
-     */
     public function testGetMigrationOrderWhenAllDependenciesHaveBeenSpecified () : void
     {
 

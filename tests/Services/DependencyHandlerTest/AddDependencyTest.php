@@ -70,10 +70,10 @@ class AddDependencyTest extends DependencyHandlerTest
         $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->upstreamModule)])->andReturn($this->upstreamModule);
         $this->methodHandler->shouldReceive("sanitiseModuleName")->withArgs([strtolower($this->downstreamModule)])->andReturn($this->downstreamModule);
 
-        // The dependency should be new
+        // The dependency should not be new
         $this->methodHandler->shouldReceive("dependencyExists")->withArgs([$this->downstreamModule, $this->upstreamModule])->andReturn(true);
 
-        // The tracker content should be updated
+        // And we expect an exception
         $this->expectException(DependencyAlreadyExistsException::class);
         $this->expectExceptionMessage("module \"{$this->downstreamModule}\" is already dependent on \"{$this->upstreamModule}\".");
 
