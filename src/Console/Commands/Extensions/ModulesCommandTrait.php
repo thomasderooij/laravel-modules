@@ -29,7 +29,6 @@ trait ModulesCommandTrait
         }
 
         $modules = $this->dependencyHandler->getModulesInMigrationOrder();
-        array_unshift($modules, config("modules.vanilla"));
 
         if ($modules === [null]) {
             return [];
