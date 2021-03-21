@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Thomasderooij\LaravelModules\ParentCallTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
@@ -104,5 +105,26 @@ trait GenerateOverrideTrait
         $options[] = ["module", null, InputOption::VALUE_OPTIONAL, "Apply to this module."];
 
         return $options;
+    }
+
+    /**
+     * Qualify the given model class base name.
+     *
+     * @param  string  $model
+     * @return string
+     */
+    protected function qualifyModel (string $model) : string
+    {
+        $model = ltrim($model, '\\/');
+
+        $model = str_replace('/', '\\', $model);
+
+        $rootNamespace = $this->rootNamespace();
+
+        if (Str::startsWith($model, $rootNamespace)) {
+            return $model;
+        }
+
+        return $rootNamespace.config("modules.models_dir")."\\$model";
     }
 }

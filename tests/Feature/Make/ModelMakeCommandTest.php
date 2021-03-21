@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Feature\Make;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Mockery;
 
 class ModelMakeCommandTest extends MakeTest
@@ -20,9 +21,9 @@ class ModelMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
 
         // We should then check if this model already exists
-        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, false);
 
@@ -50,9 +51,9 @@ class ModelMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
 
         // We should then check if this model already exists
-        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, true);
 
@@ -79,9 +80,9 @@ class ModelMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
 
         // We should then check if this model already exists
-        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, true);
 
@@ -108,9 +109,9 @@ class ModelMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
 
         // We should then check if this model already exists
-        $fileDirectory = "Models";
         $fileName = "$model.php";
         $this->setFileExpectations($fileDirectory, $fileName, false);
 

@@ -1,6 +1,4 @@
 make the tracker file name configurable in the config
 implement a check to see if a module exists before running a make command, e.g., make:model
-implement a setting that dictates your model directory instead of relying on whether it models directory exists in the
- app path
 implement kernel tests
 implement seeders in the modules

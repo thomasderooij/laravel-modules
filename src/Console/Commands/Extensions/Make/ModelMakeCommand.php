@@ -36,4 +36,15 @@ class ModelMakeCommand extends OriginalCommand
 
         return $this;
     }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\\'.config("modules.models_dir");
+    }
 }

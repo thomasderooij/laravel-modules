@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Feature\Make;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Mockery;
 
 class FactoryMakeCommandTest extends MakeTest
@@ -20,6 +21,7 @@ class FactoryMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Aggregates");
 
         // We should then check if this factory already exists
         $fileDirectory = "database/factories";
@@ -50,6 +52,7 @@ class FactoryMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Aggregates");
 
         // We should then check if this factory already exists
         $fileDirectory = "Database/Factories";
@@ -79,6 +82,7 @@ class FactoryMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Aggregates");
 
         // We should then check if this factory already exists
         $fileDirectory = "Database/Factories";
@@ -108,6 +112,7 @@ class FactoryMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Aggregates");
 
         // We should then check if this factory already exists
         $fileDirectory = "database/factories";

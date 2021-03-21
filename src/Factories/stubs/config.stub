@@ -18,5 +18,6 @@ return [
      */
     "root" => env("MODULES_ROOT", "{moduleDirectory}"),
     "vanilla" => env("VANILLA_LARAVEL", "{vanillaModule}"),
+    "models_dir" => env("MODELS_DIR", "models"),
     "autoload" => env("MODULES_AUTOLOAD", "{moduleAutoload}"),
 ];
