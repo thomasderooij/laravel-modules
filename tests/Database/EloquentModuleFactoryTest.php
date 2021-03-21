@@ -20,6 +20,9 @@ class EloquentModuleFactoryTest extends Test
         $this->instance("module.service.manager", $this->moduleManager);
     }
 
+    /**
+     * @group uut
+     */
     public function testResolveFactoryName () : void
     {
         // If I have a model in the app/models directory
@@ -27,7 +30,7 @@ class EloquentModuleFactoryTest extends Test
         // And I ask for the factory name, I expect to receive a correct factory
         $expected = "Database\\Factories\\MyModelFactory";
         // After we do a quick module check
-        $this->moduleManager->shouldReceive("getModulesDirectory")->andReturn("Modules");
+        $this->moduleManager->shouldReceive("getModulesNamespace")->andReturn("Modules");
 
         $this->assertSame($expected, EloquentModuleFactory::resolveFactoryName($appModel));
 

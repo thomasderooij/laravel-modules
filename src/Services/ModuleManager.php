@@ -166,6 +166,16 @@ class ModuleManager extends ModuleStateRepository implements Contract
     }
 
     /**
+     * Get the namespace for the bas
+     *
+     * @return string
+     */
+    public function getModulesNamespace () : string
+    {
+        return ucfirst(config("modules.root"));
+    }
+
+    /**
      * @param string $module
      * @return string
      * @throws ConfigFileNotFoundException

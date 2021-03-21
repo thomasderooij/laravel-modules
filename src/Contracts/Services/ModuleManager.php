@@ -41,6 +41,11 @@ interface ModuleManager
      */
     public function getModuleNamespace (string $module, bool $includeBackslash = true) : string;
 
+    /**
+     * Get the namespace of the modules directory
+     */
+    public function getModulesNamespace () : string;
+
     public function getModuleRoot (string $module) : string;
 
     /**

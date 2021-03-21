@@ -39,11 +39,11 @@ abstract class EloquentModuleFactory extends Factory
         $resolver = static::$factoryNameResolver ?: function (string $modelName) {
             /** @var ModuleManager $moduleManager */
             $moduleManager = app()->make("module.service.manager");
-            $modulesDirectory = $moduleManager->getModulesDirectory();
+            $modulesNamespace = $moduleManager->getModulesNamespace();
 
             $appNamespace = static::appNamespace();
 
-            if (Str::startsWith($modelName, $modulesDirectory)) {
+            if (Str::startsWith($modelName, $modulesNamespace)) {
                 $parts = explode("\\", $modelName);
                 $modelsKey = array_search("Models", $parts);
                 $parts[$modelsKey] = trim(static::$namespace, "\\");
