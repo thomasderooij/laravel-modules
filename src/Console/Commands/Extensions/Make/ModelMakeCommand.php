@@ -10,4 +10,30 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\GenerateOverrideTra
 class ModelMakeCommand extends OriginalCommand
 {
     use GenerateOverrideTrait;
+
+    /**
+     * Build the class with the given name.
+     *
+     * @param  string  $name
+     * @return string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function buildClass($name)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        return $this->replaceNamespace($stub, $name)->replaceFactoryTrait($stub)->replaceClass($stub, $name);
+    }
+
+    protected function replaceFactoryTrait (string &$stub) : self
+    {
+        $stub = str_replace(
+            "Illuminate\Database\Eloquent\Factories\HasFactory",
+            "Thomasderooij\LaravelModules\Database\Factories\HasFactory",
+            $stub
+        );
+
+        return $this;
+    }
 }
