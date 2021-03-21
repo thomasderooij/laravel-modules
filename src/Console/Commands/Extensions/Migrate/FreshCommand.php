@@ -10,7 +10,6 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\MigrateOverrideTrai
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\ModulesCommandTrait;
 use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Exceptions\InitExceptions\ModulesNotInitialisedException;
 
 class FreshCommand extends OriginalCommand
 {
@@ -33,39 +32,29 @@ class FreshCommand extends OriginalCommand
     public function handle () : void
     {
         // Try to get the workbench module and clear the workbench. If the modules are no initialised, default to default functionality
-        try {
-            $workbench = $this->moduleManager->getWorkBench();
-            $this->moduleManager->clearWorkbench();
-        } catch (ModulesNotInitialisedException $e) {
+        if (!$this->moduleManager->isInitialised()) {
             $this->parentCall("handle");
             return;
         }
 
         $database = $this->input->getOption('database');
-        // Run the normal fresh command
-        $this->parentCall("handle");
+        // Wipe the db
+        $this->parentCall("call", ["db:wipe", array_filter([
+            '--database' => $database,
+            '--drop-views' => $this->option('drop-views'),
+            '--drop-types' => $this->option('drop-types'),
+            '--force' => true,
+        ])]);
 
-        // Foreach module specified in the modules command, run a migration
-        foreach ($this->getModules() as $module) {
-            if (strtolower($module) === strtolower(config("modules.vanilla") ?? "")) {
-                $this->moduleManager->clearWorkbench();
-            } else {
-                $this->moduleManager->setWorkbench($module);
-            }
-
-            $this->call('migrate', array_filter([
-                '--database' => $database,
-                '--path' => $this->input->getOption('path'),
-                '--realpath' => $this->input->getOption('realpath'),
-                '--force' => true,
-                '--step' => $this->option('step'),
-            ]));
-        }
-
-        // Set the workbench back to its original value, if any.
-        if ($workbench !== null) {
-            $this->moduleManager->setWorkbench($workbench);
-        }
+        // And run migrate with the modules command
+        $this->parentCall("call", ["migrate", array_filter([
+            '--database' => $database,
+            '--path' => $this->input->getOption('path'),
+            '--realpath' => $this->input->getOption('realpath'),
+            '--force' => true,
+            '--step' => $this->option('step'),
+            '--modules' => $this->option('modules')
+        ])]);
     }
 
     /**
