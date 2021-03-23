@@ -116,7 +116,7 @@ When creating a new module, your directory structure will look as follow:
     ├── tests
     └── vendor
 
-The .tracker file keeps track of the modules your have and their dependencies.<br/>
+The .tracker file keeps track of the modules you have and their dependencies.<br/>
 All directories you're not seeing, like Database, Events, Jobs, Exceptions etc. will be created when the make command 
  is invoked.<br/>
 If you're having issues with PHPUnit, make sure you add your modules test directory to your phpunit.xml file.
