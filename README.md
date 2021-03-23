@@ -154,7 +154,8 @@ The vanilla Laravel name is just a module name for the default behaviour. If you
 change it in the config/modules file, or add 'MODULES_VANILLA={your preferred name here}' to your .env file
 
 ### Roadmap
-The following things will be applied before moving to a 1.x stage:
+The following things are planned, loosely
+ * Seeders
  * Broadcast service provider composite functionality
  * migrate:refresh command
  * Drawing pretty ASCII pictures to visualise your dependencies
