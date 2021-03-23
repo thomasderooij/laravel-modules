@@ -94,20 +94,21 @@ When creating a new module, your directory structure will look as follow:
     ├── database
     ├── modules<this is the default>
     │   └── YourModule
-    │       ├── Console
-    │       │   └── Kernel.php
-    │       ├── Http
-    │       │   └── Controllers
-    │       │       ├── Controller.php
-    │       ├── Providers
-    │       │   ├── AuthServiceProvider.php
-    │       │   ├── BroadcastServiceProvider.php
-    │       │   ├── EventServiceProvider
-    │       │   └── RouteServiceProvider
-    │       └── routes
-    │           ├── api.php
-    │           ├── console.php
-    │           └── web.php
+    │   │   ├── Console
+    │   │   │   └── Kernel.php
+    │   │   ├── Http
+    │   │   │   └── Controllers
+    │   │   │       ├── Controller.php
+    │   │   ├── Providers
+    │   │   │   ├── AuthServiceProvider.php
+    │   │   │   ├── BroadcastServiceProvider.php
+    │   │   │   ├── EventServiceProvider
+    │   │   │   └── RouteServiceProvider
+    │   │   └── routes
+    │   │       ├── api.php
+    │   │       ├── console.php
+    │   │       └── web.php
+    │   └── .tracker
     ├── public
     ├── resources
     ├── routes
@@ -115,8 +116,10 @@ When creating a new module, your directory structure will look as follow:
     ├── tests
     └── vendor
 
-All other directories, like database, Events, Jobs, Exceptions etc. will be created when the make command 
- is invoked.
+The .tracker file keeps track of the modules your have and their dependencies.<br/>
+All directories you're not seeing, like Database, Events, Jobs, Exceptions etc. will be created when the make command 
+ is invoked.<br/>
+If you're having issues with PHPUnit, make sure you add your modules test directory to your phpunit.xml file.
 
 ### Laravel Commands
 #### Make
