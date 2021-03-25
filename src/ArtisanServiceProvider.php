@@ -6,6 +6,7 @@ namespace Thomasderooij\LaravelModules;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Thomasderooij\LaravelModules\Console\Commands\Extensions\Db\SeedCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Make\ChannelMakeCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Make\ConsoleMakeCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\Make\ControllerMakeCommand;
@@ -64,10 +65,20 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'Rollback' => 'command.migrate.rollback',
     ];
 
+    protected array $databaseCommands = [
+        "Seed" => "command.seed"
+    ];
+
     public function register() : void
     {
+        $this->registerDatabaseCommands();
         $this->registerMakeCommands();
         $this->registerMigrateCommands();
+    }
+
+    protected function registerDatabaseCommands () : void
+    {
+        $this->registerSeedCommand();
     }
 
     protected function registerMakeCommands () : void
@@ -82,6 +93,19 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         foreach (array_keys($this->migrateCommands) as $command) {
             call_user_func_array([$this, "register{$command}MigrateCommand"], []);
         }
+    }
+
+    /*************************************************************************
+     * Database commands
+     *************************************************************************/
+    protected function registerSeedCommand () : void
+    {
+        $this->app->singleton($this->databaseCommands["Seed"], function ($app) {
+            return new SeedCommand(
+                $app['db'],
+                $app['module.service.manager'],
+            );
+        });
     }
 
     /*************************************************************************
