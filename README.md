@@ -128,9 +128,6 @@ If there is no module in your workbench and the --module option is not used, the
 will display vanilla Laravel behaviour.
  To explicitly refer to the vanilla Laravel directories, you can use the --module=vanilla option.
 
-The following command(s) do not apply to your module (yet):
- * [`php artisan make:seeder`]
-
 #### Migrate
 The migrate command looks at your module dependencies, and migrates them based on that. So make sure your downstream 
 migrations don't reference your upstream migrations, because that be trouble.<br/>
@@ -160,7 +157,6 @@ change it in the config/modules file, or add 'MODULES_VANILLA={your preferred na
 
 ### Roadmap
 The following things are planned, loosely
- * Seeders
  * Broadcast service provider composite functionality
  * migrate:refresh command
  * Drawing pretty ASCII pictures to visualise your dependencies

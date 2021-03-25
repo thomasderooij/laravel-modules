@@ -27,14 +27,15 @@ class SeedCommand extends OriginalCommand
     protected function getSeeder()
     {
         $class = $this->input->getArgument('class') ?? $this->input->getOption('class');
+        $baseClass = $class;
 
         if (strpos($class, '\\') === false) {
             $class = 'Database\\Seeders\\'.$class;
 
             if (!class_exists('Database\\Seeders\\'.$class)) {
                 foreach ($this->moduleManager->getActiveModules() as $module) {
-                    $modulesNs = $this->moduleManager->getModuleNamespace($module);
-                    $seeder = $modulesNs . "Database\\Seeders";
+                    $moduleNs = $this->moduleManager->getModuleNamespace($module);
+                    $seeder = $moduleNs . "Database\\Seeders\\".$baseClass;
                     if (class_exists($seeder)) {
                         $class = $seeder;
                         break;
