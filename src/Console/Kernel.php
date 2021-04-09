@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
         foreach ((new Finder)->in($paths)->files() as $command) {
 
             // Determine if the command needs to be added from the module namespace or the vanilla namespace
-            if (substr($command, 0, strlen(base_path(config('modules.root')))) === base_path(config('modules.root'))) {
+            if (substr($command->getPath(), 0, strlen(base_path(config('modules.root')))) === base_path(config('modules.root'))) {
                 $command = ucfirst(config('modules.root')) . "\\".str_replace(
                         ['/', '.php'],
                         ['\\', ''],
