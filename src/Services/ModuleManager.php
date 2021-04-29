@@ -201,7 +201,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
             return null;
         }
 
-        $content = $cache[$this->getWorkbenchKey()];
+        $content = $cache[$this->getWorkbenchKey()] ?? null;
 
         return $content;
     }
