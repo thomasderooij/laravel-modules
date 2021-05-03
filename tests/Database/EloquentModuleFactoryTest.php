@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Database;
 
+use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Database\Factories\EloquentModuleFactory;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Tests\Test;
@@ -33,6 +34,7 @@ class EloquentModuleFactoryTest extends Test
         $this->moduleManager->shouldReceive("getModulesNamespace")->andReturn("Modules");
 
         $this->assertSame($expected, EloquentModuleFactory::resolveFactoryName($appModel));
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Models");
 
         // If I have a model in the modules directy
         $moduleModel = "Modules\\MyModule\\Models\\MyModel";

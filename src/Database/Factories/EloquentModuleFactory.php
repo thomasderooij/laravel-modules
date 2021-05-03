@@ -45,7 +45,7 @@ abstract class EloquentModuleFactory extends Factory
 
             if (Str::startsWith($modelName, $modulesNamespace)) {
                 $parts = explode("\\", $modelName);
-                $modelsKey = array_search("Models", $parts);
+                $modelsKey = array_search(config("modules.models_dir"), $parts);
                 $parts[$modelsKey] = trim(static::$namespace, "\\");
 
                 return implode("\\", $parts) . "Factory";
