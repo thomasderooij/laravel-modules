@@ -26,18 +26,19 @@ class EloquentModuleFactoryTest extends Test
      */
     public function testResolveFactoryName () : void
     {
+        $modelsDirectory = "Aggregates";
         // If I have a model in the app/models directory
-        $appModel = "App\\Models\\MyModel";
+        $appModel = "App\\$modelsDirectory\\MyModel";
         // And I ask for the factory name, I expect to receive a correct factory
-        $expected = "Database\\Factories\\MyModelFactory";
+        $expected = "Database\\Factories\\$modelsDirectory\\MyModelFactory";
         // After we do a quick module check
         $this->moduleManager->shouldReceive("getModulesNamespace")->andReturn("Modules");
 
         $this->assertSame($expected, EloquentModuleFactory::resolveFactoryName($appModel));
-        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn("Models");
+        Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($modelsDirectory);
 
-        // If I have a model in the modules directy
-        $moduleModel = "Modules\\MyModule\\Models\\MyModel";
+        // If I have a model in the modules directory
+        $moduleModel = "Modules\\MyModule\\$modelsDirectory\\MyModel";
         // And I ask for the factory name, I expect to receive a correct factory
         $expected = "Modules\\MyModule\\Database\\Factories\\MyModelFactory";
         $this->assertSame($expected, EloquentModuleFactory::resolveFactoryName($moduleModel));

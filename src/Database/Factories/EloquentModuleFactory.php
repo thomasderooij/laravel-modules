@@ -51,8 +51,8 @@ abstract class EloquentModuleFactory extends Factory
                 return implode("\\", $parts) . "Factory";
             }
 
-            $modelName = Str::startsWith($modelName, $appNamespace.'Models\\')
-                ? Str::after($modelName, $appNamespace.'Models\\')
+            $modelName = Str::startsWith($modelName, $appNamespace.config("modules.models_dir").'\\')
+                ? Str::after($modelName, $appNamespace.'\\'.config("modules.models_dir"))
                 : Str::after($modelName, $appNamespace);
 
             return static::$namespace.$modelName.'Factory';
