@@ -70,7 +70,7 @@ abstract class GenerateOverrideTest extends Test
         // We mock all the functions that are not our unit under test, and we exclude the constructor and option function from these mocks
         $mockableFunctions = $this->getMockableClassMethods($class, $this->method, [
             // We don't want to mock these methods
-            "__construct", "__call", "__callStatic",
+            "__construct", "__call", "__callStatic", "getDefaultName", "getDefaultDescription",
             // We also don't mock these, since these are taken from the command class itself
             "setName", "setDescription", "setHelp", "isHidden", "setHidden", "addArgument", "addOption"
         ]);
