@@ -51,7 +51,13 @@ class RollbackCommand extends OriginalCommand
             return null;
         }
 
-        $result = DB::table("migrations")->select(["module", "batch"])->groupBy(["module", "batch"])->orderBy("batch")->get("module")->last();
+        $result = DB::table("migrations")
+            ->select(["module", "batch"])
+            ->groupBy(["module", "batch"])
+            ->orderBy("batch")
+            ->get("module")
+            ->last()->module;
+        ;
 
         return $result;
     }
