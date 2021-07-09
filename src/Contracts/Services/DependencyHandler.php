@@ -30,4 +30,6 @@ interface DependencyHandler
      * Fetch all the modules upstream of the one provided
      */
     public function getUpstreamModules (string $module, array $dependencies = null) : array;
+
+    public function removeDependencies (string $module) : void;
 }

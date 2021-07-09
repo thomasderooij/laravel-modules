@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
+use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class DeleteModuleCommand extends ModuleCommand
@@ -22,9 +23,13 @@ class DeleteModuleCommand extends ModuleCommand
      */
     protected $description = 'Run the laravel_tests in this module';
 
-    public function __construct (ModuleManager $manager)
+    private DependencyHandler $dependencyHandler;
+
+    public function __construct (ModuleManager $manager, DependencyHandler $handler)
     {
         parent::__construct($manager);
+
+        $this->dependencyHandler = $handler;
     }
 
     public function handle()
@@ -38,6 +43,8 @@ class DeleteModuleCommand extends ModuleCommand
         $answer = $this->askConfirmation($name);
         if ($this->isConfirmed($answer)) {
             $this->moduleManager->removeModule($name);
+            $this->dependencyHandler->removeDependencies($name);
+
             $this->confirmDeletion();
         } elseif ($this->isCancellation($answer)) {
             $this->confirmCancellation();

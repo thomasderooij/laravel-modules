@@ -272,4 +272,26 @@ class DependencyHandler extends ModuleStateRepository implements Contract
 
         return array_unique($mapped);
     }
+
+    public function removeDependencies (string $module): void
+    {
+        if (!$this->hasTrackerFile()) {
+            return;
+        }
+
+        $trackerContent = $this->getTrackerContent();
+        if (!key_exists($this->getDependenciesKey(), $trackerContent)) {
+            return;
+        }
+
+        $dependencies = $trackerContent[$this->getDependenciesKey()];
+        foreach ($dependencies as $key => $dependency) {
+            if (strtolower($dependency["up"]) === strtolower($module) || strtolower($dependency["down"]) === strtolower($module)) {
+                unset($dependencies[$key]);
+            }
+        }
+
+        $trackerContent[$this->getDependenciesKey()] = $dependencies;
+        $this->save($trackerContent);
+    }
 }

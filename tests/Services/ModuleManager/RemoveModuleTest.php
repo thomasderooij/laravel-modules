@@ -38,6 +38,7 @@ class RemoveModuleTest extends ModuleManagerTest
         $uut->expects("getModuleDirectory")->withArgs([$module])->andReturn($directory);
         // And then delete that directory
         $this->filesystem->expects("deleteDirectories")->withArgs([$directory]);
+        $this->filesystem->expects("deleteDirectory")->withArgs([$directory]);
 
         $uut->removeModule($module);
     }
@@ -68,6 +69,7 @@ class RemoveModuleTest extends ModuleManagerTest
         $uut->expects("getModuleDirectory")->withArgs([$module])->andReturn($directory);
         // And then delete that directory
         $this->filesystem->expects("deleteDirectories")->withArgs([$directory]);
+        $this->filesystem->expects("deleteDirectory")->withArgs([$directory]);
 
         $uut->removeModule($module);
     }

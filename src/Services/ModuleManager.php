@@ -260,7 +260,12 @@ class ModuleManager extends ModuleStateRepository implements Contract
         $content[$this->getModulesTrackerKey()] = array_values($modules);
         $this->save($content);
 
-        $this->files->deleteDirectories($this->getModuleDirectory($module));
+        // Fetch the module directory
+        $directory = $this->getModuleDirectory($module);
+        // Delete the subdirectories
+        $this->files->deleteDirectories($directory);
+        // Delete the module directory itself
+        $this->files->deleteDirectory($directory);
     }
 
     /**

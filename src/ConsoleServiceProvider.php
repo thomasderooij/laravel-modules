@@ -118,7 +118,8 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($this->moduleCommands["Delete"], function ($app) {
             return new DeleteModuleCommand(
-                $app["module.service.manager"]
+                $app["module.service.manager"],
+                $app["module.service.dependency_handler"]
             );
         });
     }
