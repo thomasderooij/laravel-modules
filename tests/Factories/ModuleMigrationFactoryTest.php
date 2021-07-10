@@ -45,7 +45,7 @@ class ModuleMigrationFactoryTest extends Test
         $mockFilesystem
             ->shouldReceive('put')
             ->withArgs([
-                base_path("database/migrations/2019_11_01_000000_module_init_migration.php"),
+                base_path("database/migrations/2010_11_01_000000_module_init_migration.php"),
                 Mockery::capture($argumentContent)
             ])
             ->once()
@@ -67,7 +67,7 @@ class ModuleMigrationFactoryTest extends Test
         $uut = $this->app->make(ModuleMigrationFactory::class);
 
         // The filesysten should check if the file it wants to delete is actually a file
-        $file = base_path("database/migrations/2019_11_01_000000_module_init_migration.php");
+        $file = base_path("database/migrations/2010_11_01_000000_module_init_migration.php");
         $mockFilesystem->shouldReceive("isFile")->withArgs([$file])->andReturn(true);
         // And then delete it
         $mockFilesystem
@@ -90,7 +90,7 @@ class ModuleMigrationFactoryTest extends Test
         $uut = $this->app->make(ModuleMigrationFactory::class);
 
         // The filesysten should check if the file it wants to delete is actually a file
-        $file = base_path("database/migrations/2019_11_01_000000_module_init_migration.php");
+        $file = base_path("database/migrations/2010_11_01_000000_module_init_migration.php");
         $mockFilesystem->shouldReceive("isFile")->withArgs([$file])->andReturn(false);
         // And that should be the end of it
 

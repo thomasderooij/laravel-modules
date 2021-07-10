@@ -56,7 +56,7 @@ class InitModulesCommandTest extends CommandTest
         $migrationStubFileLocation = realpath(__DIR__ . "/../../src/Factories/stubs/moduleMigration.stub");
         $this->filesystem->shouldReceive("get")->withArgs([$migrationStubFileLocation])->andReturn($filesystem->get($migrationStubFileLocation))->once();
         $migrationFileContent = null;
-        $this->filesystem->shouldReceive("put")->withArgs([database_path("migrations/2019_11_01_000000_module_init_migration.php"), Mockery::capture($migrationFileContent)])->once();
+        $this->filesystem->shouldReceive("put")->withArgs([database_path("migrations/2010_11_01_000000_module_init_migration.php"), Mockery::capture($migrationFileContent)])->once();
 
         // And I expect to receive instructions after a successful initialisation
         $response->expectsOutput("You are set to go. Make sure to run migration command to get your module migrations working.");

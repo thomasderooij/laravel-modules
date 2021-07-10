@@ -59,7 +59,7 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      */
     protected function getMigrationName () : string
     {
-        return "2019_11_01_000000_module_init_migration.php";
+        return "2010_11_01_000000_module_init_migration.php";
     }
 
     /**
