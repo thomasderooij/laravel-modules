@@ -35,6 +35,6 @@ trait MigrateOverrideTrait
      */
     protected function getMigrationPathByModule (string $module) : string
     {
-        return base_path(config("modules.root") . "/$module/database/migrations");
+        return base_path(config("modules.root") . "/$module/Database/Migrations");
     }
 }

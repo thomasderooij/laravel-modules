@@ -20,7 +20,7 @@ abstract class EloquentModuleFactory extends Factory
         $moduleManager = app()->make("module.service.manager");
         if ($moduleManager->isInitialised()) {
             foreach ($moduleManager->getActiveModules() as $module) {
-                $path = $moduleManager->getModuleDirectory($module) . "/database/factories";
+                $path = $moduleManager->getModuleDirectory($module) . "/Database/Factories";
                 $instance->load($path);
             }
         }

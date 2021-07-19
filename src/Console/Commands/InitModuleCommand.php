@@ -148,7 +148,7 @@ class InitModuleCommand extends Command
      */
     protected function askForRootDir () : string
     {
-        return $this->ask("What will be the root directory of your modules?", "modules");
+        return $this->ask("What will be the root directory of your modules?", "Modules");
     }
 
     /**
