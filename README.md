@@ -128,6 +128,9 @@ If there is no module in your workbench and the --module option is not used, the
 will display vanilla Laravel behaviour.
  To explicitly refer to the vanilla Laravel directories, you can use the --module=vanilla option.
 
+For any models, when creating the model using the make:model command, the HasFactory trait refers to this library's trait.
+Should your model not find a factory, check if the model refers to the correct trait.
+
 #### Migrate
 The migrate command looks at your module dependencies, and migrates them based on that. So make sure your downstream 
 migrations don't reference your upstream migrations, because that be trouble.<br/>
