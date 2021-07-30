@@ -165,9 +165,6 @@ class NewModuleCommandTest extends CommandTest
             ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
         ])->andReturn(null);
 
-        // Next we expect to be asked which other module this module depends on
-        $response->expectsChoice("Alright. I've added it. What other module is \"$newModule\" dependent on?", "None. I'm done here.", ["0" => "None. I'm done here."]);
-
         // After that, we expect to have another confirmation
         $response->expectsOutput("Roger that.");
 

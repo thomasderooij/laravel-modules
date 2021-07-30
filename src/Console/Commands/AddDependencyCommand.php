@@ -44,7 +44,7 @@ class AddDependencyCommand extends ModuleCommand
         // We keep track of how many times we asked this questions
         $i = 1;
         // We call the getAvailableModules function here every time, since the previous iteration changes the current options
-        while (($dependency = $this->askForModule($module, $this->dependencyHandler->getAvailableModules($module), $i)) !== "None. I'm done here.") {
+        while (($dependency = $this->askForModule($module, $this->dependencyHandler->getAvailableModules($module), $i)) !== "None. I'm done here." && $dependency !== null) {
             $this->dependencyHandler->addDependency($module, $dependency);
             $i++;
         }
@@ -52,16 +52,21 @@ class AddDependencyCommand extends ModuleCommand
         $this->giveConfirmation();
     }
 
-    protected function askForModule (string $module, array $modules, int $loop) : string
+    protected function askForModule (string $module, array $modules, int $loop) : ?string
     {
         $options = ["None. I'm done here."];
         foreach ($modules as $option) {
             $options[] = $option;
         }
 
-        $firstquestion = "Which module is \"$module\" dependent on?";
+        $firstQuestion = "Which module is \"$module\" dependent on?";
         $followUp = "Alright. I've added it. What other module is \"$module\" dependent on?";
-        return $this->choice($loop > 1 ? $followUp : $firstquestion, $options);
+
+        if (count($options) > 1) {
+            return $this->choice($loop > 1 ? $followUp : $firstQuestion, $options);
+        }
+
+        return null;
     }
 
     protected function giveConfirmation () : void
