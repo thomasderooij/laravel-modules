@@ -20,4 +20,6 @@ return [
     "vanilla" => env("VANILLA_LARAVEL", "{vanillaModule}"),
     "models_dir" => env("MODELS_DIR", "Models"),
     "autoload" => env("MODULES_AUTOLOAD", "{moduleAutoload}"),
+    "base_model" => env("MODULES_MODEL", "{moduleModel}"),
+    "has_factory_trait" => env("MODULES_HAS_FACTORY", "{moduleHasFactory}"),
 ];

@@ -23,16 +23,13 @@ class ModelMakeCommand extends OriginalCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)->replaceFactoryTrait($stub)->replaceClass($stub, $name);
+        return $this->replaceNamespace($stub, $name)->replaceUsedClasses($stub)->replaceClass($stub, $name);
     }
 
-    protected function replaceFactoryTrait (string &$stub) : self
+    protected function replaceUsedClasses (string &$stub) : self
     {
-        $stub = str_replace(
-            "Illuminate\Database\Eloquent\Factories\HasFactory",
-            "Thomasderooij\LaravelModules\Database\Factories\HasFactory",
-            $stub
-        );
+        $stub = str_replace("{hasFactory}", config("modules.has_factory_trait"), $stub);
+        $stub = str_replace("{model}", config("modules.base_model"), $stub);
 
         return $this;
     }
@@ -46,5 +43,19 @@ class ModelMakeCommand extends OriginalCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\\'.config("modules.models_dir");
+    }
+
+    protected function getStub()
+    {
+        return $this->option('pivot')
+            ? $this->resolveStubPath('/stubs/model.pivot.stub')
+            : $this->resolveModuleStubPath('/stubs/model.stub');
+    }
+
+    protected function resolveModuleStubPath ($stub) : string
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : realpath(__DIR__."/../../../../Factories".$stub);
     }
 }
