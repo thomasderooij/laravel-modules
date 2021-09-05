@@ -14,7 +14,7 @@ composer require thomasderooij/laravel-modules
 
 
 ## Docs
-This package enables you to use the Laravel framework with separate modules for code that can be disables 
+This package enables you to use the Laravel framework with separate modules for code that can be disabled 
 and have dependencies on other modules. A workbench is provided to keep track of the module you're currently
  working on, and all command, such as "make:controller" apply to the module currently in your workbench. 
  Each module has all functionality the vanilla Laravel has, and has service providers which are included in the project
