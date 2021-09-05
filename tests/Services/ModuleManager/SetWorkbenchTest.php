@@ -40,7 +40,7 @@ class SetWorkbenchTest extends ModuleManagerTest
 
         // And the timeframe of the cache validity should be provided
         $cacheValitidy = 3600;
-        $uut->shouldReceive('getCacheValidity')->andReturn($cacheValitidy);
+        $uut->shouldReceive('getDefaultCacheValidity')->andReturn($cacheValitidy);
 
         // The cache should try to get a cache key, wopwop, from above, and return null
         Cache::shouldReceive('get')->withArgs([$actualKey])->andReturn(null)->once();
@@ -79,7 +79,7 @@ class SetWorkbenchTest extends ModuleManagerTest
 
         // And the timeframe of the cache validity should be provided
         $cacheValitidy = 3600;
-        $uut->shouldReceive('getCacheValidity')->andReturn($cacheValitidy);
+        $uut->shouldReceive('getDefaultCacheValidity')->andReturn($cacheValitidy);
 
         // The cache should try to get a cache key from above, and return null
         $preexitingCache = ["somekey" => "somevalue", $workbenchKey => "other_module"];

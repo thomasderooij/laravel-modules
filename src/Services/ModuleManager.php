@@ -91,7 +91,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
 
         $content[$this->getWorkbenchKey()] = null;
 
-        Cache::put($this->getCacheKey(), $content, $this->getCacheValidity());
+        Cache::put($this->getCacheKey(), $content, $this->getDefaultCacheValidity());
     }
 
     /**
@@ -295,7 +295,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
 
         $content[$this->getWorkbenchKey()] = $module;
 
-        Cache::put($cacheKey, $content, $this->getCacheValidity());
+        Cache::put($cacheKey, $content, $this->getDefaultCacheValidity());
     }
 
     /**
@@ -313,7 +313,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @return int
      */
-    protected function getCacheValidity () : int
+    protected function getDefaultCacheValidity () : int
     {
         return 60 * 60 * 24 * 7;
     }

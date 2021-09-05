@@ -28,7 +28,7 @@ class ClearWorkbenchTest extends ModuleManagerTest
         $uut->shouldReceive('getWorkbenchKey')->andReturn($workbenchKey);
         // And we fetch the validity
         $cacheValidity = 1000;
-        $uut->shouldReceive('getCacheValidity')->andReturn($cacheValidity);
+        $uut->shouldReceive("getDefaultCacheValidity")->andReturn($cacheValidity);
 
         // We then fetch the modules cache
         $preexistingCache = ["somekey" => "somevalue", $workbenchKey => "module_name"];
