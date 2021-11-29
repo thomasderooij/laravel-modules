@@ -14,7 +14,7 @@ composer require thomasderooij/laravel-modules
 
 
 ## Docs
-This package enables you to use the Laravel framework with separate modules for code that can be disables 
+This package enables you to use the Laravel framework with separate modules for code that can be disabled 
 and have dependencies on other modules. A workbench is provided to keep track of the module you're currently
  working on, and all command, such as "make:controller" apply to the module currently in your workbench. 
  Each module has all functionality the vanilla Laravel has, and has service providers which are included in the project
@@ -55,9 +55,11 @@ php artisan module:activate <module-name>
 This reactivates a deactivated a module.<br/><br/>
 
 ```bash
-php artisan module:set <module-name>
+php artisan module:set <module-name> <--module_to_apply_it_to, optional>
 ```
-This sets one of your modules to your workbench<br/><br/>
+This sets one of your modules to your workbench. This is set in your local cache, and will expire in 1 week.<br/>
+The only advantage to this is when you call a make command, it will apply to the module in your workbench.
+To apply this to another module, add --module=your-module-here-case-insensitive and it will apply it to whatever module you wish, as long as it exists <br><br/>
 
 ```bash
 php artisan module:unset
@@ -133,7 +135,7 @@ Should your model not find a factory, check if the model refers to the correct t
 
 #### Migrate
 The migrate command looks at your module dependencies, and migrates them based on that. So make sure your downstream 
-migrations don't reference your upstream migrations, because that be trouble.<br/>
+migrations don't reference your upstream migrations, because that would be trouble.<br/>
 Both the migrate and the migrate:fresh commands have a --modules option, in case you don't want to use your dependencies
 and will migrate the modules in the order they are provided in. The modules should be comma separated, as displayed below
 ```bash
@@ -160,6 +162,7 @@ change it in the config/modules file, or add 'MODULES_VANILLA={your preferred na
 
 ### Roadmap
 The following things are planned, loosely
+ * Adding view resources to modules
  * Broadcast service provider composite functionality
  * migrate:refresh command
  * Drawing pretty ASCII pictures to visualise your dependencies

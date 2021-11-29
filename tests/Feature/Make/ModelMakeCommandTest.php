@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Feature\Make;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Mockery;
+use Thomasderooij\LaravelModules\Database\Factories\HasFactory;
 
 class ModelMakeCommandTest extends MakeTest
 {
@@ -22,6 +24,8 @@ class ModelMakeCommandTest extends MakeTest
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
         Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
+        Config::shouldReceive("get")->withArgs(["modules.has_factory_trait", null])->andReturn(HasFactory::class);
+        Config::shouldReceive("get")->withArgs(["modules.base_model", null])->andReturn(Model::class);
 
         // We should then check if this model already exists
         $fileName = "$model.php";
@@ -52,6 +56,8 @@ class ModelMakeCommandTest extends MakeTest
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
         Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
+        Config::shouldReceive("get")->withArgs(["modules.has_factory_trait", null])->andReturn(HasFactory::class);
+        Config::shouldReceive("get")->withArgs(["modules.base_model", null])->andReturn(Model::class);
 
         // We should then check if this model already exists
         $fileName = "$model.php";
@@ -81,6 +87,8 @@ class ModelMakeCommandTest extends MakeTest
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $this->module]);
         Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
+        Config::shouldReceive("get")->withArgs(["modules.has_factory_trait", null])->andReturn(HasFactory::class);
+        Config::shouldReceive("get")->withArgs(["modules.base_model", null])->andReturn(Model::class);
 
         // We should then check if this model already exists
         $fileName = "$model.php";
@@ -110,6 +118,8 @@ class ModelMakeCommandTest extends MakeTest
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
         Config::shouldReceive("get")->withArgs(["modules.models_dir", null])->andReturn($fileDirectory = "Aggregates");
+        Config::shouldReceive("get")->withArgs(["modules.has_factory_trait", null])->andReturn(HasFactory::class);
+        Config::shouldReceive("get")->withArgs(["modules.base_model", null])->andReturn(Model::class);
 
         // We should then check if this model already exists
         $fileName = "$model.php";
@@ -129,7 +139,7 @@ class ModelMakeCommandTest extends MakeTest
 
     protected function fetchStub(): void
     {
-        $stub = realpath(__DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/model.stub");
+        $stub = realpath(__DIR__ . "/../../../src/Factories/stubs/model.stub");
         $this->filesystem->shouldReceive("get")->withArgs([$stub])->andReturn($this->files->get($stub));
     }
 }

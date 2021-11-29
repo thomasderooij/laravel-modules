@@ -42,7 +42,7 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
                 ["up" => $layer1Module, "down" => $layer2Module2 = "layer2Module2"],
             ],
         ]);
-        // And there is no dependencies key specified
+        // And there are some dependencies key specified
         $this->methodHandler->shouldReceive("getDependenciesKey")->andReturn($dependenciesKey);
 
         Config::shouldReceive("get")->withArgs(["modules.vanilla", null])->andReturn($vanilla = "Vanilla");
@@ -64,13 +64,8 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
         $list = array_merge($list, $thirdIteration);
         $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn([]);
 
-        // And return a array containing vanilla, and the active modules
+        // And return an array containing vanilla, and the active modules
         $expected = [$vanilla, $topModule, $topModule2, $layer1Module, $layer2Module, $layer2Module2, $module1, $module2];
         $this->assertSame($expected, $this->uut->invoke($this->methodHandler));
-    }
-
-    public function testGetMigrationOrderWhenAllDependenciesHaveBeenSpecified () : void
-    {
-
     }
 }

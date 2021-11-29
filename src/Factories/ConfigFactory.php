@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Factories;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Thomasderooij\LaravelModules\CompositeProviders\AuthCompositeServiceProvider;
 use Thomasderooij\LaravelModules\CompositeProviders\BroadcastCompositeServiceProvider;
@@ -12,6 +13,7 @@ use Thomasderooij\LaravelModules\CompositeProviders\EventCompositeServiceProvide
 use Thomasderooij\LaravelModules\CompositeProviders\RouteCompositeServiceProvider;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory as Contract;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
+use Thomasderooij\LaravelModules\Database\Factories\HasFactory;
 
 class ConfigFactory extends FileFactory implements Contract
 {
@@ -66,6 +68,8 @@ class ConfigFactory extends FileFactory implements Contract
             $this->getModuleNamespacePlaceholder() => ucfirst($rootDir),
             $this->getModuleAutoloadPlaceholder() => $rootDir,
             $this->getVanillaModuleNamePlaceholder() => $this->getDefaultVanillaModuleName(),
+            $this->getModuleBaseModelPlaceholder() => $this->getDefaultModel(),
+            $this->getModuleHasFactoryPlaceholder() => $this->getDefaultHasFactoryTrait(),
         ]);
     }
 
@@ -160,6 +164,26 @@ class ConfigFactory extends FileFactory implements Contract
     }
 
     /**
+     * Get the module base model placeholder
+     *
+     * @return string
+     */
+    protected function getModuleBaseModelPlaceholder () : string
+    {
+        return "{moduleModel}";
+    }
+
+    /**
+     * Get the HasFactory trait placeholder
+     *
+     * @return string
+     */
+    protected function getModuleHasFactoryPlaceholder () : string
+    {
+        return "{moduleHasFactory}";
+    }
+
+    /**
      * Get the modules config filename
      *
      * @return string
@@ -197,5 +221,15 @@ class ConfigFactory extends FileFactory implements Contract
     public function getDefaultVanillaModuleName () : string
     {
         return "Vanilla";
+    }
+
+    public function getDefaultModel () : string
+    {
+        return Model::class;
+    }
+
+    public function getDefaultHasFactoryTrait () : string
+    {
+        return HasFactory::class;
     }
 }
