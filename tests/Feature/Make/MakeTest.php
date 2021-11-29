@@ -28,6 +28,11 @@ abstract class MakeTest extends CommandTest
         Config::shouldReceive("get")->withArgs(["auth.guards.api.provider"])->andReturn("users");
         // And then get the user model
         Config::shouldReceive("get")->withArgs(["auth.providers.users.model"])->andReturn("App\Models\User");
+        Config::shouldReceive("get")->withArgs(["logging.channels.deprecations"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["logging.deprecations"])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["logging.channels.null"])->andReturn(null);
+        Config::shouldReceive("set")->withArgs(["logging.channels.deprecations", null]);
+        Config::shouldReceive("offsetGet")->withArgs(["logging.channels.emergency"]);
 
         $this->files = new Filesystem();
     }
