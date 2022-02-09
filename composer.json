@@ -17,14 +17,14 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "laravel/framework": "^8",
+        "php": "^8",
+        "laravel/framework": "^9",
         "ext-json": "*"
     },
     "require-dev": {
+        "mockery/mockery": "^1.5",
+        "orchestra/testbench": "^7.0",
         "phpunit/phpunit": "^9.5",
-        "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^6.12",
         "spatie/phpunit-snapshot-assertions": "^4.2"
     },
     "autoload": {

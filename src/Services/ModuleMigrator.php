@@ -41,7 +41,7 @@ class ModuleMigrator extends Migrator
 
         $module = $options["module"] ?? null;
 
-        $this->fireMigrationEvent(new MigrationsStarted);
+        $this->fireMigrationEvent(new MigrationsStarted("up"));
 
         // Once we have the array of migrations, we will spin through them and run the
         // migrations "up" so the changes are made to the databases. We'll then log
@@ -54,7 +54,7 @@ class ModuleMigrator extends Migrator
             }
         }
 
-        $this->fireMigrationEvent(new MigrationsEnded);
+        $this->fireMigrationEvent(new MigrationsEnded("up"));
     }
 
     /**

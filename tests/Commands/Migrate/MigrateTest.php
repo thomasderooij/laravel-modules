@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Commands\Migrate;
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Events\Dispatcher;
 use Mockery;
+use Thomasderooij\LaravelModules\Console\Kernel as ModulesKernel;
 use Thomasderooij\LaravelModules\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Services\ModuleMigrator;
@@ -35,5 +37,7 @@ abstract class MigrateTest extends Test
         $this->moduleManager->shouldReceive("getActiveModules")->andReturn([]);
         // And the modules are initialised
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(true);
+        // And the dispatcher should receive a dispatch call
+        $this->dispatcher->shouldReceive('dispatch');
     }
 }

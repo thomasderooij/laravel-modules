@@ -5,10 +5,24 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Feature\Make;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Mockery;
 
 class ListenerMakeCommandTest extends MakeTest
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Config::shouldReceive("get")->withArgs(["logging.channels.deprecations"]);
+        Config::shouldReceive("set")->withArgs(["logging.channels.deprecations", null]);
+        Config::shouldReceive("offsetGet")->withArgs(["logging.channels.emergency"]);
+        Config::shouldReceive("get")->withArgs(["logging.deprecations"]);
+        Config::shouldReceive("get")->withArgs(["logging.channels.null"]);
+        Config::shouldReceive("set")->withArgs(['logging.channels.null', ['driver' => 'monolog', 'handler' => 'Monolog\Handler\NullHandler']]);
+
+    }
+
     public function testWithoutModule () : void
     {
         // If I want to make a listener for my module
@@ -20,7 +34,6 @@ class ListenerMakeCommandTest extends MakeTest
 
         // And the workbench should be checked
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
-
         // We should then check if this listener already exists
         $fileDirectory = "Listeners";
         $fileName = "$listener.php";

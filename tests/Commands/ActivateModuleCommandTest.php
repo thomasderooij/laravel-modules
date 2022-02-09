@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Commands;
 
+use Illuminate\Support\Facades\Cache;
+
 class ActivateModuleCommandTest extends CommandTest
 {
     public function testActivateModule(): void

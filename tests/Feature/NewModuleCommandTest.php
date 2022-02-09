@@ -23,7 +23,7 @@ class NewModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);

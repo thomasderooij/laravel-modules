@@ -20,7 +20,7 @@ class SetWorkbenchCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => null]);
 
 

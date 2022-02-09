@@ -21,7 +21,7 @@ abstract class MakeTest extends CommandTest
     {
         parent::setUp();
 
-        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         // The config should get the auth guard
         Config::shouldReceive("get")->withArgs(["auth.defaults.guard"])->andReturn("api");
         // And provider

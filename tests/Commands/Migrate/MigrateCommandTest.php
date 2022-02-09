@@ -30,7 +30,7 @@ class MigrateCommandTest extends MigrateTest
             $this->dependencyHandler,
         ]);
         $command->shouldAllowMockingProtectedMethods();
-        $this->instance("command.migrate", $command);
+        $this->instance(\Illuminate\Database\Console\Migrations\MigrateCommand::class, $command);
 
         // The database should be prepped
         $command->shouldReceive("prepareDatabase");
@@ -75,7 +75,7 @@ class MigrateCommandTest extends MigrateTest
             $this->dependencyHandler,
         ]);
         $command->shouldAllowMockingProtectedMethods();
-        $this->instance("command.migrate", $command);
+        $this->instance(\Illuminate\Database\Console\Migrations\MigrateCommand::class, $command);
 
         // When we ask for modules, we should receive nothing
         $this->dependencyHandler->shouldReceive("getModulesInMigrationOrder")->andReturn([]);

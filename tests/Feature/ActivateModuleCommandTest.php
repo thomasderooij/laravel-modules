@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Feature;
 
+use Illuminate\Cache\CacheManager;
 use Illuminate\Cache\FileStore;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Mockery\Matcher\Any;
+use Mockery\Matcher\AnyArgs;
 
 class ActivateModuleCommandTest extends CommandTest
 {
@@ -23,8 +26,8 @@ class ActivateModuleCommandTest extends CommandTest
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
         // The cache should check the workbench
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
-        // With a cache driver
-        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+//        // With a cache driver
+//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         // And there should be a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
 

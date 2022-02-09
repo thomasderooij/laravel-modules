@@ -3,17 +3,12 @@
 namespace MyModulesDir\MYMODULE\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use MyModulesDir\MYMODULE\Models\Model;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\MyModulesDir\MYMODULE\Models\Model>
+ */
 class MyNewFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Model::class;
-
     /**
      * Define the model's default state.
      *

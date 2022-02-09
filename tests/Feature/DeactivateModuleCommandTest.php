@@ -20,8 +20,8 @@ class DeactivateModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-        // With a cache driver
-        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+//        // With a cache driver
+//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);

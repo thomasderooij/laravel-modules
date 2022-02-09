@@ -16,6 +16,7 @@ trait ParentCallTrait
      */
     protected function parentCall (string $function, array $args = [])
     {
+
         return parent::$function(...$args);
     }
 }
