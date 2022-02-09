@@ -9,7 +9,6 @@ matrix:
   fast_finish: true
   include:
     - php: 8.0
-    - php: 8.1
 
 cache:
   directories:
