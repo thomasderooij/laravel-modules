@@ -23,7 +23,10 @@ class ModelMakeCommand extends OriginalCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)->replaceUsedClasses($stub)->replaceClass($stub, $name);
+        return $this->replaceNamespace($stub, $name)
+            ->replaceUsedClasses($stub)
+            ->replaceClass($stub, $name)
+        ;
     }
 
     protected function replaceUsedClasses (string &$stub) : self

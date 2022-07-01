@@ -127,4 +127,31 @@ trait GenerateOverrideTrait
 
         return $rootNamespace.config("modules.models_dir")."\\$model";
     }
+
+    /**
+     * @return string|null
+     */
+    protected function getModule () : string|null
+    {
+        // If there is no module, return default values
+        $module = $this->option("module");
+        if ($module === null) {
+            $module = $this->moduleManager->getWorkBench();
+        }
+
+        // If there is not module, or the module is vanilla, or the modules are not initialised, go for the default
+        if ($module === null || $this->isVanilla($module) || !$this->moduleManager->isInitialised()) {
+            return null;
+        }
+
+        return $module;
+    }
+
+    protected function replaceClass($stub, $name)
+    {
+        $parts = explode("\\", $name);
+        $class = array_pop($parts);
+
+        return str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
+    }
 }
