@@ -11,7 +11,7 @@ class GetTrackerContentTest extends ModuleStateRepositoryTest
 {
     private $method = "getTrackerContent";
 
-    public function testGetTrackerContent () : void
+    public function testGetTrackerContent(): void
     {
         // If I have a method to ask for the modules tracker key
         $uut = $this->getMethod($this->method);
@@ -27,14 +27,14 @@ class GetTrackerContentTest extends ModuleStateRepositoryTest
         $moduleManager->shouldReceive("getTrackerFileName")->andReturn($tracker);
 
         // And then we fetch its content
-        $content = ["modules" => ["module_1",  "other_module"]];
+        $content = ["modules" => ["module_1", "other_module"]];
         $this->filesystem->shouldReceive("get")->withArgs(["$directory/$tracker"])->andReturn(json_encode($content));
 
         // And we should receive an array
         $this->assertSame($content, $uut->invoke($moduleManager));
     }
 
-    public function testGetTrackerContentWithoutTracker () : void
+    public function testGetTrackerContentWithoutTracker(): void
     {
         // If I have a method to ask for the modules tracker key
         $uut = $this->getMethod($this->method);

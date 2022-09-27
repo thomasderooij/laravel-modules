@@ -15,19 +15,19 @@ abstract class ModuleManagerTest extends ModuleStateRepositoryTest
     /**
      * @return Mockery\MockInterface&ModuleManager
      */
-    protected function getMockManager (string $method) : Mockery\MockInterface
+    protected function getMockManager(string $method): Mockery\MockInterface
     {
         $mockMethods = $this->getMockableClassMethods(ModuleManager::class, $method);
 
         $functions = implode(", ", $mockMethods);
         // Mock the module manager with all functions except the one we want to test
-        $mock = Mockery::mock(ModuleManager::class."[$functions]", [$this->filesystem]);
+        $mock = Mockery::mock(ModuleManager::class . "[$functions]", [$this->filesystem]);
         $mock->shouldAllowMockingProtectedMethods();
 
         return $mock;
     }
 
-    protected function getMethod (string $method) : \ReflectionMethod
+    protected function getMethod(string $method): \ReflectionMethod
     {
         return $this->getMethodFromClass($method, ModuleManager::class);
     }

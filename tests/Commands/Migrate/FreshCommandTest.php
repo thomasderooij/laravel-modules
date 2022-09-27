@@ -9,11 +9,12 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate\FreshComman
 
 class FreshCommandTest extends MigrateTest
 {
-    public function testMigrateFreshWithoutTheModulesOption () : void
+    public function testMigrateFreshWithoutTheModulesOption(): void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&FreshCommand $command */
-        $command = Mockery::mock(FreshCommand::class."[parentCall]", [$this->moduleManager, $this->dependencyHandler]);
+        $command = Mockery::mock(FreshCommand::class . "[parentCall]", [$this->moduleManager, $this->dependencyHandler]
+        );
         $command->shouldAllowMockingProtectedMethods();
         $this->instance(\Illuminate\Database\Console\Migrations\FreshCommand::class, $command);
 
@@ -30,10 +31,13 @@ class FreshCommandTest extends MigrateTest
         $response->run();
     }
 
-    public function testMigrateFreshWithModulesOption () : void
+    public function testMigrateFreshWithModulesOption(): void
     {
         // We mock the command partially, since we don't want to test the extended functions in a unit test
-        $command = Mockery::mock(FreshCommand::class."[parentCall, call]", [$this->moduleManager, $this->dependencyHandler]);
+        $command = Mockery::mock(
+            FreshCommand::class . "[parentCall, call]",
+            [$this->moduleManager, $this->dependencyHandler]
+        );
         $command->shouldAllowMockingProtectedMethods();
         $this->instance(\Illuminate\Database\Console\Migrations\FreshCommand::class, $command);
 
@@ -47,7 +51,9 @@ class FreshCommandTest extends MigrateTest
         // It should then call a db:wipe
         $command->shouldReceive("parentCall")->withArgs(["call", ["db:wipe", ["--force" => true]]]);
         // And then it should call the migrate function
-        $command->shouldReceive("parentCall")->withArgs(["call", ["migrate", ["--force" => true, "--modules" => "$module1,$module2"]]]);
+        $command->shouldReceive("parentCall")->withArgs(
+            ["call", ["migrate", ["--force" => true, "--modules" => "$module1,$module2"]]]
+        );
 
         $response->run();
     }

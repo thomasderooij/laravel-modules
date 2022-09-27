@@ -30,12 +30,12 @@ abstract class ModuleMigrationRepositoryTest extends Test
     /**
      * @return Mockery\MockInterface&ModuleMigrationRepository
      */
-    protected function getRepository () : Mockery\MockInterface
+    protected function getRepository(): Mockery\MockInterface
     {
         $mockableMethods = $this->getMockableClassMethods(ModuleMigrationRepository::class, $this->method);
 
         $methodString = implode(',', $mockableMethods);
-        $mock = Mockery::mock(ModuleMigrationRepository::class."[$methodString]", [
+        $mock = Mockery::mock(ModuleMigrationRepository::class . "[$methodString]", [
             $this->app->make(ConnectionResolver::class),
             "table"
         ]);

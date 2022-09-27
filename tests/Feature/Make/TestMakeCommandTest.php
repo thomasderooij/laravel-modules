@@ -9,7 +9,7 @@ use Mockery;
 
 class TestMakeCommandTest extends MakeTest
 {
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If I want to make a test for my module
         $response = $this->artisan("make:test", ["name" => $test = "MyNewTest"]);
@@ -24,21 +24,23 @@ class TestMakeCommandTest extends MakeTest
         // We should then check if this test already exists
         $fileDirectory = "tests/Feature";
         $fileName = "$test.php";
-        $this->setFileExpectations(null, $fileName, false,$fileDirectory);
+        $this->setFileExpectations(null, $fileName, false, $fileDirectory);
 
         // The test stub should be fetched
         $this->fetchStub();
 
         // The test should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If I want to make a test for my module
         // The casing of the module name differs from the one in the tracker file to ensure casing does not matter for the module option
@@ -61,14 +63,16 @@ class TestMakeCommandTest extends MakeTest
 
         // The test should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithWorkbench () : void
+    public function testWithWorkbench(): void
     {
         // If I want to make a test for my module
         $response = $this->artisan("make:test", ["name" => $test = "MyNewTest"]);
@@ -90,14 +94,16 @@ class TestMakeCommandTest extends MakeTest
 
         // The test should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithVanillaModule () : void
+    public function testWithVanillaModule(): void
     {
         // If I want to make a test for my module
         $response = $this->artisan("make:test", ["name" => $test = "MyNewTest", "--module" => $module = "MYMODULE"]);
@@ -119,7 +125,9 @@ class TestMakeCommandTest extends MakeTest
 
         // The test should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
@@ -128,7 +136,9 @@ class TestMakeCommandTest extends MakeTest
 
     protected function fetchStub(): void
     {
-        $stub = realpath(__DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/test.stub");
+        $stub = realpath(
+            __DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/test.stub"
+        );
         $this->filesystem->shouldReceive("get")->withArgs([$stub])->andReturn($this->files->get($stub));
     }
 }

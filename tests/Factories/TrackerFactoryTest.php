@@ -12,7 +12,7 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class TrackerFactoryTest extends Test
 {
-    public function testCreatingATrackerFile () : void
+    public function testCreatingATrackerFile(): void
     {
         $filesystem = \Mockery::mock(Filesystem::class);
         $this->instance('files', $filesystem);

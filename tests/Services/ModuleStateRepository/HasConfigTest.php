@@ -11,7 +11,7 @@ class HasConfigTest extends ModuleStateRepositoryTest
 {
     protected $method = "hasConfig";
 
-    public function testHasConfig () : void
+    public function testHasConfig(): void
     {
         $uut = $this->getMethodFromClass($this->method, ModuleStateRepository::class);
         $mockRepo = $this->getMockRepository($this->method);
@@ -21,7 +21,7 @@ class HasConfigTest extends ModuleStateRepositoryTest
         $this->assertTrue($uut->invoke($mockRepo));
     }
 
-    public function testDoesNotHaveConfig () : void
+    public function testDoesNotHaveConfig(): void
     {
         $uut = $this->getMethodFromClass($this->method, ModuleStateRepository::class);
         $mockRepo = $this->getMockRepository($this->method);

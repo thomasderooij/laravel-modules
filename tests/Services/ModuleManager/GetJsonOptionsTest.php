@@ -14,7 +14,7 @@ class GetJsonOptionsTest extends ModuleManagerTest
      * Here we test the default value of the json options. We do this because we want to this test to fail when
      *  this value gets changed and breaks backward compatibility.
      */
-    public function testGetJsonOptions () : void
+    public function testGetJsonOptions(): void
     {
         // If I have a method
         $uut = $this->getMethod($this->method);

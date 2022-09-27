@@ -21,7 +21,7 @@ class ComposerEditorTest extends Test
         $this->instance('files', $this->filesystem);
     }
 
-    public function testAddNamespaceToAutoload () : void
+    public function testAddNamespaceToAutoload(): void
     {
         // If I have a composer editor
         /** @var ComposerEditor $uut */
@@ -31,7 +31,9 @@ class ComposerEditorTest extends Test
         $root = "moduleRoot";
 
         // If I want to add a namespace to the composer.json, I need to fetch the content of the file
-        $this->filesystem->shouldReceive("get")->withArgs([base_path("composer.json")])->andReturn($this->getComposerContent());
+        $this->filesystem->shouldReceive("get")->withArgs([base_path("composer.json")])->andReturn(
+            $this->getComposerContent()
+        );
 
         // I expect the file to be replaced with an updated version of the composer.json
         $json = null;
@@ -44,7 +46,7 @@ class ComposerEditorTest extends Test
         $this->assertMatchesSnapshot($json);
     }
 
-    public function testRemoveNamespaceFromAutoload () : void
+    public function testRemoveNamespaceFromAutoload(): void
     {
         // If I have a composer editor
         /** @var ComposerEditor $uut */
@@ -55,7 +57,9 @@ class ComposerEditorTest extends Test
         $psr4 = ["Thomasderooij\\LaravelModules\\" => "src", "ModuleRoot\\" => $root];
 
         // If I want to remove a namespace to the composer.json, I need to fetch the content of the file
-        $this->filesystem->shouldReceive("get")->withArgs([base_path("composer.json")])->andReturn($this->getComposerContent($psr4));
+        $this->filesystem->shouldReceive("get")->withArgs([base_path("composer.json")])->andReturn(
+            $this->getComposerContent($psr4)
+        );
 
         // I expect the file to be replaced with an updated version of the composer.json
         $this->filesystem->shouldReceive("put")->withArgs([
@@ -67,7 +71,7 @@ class ComposerEditorTest extends Test
         $this->assertMatchesSnapshot($json);
     }
 
-    public function testHasNamespaceInAutoload () : void
+    public function testHasNamespaceInAutoload(): void
     {
         // If I have a composer editor
         /** @var ComposerEditor $uut */
@@ -77,7 +81,9 @@ class ComposerEditorTest extends Test
         $root = "moduleRoot";
 
         // And I want to check if I have the namespace in my Psr4 autoload
-        $this->filesystem->shouldReceive("get")->withArgs([base_path("composer.json")])->andReturn($this->getComposerContent());
+        $this->filesystem->shouldReceive("get")->withArgs([base_path("composer.json")])->andReturn(
+            $this->getComposerContent()
+        );
 
         // I should not see my module root in there
         $this->assertFalse($uut->hasNamespaceInAutoload($root));
@@ -85,7 +91,7 @@ class ComposerEditorTest extends Test
         $this->assertTrue($uut->hasNamespaceInAutoload("Thomasderooij\\LaravelModules"));
     }
 
-    private function getComposerContent (array $psr4 = null) : string
+    private function getComposerContent(array $psr4 = null): string
     {
         $content = $this->getComposerContentWithoutPsr4();
         if ($psr4 === null) {
@@ -97,7 +103,7 @@ class ComposerEditorTest extends Test
         return json_encode($content, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES);
     }
 
-    private function getComposerContentWithoutPsr4 () : array
+    private function getComposerContentWithoutPsr4(): array
     {
         return [
             "name" => "thomasderooij/laravel-modules",

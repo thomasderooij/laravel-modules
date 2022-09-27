@@ -54,15 +54,19 @@ class InitModulesCommandTest extends CommandTest
     /**
      * Here we test initialising modules when all goes well
      */
-    public function testInitModules () : void
+    public function testInitModules(): void
     {
         // When I run the init command
         $response = $this->artisan("module:init");
         // I expect to be asked which directory will be my modules directory
         $response->expectsQuestion("What will be the root directory of your modules?", $this->root);
         // And I expect to receive instructions after a successful initialisation
-        $response->expectsOutput("You are set to go. Make sure to run migration command to get your module migrations working.");
-        $response->expectsOutput("Call for module:new your-module-name-here to create a module. For any other info, check out the readme.md file.");
+        $response->expectsOutput(
+            "You are set to go. Make sure to run migration command to get your module migrations working."
+        );
+        $response->expectsOutput(
+            "Call for module:new your-module-name-here to create a module. For any other info, check out the readme.md file."
+        );
 
         // In this process, the bootstrap factory create method should be called
         $this->bootstrapFactory->shouldReceive('create')->once();
@@ -80,8 +84,10 @@ class InitModulesCommandTest extends CommandTest
             $i++;
 
             switch ($i) {
-                case 1: return "woep";
-                default: return "wop";
+                case 1:
+                    return "woep";
+                default:
+                    return "wop";
             }
         });
 
@@ -100,7 +106,7 @@ class InitModulesCommandTest extends CommandTest
     /**
      * Here we test the response if we try to initialise modules more than once
      */
-    public function testInitWhenModulesAreAlreadyInitialised () : void
+    public function testInitWhenModulesAreAlreadyInitialised(): void
     {
         // When I run the init command
         $response = $this->artisan("module:init");
@@ -113,7 +119,7 @@ class InitModulesCommandTest extends CommandTest
         $response->execute();
     }
 
-    public function testConfigFactoryThrowsAFileNotFoundException () : void
+    public function testConfigFactoryThrowsAFileNotFoundException(): void
     {
         // When I run the init command
         $response = $this->artisan("module:init");
@@ -127,7 +133,10 @@ class InitModulesCommandTest extends CommandTest
 
         // And if the config factory throws an exception
         $errorMessage = "Error. Things went terribly wrong!";
-        $this->configFactory->shouldReceive("create")->withArgs([$this->root])->andThrow(FileNotFoundException::class, $errorMessage);
+        $this->configFactory->shouldReceive("create")->withArgs([$this->root])->andThrow(
+            FileNotFoundException::class,
+            $errorMessage
+        );
 
         // I expect the bootstrap factory to undo its create
         $this->bootstrapFactory->shouldReceive("undo");

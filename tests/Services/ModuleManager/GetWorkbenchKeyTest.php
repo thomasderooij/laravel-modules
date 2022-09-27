@@ -10,7 +10,7 @@ class GetWorkbenchKeyTest extends ModuleManagerTest
 {
     private $method = "getWorkbenchKey";
 
-    public function testGetWorkbenchKey () : void
+    public function testGetWorkbenchKey(): void
     {
         // If I have a function to get a workbench key
         $uut = $this->getMethod($this->method);

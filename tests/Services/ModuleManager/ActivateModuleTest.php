@@ -15,7 +15,7 @@ class ActivateModuleTest extends ModuleManagerTest
      * All public methods called by the module will be mocked, since they will also get their own test
      *  As a result, we will not be testing them in this test.
      */
-    public function testActivateModule () : void
+    public function testActivateModule(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -47,7 +47,7 @@ class ActivateModuleTest extends ModuleManagerTest
         $uut->activateModule($module);
     }
 
-    public function testThrowingExceptionIfThereIsNoSuchModule () : void
+    public function testThrowingExceptionIfThereIsNoSuchModule(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -66,7 +66,7 @@ class ActivateModuleTest extends ModuleManagerTest
         $uut->activateModule($module);
     }
 
-    public function testThrowingExceptionIfTheModuleIsAlreadyActive () : void
+    public function testThrowingExceptionIfTheModuleIsAlreadyActive(): void
     {
         $uut = $this->getMockManager($this->method);
 

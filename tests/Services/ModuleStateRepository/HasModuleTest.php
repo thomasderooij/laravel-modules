@@ -8,7 +8,7 @@ class HasModuleTest extends ModuleStateRepositoryTest
 {
     private $method = "hasModule";
 
-    public function testHasModule () : void
+    public function testHasModule(): void
     {
         $uut = $this->getMockRepository($this->method);
 
@@ -30,7 +30,7 @@ class HasModuleTest extends ModuleStateRepositoryTest
         $this->assertTrue($uut->hasModule($module));
     }
 
-    public function testHasModuleWhenYouDoNotHaveTheModule () : void
+    public function testHasModuleWhenYouDoNotHaveTheModule(): void
     {
         $uut = $this->getMockRepository($this->method);
 

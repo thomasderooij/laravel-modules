@@ -57,7 +57,7 @@ class getModulesMigratableAfterListTest extends DependencyHandlerTest
             $auth = "Auth",
             $finance = "Finance",
             $company = "Company",
-            $user ="User",
+            $user = "User",
             $subscription = "Subscription",
             $publications = "Publications",
             $subInvoices = "Subscription invoices",
@@ -101,49 +101,73 @@ class getModulesMigratableAfterListTest extends DependencyHandlerTest
         ];
     }
 
-    public function testMigratableModulesAfterList () : void
+    public function testMigratableModulesAfterList(): void
     {
         // If I have a whole bunch of modules with dependencies
         // And I ask which ones are safe to migrate
         // I should get "Common", "Commerce" and "Shop"
         $list = ["vanilla"];
         $expected = ["Common", "Commerce", "Shop"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
 
         // Next, we merge the lists, and try it again
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "Auth", "Finance", "Partners" and "Suppliers"
         $expected = ["Auth", "Finance", "Partners", "Suppliers"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
         // Next, we merge the lists, and try it again
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "Company", "Invoices", "Contracts"
         $expected = ["Company", "Invoices", "Contracts"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
         // Next, we merge the lists, and try it again
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "User", "Business invoices"
         $expected = ["User", "Business invoices"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "Kickback", "Subscription"
         $expected = ["Kickback", "Subscription"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "Publications", "Subscription invoices"
         $expected = ["Publications", "Subscription invoices"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "Article"
         $expected = ["Article"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
         $list = array_merge($list, $expected);
         // This time, based on the previous modules, we expect "Adds"
         $expected = ["Adds"];
-        $this->assertSame($this->returnSorted($expected), $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies)));
+        $this->assertSame(
+            $this->returnSorted($expected),
+            $this->returnSorted($this->uut->invoke($this->methodHandler, $list, $this->dependencies))
+        );
     }
 
-    private function returnSorted (array $arr) : array
+    private function returnSorted(array $arr): array
     {
         sort($arr);
         return $arr;

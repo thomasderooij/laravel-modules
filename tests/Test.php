@@ -18,7 +18,7 @@ abstract class Test extends TestCase
 {
     use MatchesSnapshots;
 
-    protected function getPackageProviders ($app) : array
+    protected function getPackageProviders($app): array
     {
         return [
             AuthCompositeServiceProvider::class,
@@ -46,7 +46,7 @@ abstract class Test extends TestCase
      *
      * @param \Illuminate\Foundation\Application $app
      */
-    protected function getEnvironmentSetUp ($app) : void
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
@@ -67,12 +67,14 @@ abstract class Test extends TestCase
         $app->singleton('Illuminate\Contracts\Http\Kernel', HttpKernel::class);
     }
 
-    protected function getMockableClassMethods (string $class, string $method, array $exclude = ["__construct"]) : array
+    protected function getMockableClassMethods(string $class, string $method, array $exclude = ["__construct"]): array
     {
         $reflection = new \ReflectionClass($class);
         // Get all the methods from out module manager
         $methods = $reflection->getMethods();
-        $mockFunctions = array_map(function (\ReflectionMethod $method) { return $method->getName(); }, $methods);
+        $mockFunctions = array_map(function (\ReflectionMethod $method) {
+            return $method->getName();
+        }, $methods);
 
         // Exclude methods you don't want to mock
         foreach ($exclude as $excludeMethod) {
@@ -90,7 +92,7 @@ abstract class Test extends TestCase
         return array_values($mockFunctions);
     }
 
-    protected function getMethodFromClass (string $method, string $class) : \ReflectionMethod
+    protected function getMethodFromClass(string $method, string $class): \ReflectionMethod
     {
         $reflection = new \ReflectionClass($class);
         $uut = $reflection->getMethod($method);

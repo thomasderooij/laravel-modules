@@ -13,7 +13,7 @@ class SetWorkbenchCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
     }
 
-    public function testSetWorkbench () : void
+    public function testSetWorkbench(): void
     {
         // If I want to set a module to my workbench
         $module = "CurrentModule";
@@ -31,7 +31,7 @@ class SetWorkbenchCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesAreNotInitialised () : void
+    public function testModulesAreNotInitialised(): void
     {
         // If I want to set a module to my workbench
         $module = "CurrentModule";
@@ -41,11 +41,13 @@ class SetWorkbenchCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(false);
 
         // And I should get some feedback
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 
-    public function testModuleDoesNotExist () : void
+    public function testModuleDoesNotExist(): void
     {
         // If I want to set a module to my workbench
         $module = "CurrentModule";

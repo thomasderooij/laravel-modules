@@ -14,7 +14,7 @@ class GetCacheValidityTest extends ModuleManagerTest
      * Here we test the default value of the cache validity. We do this because we want to this test to fail when
      *  this value gets changed and breaks backward compatibility.
      */
-    public function testGetCacheValidity () : void
+    public function testGetCacheValidity(): void
     {
         // If I have a method
         $uut = $this->getMethod($this->method);

@@ -11,7 +11,7 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class AuthServiceProviderFactoryTest extends Test
 {
-    public function testGetStub () : void
+    public function testGetStub(): void
     {
         $uut = $this->getMethodFromClass("getStub", AuthServiceProviderFactory::class);
         $factory = Mockery::mock(AuthServiceProviderFactory::class);
@@ -28,7 +28,7 @@ class AuthServiceProviderFactoryTest extends Test
         $this->assertSame($stub, $uut->invoke($factory));
     }
 
-    public function testGetClassName () : void
+    public function testGetClassName(): void
     {
         $uut = $this->getMethodFromClass("getClassName", AuthServiceProviderFactory::class);
         $provider = Mockery::mock(AuthServiceProviderFactory::class);

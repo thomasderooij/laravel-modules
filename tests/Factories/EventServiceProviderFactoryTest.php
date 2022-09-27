@@ -10,7 +10,7 @@ use Thomasderooij\LaravelModules\Factories\EventServiceProviderFactory;
 
 class EventServiceProviderFactoryTest extends ServiceProviderFactoryTest
 {
-    public function testGetStub () : void
+    public function testGetStub(): void
     {
         $uut = $this->getMethodFromClass("getStub", EventServiceProviderFactory::class);
         $factory = Mockery::mock(EventServiceProviderFactory::class);
@@ -27,7 +27,7 @@ class EventServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($stub, $uut->invoke($factory));
     }
 
-    public function testGetClassName () : void
+    public function testGetClassName(): void
     {
         $uut = $this->getMethodFromClass("getClassName", EventServiceProviderFactory::class);
         $provider = Mockery::mock(EventServiceProviderFactory::class);

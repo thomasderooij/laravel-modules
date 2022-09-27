@@ -17,13 +17,13 @@ class MigrateCommandTest extends MigrateTest
         $this->moduleManager->shouldReceive('getWorkbench')->andReturn(null);
     }
 
-    public function testWithModules () : void
+    public function testWithModules(): void
     {
         // If there are modules
         $modules = [$module1 = "module_1", $module2 = "module_2"];
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&MigrateCommand $command */
-        $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths,prepareDatabase]", [
+        $command = Mockery::mock(MigrateCommand::class . "[parentCall, getMigrationPaths,prepareDatabase]", [
             $this->migrator,
             $this->dispatcher,
             $this->moduleManager,
@@ -50,8 +50,12 @@ class MigrateCommandTest extends MigrateTest
 
         $command->shouldReceive("getMigrationPaths")->withArgs([$module1])->andReturn($paths = ["paths", "here"]);
         $command->shouldReceive("getMigrationPaths")->withArgs([$module2])->andReturn($paths);
-        $this->migrator->shouldReceive("run")->withArgs([$paths, ["pretend" => $pretend, "step" => $step, "module" => $module1]]);
-        $this->migrator->shouldReceive("run")->withArgs([$paths, ["pretend" => $pretend, "step" => $step, "module" => $module2]]);
+        $this->migrator->shouldReceive("run")->withArgs(
+            [$paths, ["pretend" => $pretend, "step" => $step, "module" => $module1]]
+        );
+        $this->migrator->shouldReceive("run")->withArgs(
+            [$paths, ["pretend" => $pretend, "step" => $step, "module" => $module2]]
+        );
 
         // And there should be no seed option
         $this->migrator->shouldReceive("option")->withArgs(["seed"])->andReturn(null);
@@ -62,13 +66,13 @@ class MigrateCommandTest extends MigrateTest
         $response->run();
     }
 
-    public function testWithoutModules () : void
+    public function testWithoutModules(): void
     {
         // If there are modules
         $modules = [$module1 = "module_1", $module2 = "module_2"];
         // We mock the command partially, since we don't want to test the extended functions in a unit test
         /** @var Mockery\MockInterface&MigrateCommand $command */
-        $command = Mockery::mock(MigrateCommand::class."[parentCall, getMigrationPaths,prepareDatabase]", [
+        $command = Mockery::mock(MigrateCommand::class . "[parentCall, getMigrationPaths,prepareDatabase]", [
             $this->migrator,
             $this->dispatcher,
             $this->moduleManager,

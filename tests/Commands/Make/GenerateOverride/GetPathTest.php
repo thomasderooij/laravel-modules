@@ -11,14 +11,14 @@ class GetPathTest extends GenerateOverrideTest
 {
     protected $moduleManager;
 
-    protected function setUp () : void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->method = "getPath";
     }
 
-    public function testGetPathWithModules () : void
+    public function testGetPathWithModules(): void
     {
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
 
@@ -40,7 +40,7 @@ class GetPathTest extends GenerateOverrideTest
         }
     }
 
-    public function testGetPathWithoutModules () : void
+    public function testGetPathWithoutModules(): void
     {
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
 
@@ -51,7 +51,9 @@ class GetPathTest extends GenerateOverrideTest
             $command->shouldReceive("option")->withArgs(["module"])->andReturn(null);
             // It should then make its parent call
             $name = "App\Broadcasting\NewChannel";
-            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn($parentResult = base_path("App/Broadcasting/NewChannel.php"));
+            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn(
+                $parentResult = base_path("App/Broadcasting/NewChannel.php")
+            );
 
             // When I call the getPath method from out class, it should return its parent call results to me
             $uut = $this->getMethodFromClass($this->method, $class);
@@ -62,7 +64,7 @@ class GetPathTest extends GenerateOverrideTest
         }
     }
 
-    public function testGetPathWithWorkbench () : void
+    public function testGetPathWithWorkbench(): void
     {
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn($module = "MyModule");
 
@@ -76,7 +78,9 @@ class GetPathTest extends GenerateOverrideTest
 
             // It should then make its parent call
             $name = "App\Broadcasting\NewChannel";
-            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn($parentResult = base_path("App/Broadcasting/NewChannel.php"));
+            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn(
+                $parentResult = base_path("App/Broadcasting/NewChannel.php")
+            );
 
             // When I call the getPath method from out class, it should return its parent call results to me
             $uut = $this->getMethodFromClass($this->method, $class);
@@ -87,7 +91,7 @@ class GetPathTest extends GenerateOverrideTest
         }
     }
 
-    public function testGetPathWithVanillaModule () : void
+    public function testGetPathWithVanillaModule(): void
     {
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
 
@@ -99,7 +103,9 @@ class GetPathTest extends GenerateOverrideTest
             $command->shouldReceive("option")->withArgs(["module"])->andReturn(null);
             // It should then make its parent call
             $name = "App\Broadcasting\NewChannel";
-            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn($parentResult = base_path("App/Broadcasting/NewChannel.php"));
+            $command->shouldReceive("parentCall")->withArgs([$this->method, [$name]])->andReturn(
+                $parentResult = base_path("App/Broadcasting/NewChannel.php")
+            );
 
             // When I call the getPath method from out class, it should return its parent call results to me
             $uut = $this->getMethodFromClass($this->method, $class);

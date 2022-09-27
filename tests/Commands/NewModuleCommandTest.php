@@ -24,7 +24,7 @@ class NewModuleCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
     }
 
-    public function testMakeNewModule () : void
+    public function testMakeNewModule(): void
     {
         // When I make a new module
         $newModule = "NewModule";
@@ -55,17 +55,19 @@ class NewModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesNotInitialised () : void
+    public function testModulesNotInitialised(): void
     {
         $newModule = "NewModule";
         $response = $this->artisan("module:new", ["name" => $newModule]);
 
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(false);
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 
-    public function testModuleAlreadyExists () : void
+    public function testModuleAlreadyExists(): void
     {
         $newModule = "NewModule";
         $response = $this->artisan("module:new", ["name" => $newModule]);

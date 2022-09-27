@@ -9,7 +9,7 @@ use Mockery;
 
 class EventMakeCommandTest extends MakeTest
 {
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If I want to make a event for my module
         $response = $this->artisan("make:event", ["name" => $event = "MyNewEvent"]);
@@ -31,14 +31,16 @@ class EventMakeCommandTest extends MakeTest
 
         // The event should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If I want to make a event for my module
         // The casing of the module name differs from the one in the tracker file to ensure casing does not matter for the module option
@@ -62,14 +64,16 @@ class EventMakeCommandTest extends MakeTest
 
         // The event should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithWorkbench () : void
+    public function testWithWorkbench(): void
     {
         // If I want to make a event for my module
         $response = $this->artisan("make:event", ["name" => $event = "MyNewEvent"]);
@@ -91,14 +95,16 @@ class EventMakeCommandTest extends MakeTest
 
         // The event should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithVanillaModule () : void
+    public function testWithVanillaModule(): void
     {
         // If I want to make a event for my module
         $response = $this->artisan("make:event", ["name" => $event = "MyNewEvent", "--module" => $module = "MYMODULE"]);
@@ -120,7 +126,9 @@ class EventMakeCommandTest extends MakeTest
 
         // The event should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
@@ -129,7 +137,9 @@ class EventMakeCommandTest extends MakeTest
 
     protected function fetchStub(): void
     {
-        $stub = realpath(__DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/event.stub");
+        $stub = realpath(
+            __DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/event.stub"
+        );
         $this->filesystem->shouldReceive("get")->withArgs([$stub])->andReturn($this->files->get($stub));
     }
 }

@@ -11,7 +11,7 @@ class GetModulesTest extends ModuleStateRepositoryTest
 {
     private $method = "getModules";
 
-    public function testGetModules () : void
+    public function testGetModules(): void
     {
         // If I have a method to get all the modules
         $uut = $this->getMethod($this->method);
@@ -36,7 +36,7 @@ class GetModulesTest extends ModuleStateRepositoryTest
         $this->assertSame($expected, $uut->invoke($moduleManager));
     }
 
-    public function testGetModulesIfModulesAreNotInitialised () : void
+    public function testGetModulesIfModulesAreNotInitialised(): void
     {
         // If I have a method to get all the modules
         $uut = $this->getMethod($this->method);
@@ -49,7 +49,9 @@ class GetModulesTest extends ModuleStateRepositoryTest
         // I expect an exception
         $this->expectException(ModulesNotInitialisedException::class);
         // With a message
-        $this->expectExceptionMessage("The modules need to be initialised first. You can do this by running the module:init command.");
+        $this->expectExceptionMessage(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
 
         // When I call the function
         $uut->invoke($moduleManager);

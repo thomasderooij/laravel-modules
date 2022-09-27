@@ -13,11 +13,16 @@ class DependencyExistsTest extends DependencyHandlerTest
      */
     protected string $method = "dependencyExists";
 
-    public function testCheckingExistingMethod () : void
+    public function testCheckingExistingMethod(): void
     {
         // If I want to know if a dependency exists, I should get the tracker content first
         $this->methodHandler->shouldReceive("getTrackerContent")->andReturn([
-            "modules" => [$this->upstreamModule, $this->moduleInBetween, $this->blueCollarModule, $this->downstreamModule],
+            "modules" => [
+                $this->upstreamModule,
+                $this->moduleInBetween,
+                $this->blueCollarModule,
+                $this->downstreamModule
+            ],
             "activeModules" => [],
             $dependenciesKey = "dependencies" => [
                 [$this->upKey => $this->upstreamModule, $this->downKey => $this->downstreamModule]

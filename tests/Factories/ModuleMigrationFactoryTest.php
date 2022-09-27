@@ -21,7 +21,7 @@ class ModuleMigrationFactoryTest extends Test
         $this->instance(ModuleManagerContract::class, $this->app->make(ModuleManager::class));
     }
 
-    public function testCreate () : void
+    public function testCreate(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $filesystem = $this->app->make('files');
@@ -36,9 +36,9 @@ class ModuleMigrationFactoryTest extends Test
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$stub])
-            ->andReturn([$filesystem->get($stub)]) // Here we use the real filesystem to output the actual contents of the stub
-            ->once()
-        ;
+            ->andReturn([$filesystem->get($stub)]
+            ) // Here we use the real filesystem to output the actual contents of the stub
+            ->once();
 
         // And a new migration file should be created, based on a stub
         $argumentContent = null; // This variable will be used to capture the argument content
@@ -48,8 +48,7 @@ class ModuleMigrationFactoryTest extends Test
                 base_path("database/migrations/2010_11_01_000000_module_init_migration.php"),
                 Mockery::capture($argumentContent)
             ])
-            ->once()
-        ;
+            ->once();
 
         // When I call the create function
         $uut->create();
@@ -57,7 +56,7 @@ class ModuleMigrationFactoryTest extends Test
         $this->assertMatchesSnapshot($argumentContent);
     }
 
-    public function testUndo () : void
+    public function testUndo(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);
@@ -73,14 +72,13 @@ class ModuleMigrationFactoryTest extends Test
         $mockFilesystem
             ->shouldReceive('delete')
             ->withArgs([$file])
-            ->once()
-        ;
+            ->once();
 
         // When I call the undo function
         $uut->undo();
     }
 
-    public function testUndoIfThereIsNothingToUndo () : void
+    public function testUndoIfThereIsNothingToUndo(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);

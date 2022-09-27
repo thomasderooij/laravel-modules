@@ -24,7 +24,7 @@ class EloquentModuleFactoryTest extends Test
     /**
      * @group uut
      */
-    public function testResolveFactoryName () : void
+    public function testResolveFactoryName(): void
     {
         $modelsDirectory = "Aggregates";
         // If I have a model in the app/models directory

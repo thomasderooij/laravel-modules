@@ -9,7 +9,7 @@ use Mockery;
 
 class ExceptionMakeCommandTest extends MakeTest
 {
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If I want to make a exception for my module
         $response = $this->artisan("make:exception", ["name" => $exception = "MyNewException"]);
@@ -31,19 +31,24 @@ class ExceptionMakeCommandTest extends MakeTest
 
         // The exception should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If I want to make a exception for my module
         // The casing of the module name differs from the one in the tracker file to ensure casing does not matter for the module option
         // If I want to make a exception for my module
-        $response = $this->artisan("make:exception", ["name" => $exception = "MyNewException", "--module" => $module = "MyModule"]);
+        $response = $this->artisan(
+            "make:exception",
+            ["name" => $exception = "MyNewException", "--module" => $module = "MyModule"]
+        );
 
         // We make sure the modules are initialised
         $this->initialisedModulesSetup();
@@ -62,14 +67,16 @@ class ExceptionMakeCommandTest extends MakeTest
 
         // The exception should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithWorkbench () : void
+    public function testWithWorkbench(): void
     {
         // If I want to make a exception for my module
         $response = $this->artisan("make:exception", ["name" => $exception = "MyNewException"]);
@@ -91,17 +98,22 @@ class ExceptionMakeCommandTest extends MakeTest
 
         // The exception should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithVanillaModule () : void
+    public function testWithVanillaModule(): void
     {
         // If I want to make a exception for my module
-        $response = $this->artisan("make:exception", ["name" => $exception = "MyNewException", "--module" => $module = "MYMODULE"]);
+        $response = $this->artisan(
+            "make:exception",
+            ["name" => $exception = "MyNewException", "--module" => $module = "MYMODULE"]
+        );
 
         // We make sure the modules are initialised
         $this->initialisedModulesSetup();
@@ -120,7 +132,9 @@ class ExceptionMakeCommandTest extends MakeTest
 
         // The exception should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
@@ -129,7 +143,9 @@ class ExceptionMakeCommandTest extends MakeTest
 
     protected function fetchStub(): void
     {
-        $stub = realpath(__DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/exception.stub");
+        $stub = realpath(
+            __DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/exception.stub"
+        );
         $this->filesystem->shouldReceive("get")->withArgs([$stub])->andReturn($this->files->get($stub));
     }
 }

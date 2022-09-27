@@ -15,7 +15,7 @@ class BaseRunUpFunctionTest extends ModuleMigratorTest
         parent::setUp();
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If there is no module
         $module = null;
@@ -35,7 +35,7 @@ class BaseRunUpFunctionTest extends ModuleMigratorTest
         $this->uut->invoke($this->migrator, $file, $batch, false, $module);
     }
 
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If there is a module
         $module = "TestModule";

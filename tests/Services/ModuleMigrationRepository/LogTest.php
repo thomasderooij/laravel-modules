@@ -13,7 +13,7 @@ class LogTest extends ModuleMigrationRepositoryTest
         parent::setUp();
     }
 
-    public function testLogWithoutModule () : void
+    public function testLogWithoutModule(): void
     {
         // If there is no module
         $module = null;
@@ -23,7 +23,7 @@ class LogTest extends ModuleMigrationRepositoryTest
         $this->uut->invoke($this->repository, $file, $batch, $module);
     }
 
-    public function testLogWithModule () : void
+    public function testLogWithModule(): void
     {
         // If I have a module
         $module = "MyModule";

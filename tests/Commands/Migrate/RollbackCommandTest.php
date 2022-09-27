@@ -11,15 +11,18 @@ use Thomasderooij\LaravelModules\Services\ModuleMigrator;
 
 class RollbackCommandTest extends MigrateTest
 {
-    public function testGetMigrationPathsWithoutModule () : void
+    public function testGetMigrationPathsWithoutModule(): void
     {
         // If I have a command
         $migrator = Mockery::mock(ModuleMigrator::class);
         $moduleManager = Mockery::mock(ModuleManager::class);
-        $command = Mockery::mock(RollbackCommand::class."[parentCall, getLastMigrationModule, getMigrationPathByModule]", [
-            $migrator,
-            $moduleManager
-        ]);
+        $command = Mockery::mock(
+            RollbackCommand::class . "[parentCall, getLastMigrationModule, getMigrationPathByModule]",
+            [
+                $migrator,
+                $moduleManager
+            ]
+        );
         $command->shouldAllowMockingProtectedMethods();
 
         // It should call getLastMigrationModule and return nothing
@@ -34,15 +37,18 @@ class RollbackCommandTest extends MigrateTest
         $this->assertSame($expected, $result);
     }
 
-    public function testGetMigrationPathsWithModule () : void
+    public function testGetMigrationPathsWithModule(): void
     {
         // If I have a command
         $migrator = Mockery::mock(ModuleMigrator::class);
         $moduleManager = Mockery::mock(ModuleManager::class);
-        $command = Mockery::mock(RollbackCommand::class."[parentCall, getLastMigrationModule, getMigrationPathByModule]", [
-            $migrator,
-            $moduleManager
-        ]);
+        $command = Mockery::mock(
+            RollbackCommand::class . "[parentCall, getLastMigrationModule, getMigrationPathByModule]",
+            [
+                $migrator,
+                $moduleManager
+            ]
+        );
         $command->shouldAllowMockingProtectedMethods();
 
         // It should call getLastMigrationModule and return nothing

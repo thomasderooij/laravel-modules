@@ -8,7 +8,7 @@ class GetModulesTrackerKeyTest extends ModuleStateRepositoryTest
 {
     private $method = "getModulesTrackerKey";
 
-    public function testGetModulesTrackerKey () : void
+    public function testGetModulesTrackerKey(): void
     {
         // If I have a method to ask for the modules tracker key
         $uut = $this->getMethod($this->method);

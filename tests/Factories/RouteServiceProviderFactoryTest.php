@@ -11,7 +11,7 @@ use Thomasderooij\LaravelModules\Factories\RouteServiceProviderFactory;
 
 class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
 {
-    public function testCreate () : void
+    public function testCreate(): void
     {
         // If I have a route service provider
         /** @var MockInterface|RouteServiceProviderFactory $uut */
@@ -34,8 +34,12 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $namespacePlaceholder = "ns_placeholder";
         $uut->shouldReceive("getNamespacePlaceholder")->andReturn($namespacePlaceholder);
         $moduleNamespace = "module_namespace";
-        $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->once()->andReturn($moduleNamespace."\\");
-        $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module, false])->once()->andReturn($moduleNamespace);
+        $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->once()->andReturn(
+            $moduleNamespace . "\\"
+        );
+        $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module, false])->once()->andReturn(
+            $moduleNamespace
+        );
         $providersRoot = "providers_root";
         $uut->shouldReceive("getProvidersRoot")->andReturn($providersRoot);
         $controllerNamespaceHolder = "controller_ns_placeholder";
@@ -54,19 +58,24 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $uut->shouldReceive("getApiFile")->andReturn($apiFile);
 
         // Then the populate file function should be called using these return values
-        $uut->shouldReceive("populateFile")->withArgs([$serviceProvidersDir, $fileName, $stub, [
-            $namespacePlaceholder => $moduleNamespace . "\\" . $providersRoot,
-            $controllerNamespaceHolder => $moduleNamespace,
-            $classNamePlaceholder => $className,
-            $webFilePlaceholder => $webFile,
-            $apiFilePlaceholder => $apiFile
-        ]])->once();
+        $uut->shouldReceive("populateFile")->withArgs([
+            $serviceProvidersDir,
+            $fileName,
+            $stub,
+            [
+                $namespacePlaceholder => $moduleNamespace . "\\" . $providersRoot,
+                $controllerNamespaceHolder => $moduleNamespace,
+                $classNamePlaceholder => $className,
+                $webFilePlaceholder => $webFile,
+                $apiFilePlaceholder => $apiFile
+            ]
+        ])->once();
 
         // When I call the function
         $uut->create($module);
     }
 
-    public function testGetStub () : void
+    public function testGetStub(): void
     {
         $uut = $this->getMethodFromClass("getStub", RouteServiceProviderFactory::class);
         $factory = Mockery::mock(RouteServiceProviderFactory::class);
@@ -83,7 +92,7 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($stub, $uut->invoke($factory));
     }
 
-    public function testGetWebFile () : void
+    public function testGetWebFile(): void
     {
         $uut = $this->getMethodFromClass("getWebFile", RouteServiceProviderFactory::class);
         /** @var MockInterface|RouteServiceProviderFactory $uut */
@@ -99,7 +108,7 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($factory, $path));
     }
 
-    public function testGetApiFile () : void
+    public function testGetApiFile(): void
     {
         $uut = $this->getMethodFromClass("getApiFile", RouteServiceProviderFactory::class);
         /** @var MockInterface|RouteServiceProviderFactory $uut */
@@ -115,7 +124,7 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($factory, $path));
     }
 
-    public function testGetClassName () : void
+    public function testGetClassName(): void
     {
         $uut = $this->getMethodFromClass("getClassName", RouteServiceProviderFactory::class);
         $provider = Mockery::mock(RouteServiceProviderFactory::class);
@@ -127,7 +136,7 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($provider));
     }
 
-    public function testGetControllerNamespacePlaceholder () : void
+    public function testGetControllerNamespacePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getControllerNamespacePlaceholder", RouteServiceProviderFactory::class);
         $provider = Mockery::mock(RouteServiceProviderFactory::class);
@@ -139,7 +148,7 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($provider));
     }
 
-    public function testGetWebRouteFilePlaceholder () : void
+    public function testGetWebRouteFilePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getWebRouteFilePlaceholder", RouteServiceProviderFactory::class);
         $provider = Mockery::mock(RouteServiceProviderFactory::class);
@@ -151,7 +160,7 @@ class RouteServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($provider));
     }
 
-    public function testGetApiRouteFilePlaceholder () : void
+    public function testGetApiRouteFilePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getApiRouteFilePlaceholder", RouteServiceProviderFactory::class);
         $provider = Mockery::mock(RouteServiceProviderFactory::class);

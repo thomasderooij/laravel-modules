@@ -27,7 +27,7 @@ class AppBootstrapFactoryTest extends Test
         $this->instance(HttpCompositeKernel::class, $this->app->make(HttpKernel::class));
     }
 
-    public function testCreate () : void
+    public function testCreate(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $filesystem = $this->app->make('files');
@@ -45,17 +45,16 @@ class AppBootstrapFactoryTest extends Test
                 base_path("bootstrap/app_orig.php")
             ])
             ->andReturn(true)
-            ->once()
-        ;
+            ->once();
 
         // A stub file should be fetched
         $stub = realpath(__DIR__ . '/../../src/Factories/stubs/bootstrapFile.stub');
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$stub])
-            ->andReturn([$filesystem->get($stub)]) // Here we use the real filesystem to output the actual contents of the stub
-            ->once()
-        ;
+            ->andReturn([$filesystem->get($stub)]
+            ) // Here we use the real filesystem to output the actual contents of the stub
+            ->once();
 
         // And a new bootstrap file should be created, based on a stub
         $argumentContent = null; // This variable will be used to capture the argument content
@@ -65,8 +64,7 @@ class AppBootstrapFactoryTest extends Test
                 base_path("bootstrap/app.php"),
                 Mockery::capture($argumentContent)
             ])
-            ->once()
-        ;
+            ->once();
 
         // Call the create function
         $uut->create();
@@ -74,7 +72,7 @@ class AppBootstrapFactoryTest extends Test
         $this->assertMatchesSnapshot($argumentContent);
     }
 
-    public function testUndo () : void
+    public function testUndo(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);
@@ -88,8 +86,7 @@ class AppBootstrapFactoryTest extends Test
             ->shouldReceive('delete')
             ->withArgs([base_path("bootstrap/app.php")])
             ->andReturn([true])
-            ->once()
-        ;
+            ->once();
 
         // And the original bootstrap file should take its place
         $mockFilesystem
@@ -99,8 +96,7 @@ class AppBootstrapFactoryTest extends Test
                 base_path("bootstrap/app.php")
             ])
             ->andReturn([true])
-            ->once()
-        ;
+            ->once();
 
         $uut->undo();
     }

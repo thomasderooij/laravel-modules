@@ -33,7 +33,7 @@ class ActivateModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testActivateModuleWhileWorkbenchIsOccupied () : void
+    public function testActivateModuleWhileWorkbenchIsOccupied(): void
     {
         $module = "MyModule";
 
@@ -56,7 +56,7 @@ class ActivateModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesNotInitialised (): void
+    public function testModulesNotInitialised(): void
     {
         $module = "MyModule";
 
@@ -69,7 +69,9 @@ class ActivateModuleCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(false);
 
         // Get info on how to initialise the modules
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 

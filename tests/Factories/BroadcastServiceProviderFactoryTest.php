@@ -10,7 +10,7 @@ use Thomasderooij\LaravelModules\Factories\BroadcastServiceProviderFactory;
 
 class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
 {
-    public function testCreate () : void
+    public function testCreate(): void
     {
         // When I call create a module
         $uut = $this->getMethodFromClass("create", BroadcastServiceProviderFactory::class);
@@ -52,16 +52,21 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $factory->shouldReceive("getRelativeRouteFile")->withArgs([$routesRoot])->andReturn($routeFile);
 
         // And finally, the populate file function should be called, which is tested in the FileFactoryTest
-        $factory->shouldReceive("populateFile")->withArgs([$serviceProviderDir, $fileName, $stub, [
-            $namespacePlaceholder => "$moduleNamespace\\$providersRoot",
-            $classNamePlaceholder => $class,
-            $routeFilePlaceholder => $routeFile
-        ]]);
+        $factory->shouldReceive("populateFile")->withArgs([
+            $serviceProviderDir,
+            $fileName,
+            $stub,
+            [
+                $namespacePlaceholder => "$moduleNamespace\\$providersRoot",
+                $classNamePlaceholder => $class,
+                $routeFilePlaceholder => $routeFile
+            ]
+        ]);
 
         $uut->invoke($factory, $module);
     }
 
-    public function testGetStub () : void
+    public function testGetStub(): void
     {
         $uut = $this->getMethodFromClass("getStub", BroadcastServiceProviderFactory::class);
         $filesystem = $this->app->make(Filesystem::class);
@@ -77,7 +82,7 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($stub, $uut->invoke($factory));
     }
 
-    public function testGetClassName () : void
+    public function testGetClassName(): void
     {
         $uut = $this->getMethodFromClass("getClassName", BroadcastServiceProviderFactory::class);
         $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
@@ -89,7 +94,7 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($factory));
     }
 
-    public function testGetRelativeRoutesDir () : void
+    public function testGetRelativeRoutesDir(): void
     {
         $uut = $this->getMethodFromClass("getRelativeRouteFile", BroadcastServiceProviderFactory::class);
         $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);
@@ -110,7 +115,7 @@ class BroadcastServiceProviderFactoryTest extends ServiceProviderFactoryTest
         $this->assertSame($expected, $uut->invoke($factory, $root));
     }
 
-    public function testGetRouteFilePlaceholder () : void
+    public function testGetRouteFilePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getRouteFilePlaceholder", BroadcastServiceProviderFactory::class);
         $factory = $this->getMockServiceProviderFactory("create", BroadcastServiceProviderFactory::class);

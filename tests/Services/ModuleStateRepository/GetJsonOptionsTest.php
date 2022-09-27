@@ -10,7 +10,7 @@ class GetJsonOptionsTest extends ModuleStateRepositoryTest
 {
     protected $method = "getJsonOptions";
 
-    public function testGetJsonOptions () : void
+    public function testGetJsonOptions(): void
     {
         // I expect the following json options when I ask for them
         $expected = [JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES];

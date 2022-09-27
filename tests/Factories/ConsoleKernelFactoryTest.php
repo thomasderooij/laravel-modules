@@ -14,14 +14,20 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class ConsoleKernelFactoryTest extends Test
 {
-    public function testCreate () : void
+    public function testCreate(): void
     {
         /** @var Mockery\MockInterface&ConsoleKernelFactory $factory */
-        $factory = Mockery::mock(ConsoleKernelFactory::class."[" . implode(", ", $this->getMockableClassMethods(ConsoleKernelFactory::class, "create")) . "]", [
-            $this->app->make('files'),
-            $this->app->make("module.service.manager"),
-            $this->app->make("module.service.route_source")
-        ]);
+        $factory = Mockery::mock(
+            ConsoleKernelFactory::class . "[" . implode(
+                ", ",
+                $this->getMockableClassMethods(ConsoleKernelFactory::class, "create")
+            ) . "]",
+            [
+                $this->app->make('files'),
+                $this->app->make("module.service.manager"),
+                $this->app->make("module.service.route_source")
+            ]
+        );
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
@@ -36,20 +42,25 @@ class ConsoleKernelFactoryTest extends Test
         $factory->shouldReceive("getKernelConsoleDir")->andReturn($cd = "cd");
         $factory->shouldReceive("getRouteFilePlaceholder")->andReturn($rfPh = "rfPh");
         $factory->shouldReceive("getRelativeRouteFilePath")->andReturn($path = "path");
-        $factory->shouldReceive("populateFile")->withArgs([$consoleDir, $kernelFileName, $stub, [
-            $kernelNsPh => $kernelNs,
-            $mkPh => $mk,
-            $consoleDirPh => $cd,
-            $rfPh => $path
-        ]]);
+        $factory->shouldReceive("populateFile")->withArgs([
+            $consoleDir,
+            $kernelFileName,
+            $stub,
+            [
+                $kernelNsPh => $kernelNs,
+                $mkPh => $mk,
+                $consoleDirPh => $cd,
+                $rfPh => $path
+            ]
+        ]);
 
         $factory->create($module);
     }
 
-    public function testGetConsoleDir () : void
+    public function testGetConsoleDir(): void
     {
         $uut = $this->getMethodFromClass("getConsoleDir", ConsoleKernelFactory::class);
-        $factory = Mockery::mock(ConsoleKernelFactory::class."[getConsoleDirectory]", [
+        $factory = Mockery::mock(ConsoleKernelFactory::class . "[getConsoleDirectory]", [
             $this->app->make('files'),
             $this->app->make("module.service.manager"),
             $this->app->make("module.service.route_source")
@@ -64,12 +75,15 @@ class ConsoleKernelFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    public function testGetRelativeRouteFilePath () : void
+    public function testGetRelativeRouteFilePath(): void
     {
         $routeSource = Mockery::mock(RouteSource::class);
 
         $uut = $this->getMethodFromClass("getRelativeRouteFilePath", ConsoleKernelFactory::class);
-        $factory = Mockery::mock(ConsoleKernelFactory::class."[getRelativeRouteRootDir, ensureSlash]", [$this->app->make('files'), $this->app->make("module.service.manager"), $routeSource]);
+        $factory = Mockery::mock(
+            ConsoleKernelFactory::class . "[getRelativeRouteRootDir, ensureSlash]",
+            [$this->app->make('files'), $this->app->make("module.service.manager"), $routeSource]
+        );
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
@@ -83,12 +97,15 @@ class ConsoleKernelFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    public function testGetRelativeRouteRootDir () : void
+    public function testGetRelativeRouteRootDir(): void
     {
         $routeSource = Mockery::mock(RouteSource::class);
 
         $uut = $this->getMethodFromClass("getRelativeRouteRootDir", ConsoleKernelFactory::class);
-        $factory = Mockery::mock(ConsoleKernelFactory::class."[getConsoleDirectory]", [$this->app->make('files'), $this->app->make("module.service.manager"), $routeSource]);
+        $factory = Mockery::mock(
+            ConsoleKernelFactory::class . "[getConsoleDirectory]",
+            [$this->app->make('files'), $this->app->make("module.service.manager"), $routeSource]
+        );
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
@@ -99,30 +116,35 @@ class ConsoleKernelFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    public function testGetKernelNamespace () : void
+    public function testGetKernelNamespace(): void
     {
         $moduleManager = Mockery::mock(ModuleManager::class);
 
         $uut = $this->getMethodFromClass("getKernelNamespace", ConsoleKernelFactory::class);
-        $factory = Mockery::mock(ConsoleKernelFactory::class."[getConsoleDirectory]", [$this->app->make('files'), $moduleManager, $this->app->make('module.service.route_source')]);
+        $factory = Mockery::mock(
+            ConsoleKernelFactory::class . "[getConsoleDirectory]",
+            [$this->app->make('files'), $moduleManager, $this->app->make('module.service.route_source')]
+        );
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
-        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace = "Modules\\$module\\");
+        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn(
+            $namespace = "Modules\\$module\\"
+        );
 
         $factory->shouldReceive("getConsoleDirectory")->andReturn($dir = "directory");
 
         $this->assertSame("$namespace$dir", $uut->invoke($factory, $module));
     }
 
-    public function testGetModuleKernel () : void
+    public function testGetModuleKernel(): void
     {
         $uut = $this->getMethodFromClass("getModuleKernel", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
         $this->assertSame(Kernel::class, $uut->invoke($factory));
     }
 
-    public function testGetKernelConsoleDir () : void
+    public function testGetKernelConsoleDir(): void
     {
         $uut = $this->getMethodFromClass("getKernelConsoleDir", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
@@ -133,7 +155,7 @@ class ConsoleKernelFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    public function testGetStub () : void
+    public function testGetStub(): void
     {
         $uut = $this->getMethodFromClass("getStub", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
@@ -141,42 +163,42 @@ class ConsoleKernelFactoryTest extends Test
         $this->assertSame($stub, $uut->invoke($factory));
     }
 
-    public function testGetKernelNamespacePlaceholder () : void
+    public function testGetKernelNamespacePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getKernelNamespacePlaceholder", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
         $this->assertSame("{kernelNamespace}", $uut->invoke($factory));
     }
 
-    public function testGetModuleKernelPlaceholder () : void
+    public function testGetModuleKernelPlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getModuleKernelPlaceholder", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
         $this->assertSame("{moduleKernel}", $uut->invoke($factory));
     }
 
-    public function testGetKernelConsoleDirPlaceholder () : void
+    public function testGetKernelConsoleDirPlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getKernelConsoleDirPlaceholder", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
         $this->assertSame("{kernelConsolePath}", $uut->invoke($factory));
     }
 
-    public function testGetRouteFilePlaceholder () : void
+    public function testGetRouteFilePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getRouteFilePlaceholder", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
         $this->assertSame("{kernelConsoleRouteFile}", $uut->invoke($factory));
     }
 
-    public function testGetConsoleDirectory () : void
+    public function testGetConsoleDirectory(): void
     {
         $uut = $this->getMethodFromClass("getConsoleDirectory", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");
         $this->assertSame("Console", $uut->invoke($factory));
     }
 
-    public function testGetKernelFileName () : void
+    public function testGetKernelFileName(): void
     {
         $uut = $this->getMethodFromClass("getKernelFileName", ConsoleKernelFactory::class);
         $factory = $this->app->make("module.factory.console_kernel");

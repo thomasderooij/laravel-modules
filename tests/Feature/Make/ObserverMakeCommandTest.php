@@ -9,7 +9,7 @@ use Mockery;
 
 class ObserverMakeCommandTest extends MakeTest
 {
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If I want to make a observer for my module
         $response = $this->artisan("make:observer", ["name" => $observer = "MyNewObserver"]);
@@ -31,18 +31,23 @@ class ObserverMakeCommandTest extends MakeTest
 
         // The observer should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If I want to make a observer for my module
         // The casing of the module name differs from the one in the tracker file to ensure casing does not matter for the module option
-        $response = $this->artisan("make:observer", ["name" => $observer = "MyNewObserver", "--module" => $module = "MyModule"]);
+        $response = $this->artisan(
+            "make:observer",
+            ["name" => $observer = "MyNewObserver", "--module" => $module = "MyModule"]
+        );
 
         // We make sure the modules are initialised
         $this->initialisedModulesSetup();
@@ -61,14 +66,16 @@ class ObserverMakeCommandTest extends MakeTest
 
         // The observer should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithWorkbench () : void
+    public function testWithWorkbench(): void
     {
         // If I want to make a observer for my module
         $response = $this->artisan("make:observer", ["name" => $observer = "MyNewObserver"]);
@@ -90,17 +97,22 @@ class ObserverMakeCommandTest extends MakeTest
 
         // The observer should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("{$this->modulesDir}/{$this->module}/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
         $this->assertMatchesSnapshot($capture);
     }
 
-    public function testWithVanillaModule () : void
+    public function testWithVanillaModule(): void
     {
         // If I want to make a observer for my module
-        $response = $this->artisan("make:observer", ["name" => $observer = "MyNewObserver", "--module" => $module = "MYMODULE"]);
+        $response = $this->artisan(
+            "make:observer",
+            ["name" => $observer = "MyNewObserver", "--module" => $module = "MYMODULE"]
+        );
 
         // We make sure the modules are initialised
         $this->initialisedModulesSetup();
@@ -119,7 +131,9 @@ class ObserverMakeCommandTest extends MakeTest
 
         // The observer should then be created
         $capture = null;
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]);
+        $this->filesystem->shouldReceive("put")->withArgs(
+            [base_path("app/$fileDirectory/$fileName"), Mockery::capture($capture)]
+        );
 
         $response->run();
 
@@ -128,7 +142,9 @@ class ObserverMakeCommandTest extends MakeTest
 
     protected function fetchStub(): void
     {
-        $stub = realpath(__DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/observer.plain.stub");
+        $stub = realpath(
+            __DIR__ . "/../../../vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/observer.plain.stub"
+        );
         $this->filesystem->shouldReceive("get")->withArgs([$stub])->andReturn($this->files->get($stub));
     }
 }

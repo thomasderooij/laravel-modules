@@ -8,7 +8,7 @@ class SaveTest extends ModuleStateRepositoryTest
 {
     private $method = "save";
 
-    public function testSave () : void
+    public function testSave(): void
     {
         $moduleManager = $this->getMockRepository($this->method);
 
@@ -30,7 +30,7 @@ class SaveTest extends ModuleStateRepositoryTest
         $moduleManager->shouldReceive("getJsonOptions")->andReturn([1, 2]);
 
         // And save the tracker content to the tracker file
-        $trackerContent =  ["content"];
+        $trackerContent = ["content"];
         $this->filesystem->expects("put")->withArgs(["$directory/$trackerFileName", json_encode($trackerContent, 3)]);
 
         $uut->invoke($moduleManager, $trackerContent);

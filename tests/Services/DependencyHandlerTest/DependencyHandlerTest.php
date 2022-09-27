@@ -55,7 +55,7 @@ abstract class DependencyHandlerTest extends Test
         $this->uut = $this->getMethodFromClass($this->method, DependencyHandler::class);
     }
 
-    protected function alphabeticalByValues (array $array) : array
+    protected function alphabeticalByValues(array $array): array
     {
         return collect($array)->sort()->values()->toArray();
     }

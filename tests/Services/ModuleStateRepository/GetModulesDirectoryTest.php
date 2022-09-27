@@ -11,7 +11,7 @@ class GetModulesDirectoryTest extends ModuleStateRepositoryTest
 {
     private $method = "getModulesDirectory";
 
-    public function testGetModulesDirectory () : void
+    public function testGetModulesDirectory(): void
     {
         $uut = $this->getMockRepository($this->method);
 
@@ -29,7 +29,7 @@ class GetModulesDirectoryTest extends ModuleStateRepositoryTest
         $this->assertSame($expected, $uut->getModulesDirectory());
     }
 
-    public function testGetModulesDirectoryWithoutConfig () : void
+    public function testGetModulesDirectoryWithoutConfig(): void
     {
         $uut = $this->getMockRepository($this->method);
 

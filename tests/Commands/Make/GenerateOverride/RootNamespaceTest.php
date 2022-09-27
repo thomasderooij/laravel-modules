@@ -13,7 +13,7 @@ class RootNamespaceTest extends GenerateOverrideTest
         $this->method = "rootNamespace";
     }
 
-    public function testRootNamespaceWithoutModules () : void
+    public function testRootNamespaceWithoutModules(): void
     {
         // If I ask for the namespace, and there is no module
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
@@ -32,7 +32,7 @@ class RootNamespaceTest extends GenerateOverrideTest
         }
     }
 
-    public function testRootNamespaceWithVanillaModule () : void
+    public function testRootNamespaceWithVanillaModule(): void
     {
         // If I ask for the namespace, and there is no module
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
@@ -52,7 +52,7 @@ class RootNamespaceTest extends GenerateOverrideTest
         }
     }
 
-    public function testRootNamespaceWithModuleOption () : void
+    public function testRootNamespaceWithModuleOption(): void
     {
         // If I ask for the namespace, and there is no module
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
@@ -63,7 +63,9 @@ class RootNamespaceTest extends GenerateOverrideTest
 
             // The module manager should return the namespace
             $command->shouldReceive("isVanilla")->andReturn(false);
-            $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace = "Namespace");
+            $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn(
+                $namespace = "Namespace"
+            );
 
             // And that result should be returned
             $uut = $this->getMethodFromClass($this->method, $class);
@@ -72,7 +74,7 @@ class RootNamespaceTest extends GenerateOverrideTest
         }
     }
 
-    public function testRootNamespaceWithModuleInWorkbench () : void
+    public function testRootNamespaceWithModuleInWorkbench(): void
     {
         // If I ask for the namespace, and there is no module
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn($module = "MyModule");
@@ -83,7 +85,9 @@ class RootNamespaceTest extends GenerateOverrideTest
 
             // The module manager should return the namespace
             $command->shouldReceive("isVanilla")->andReturn(false);
-            $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace = "Namespace");
+            $this->moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn(
+                $namespace = "Namespace"
+            );
 
             // And that result should be returned
             $uut = $this->getMethodFromClass($this->method, $class);

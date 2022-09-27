@@ -13,7 +13,7 @@ class GetLastBatchNumberTest extends ModuleMigrationRepositoryTest
         parent::setUp();
     }
 
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If there is no module
         $module = null;
@@ -26,7 +26,7 @@ class GetLastBatchNumberTest extends ModuleMigrationRepositoryTest
         $this->assertSame($expected, $result);
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If I have a module
         $module = "ThisModule";

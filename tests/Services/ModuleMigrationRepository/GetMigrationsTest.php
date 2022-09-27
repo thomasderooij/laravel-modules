@@ -13,30 +13,34 @@ class GetMigrationsTest extends ModuleMigrationRepositoryTest
         parent::setUp();
     }
 
-    public function testGetMigrationsWithoutModule () : void
+    public function testGetMigrationsWithoutModule(): void
     {
         // If there is no module
         $module = null;
 
         // The default behaviour should occur
-        $this->repository->shouldReceive("parentCall")->withArgs([$this->method, [$steps = 1]])->andReturn($expected = ["result"]);
+        $this->repository->shouldReceive("parentCall")->withArgs([$this->method, [$steps = 1]])->andReturn(
+            $expected = ["result"]
+        );
 
         // And this should be returned by the function
         $result = $this->uut->invoke($this->repository, $steps, $module);
         $this->assertSame($expected, $result);
     }
 
-    public function testGetMigrationsWithModule () : void
+    public function testGetMigrationsWithModule(): void
     {
         // If there is no module
         $module = "MyModulle";
         $this->repository->shouldReceive("table")->andReturn($this->builder);
 
         // The builder should setup a query filter
-        $this->builder->shouldReceive("where")->withArgs([[
-            ['batch', '>=', '1'],
-            ["module", "=", $module]
-        ]])->andReturn($this->builder);
+        $this->builder->shouldReceive("where")->withArgs([
+            [
+                ['batch', '>=', '1'],
+                ["module", "=", $module]
+            ]
+        ])->andReturn($this->builder);
 
         // Setup sorting
         $steps = 1;

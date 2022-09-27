@@ -14,7 +14,7 @@ class ClearWorkbenchTest extends ModuleManagerTest
     /**
      * Test clearing the workbench
      */
-    public function testClearingTheWorkbench () : void
+    public function testClearingTheWorkbench(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -34,7 +34,9 @@ class ClearWorkbenchTest extends ModuleManagerTest
         $preexistingCache = ["somekey" => "somevalue", $workbenchKey => "module_name"];
         Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn($preexistingCache);
         // And place an empties workbench key inside it
-        Cache::shouldReceive('put')->withArgs([$cacheKey, ["somekey" => "somevalue", $workbenchKey => null], $cacheValidity])->once();
+        Cache::shouldReceive('put')->withArgs(
+            [$cacheKey, ["somekey" => "somevalue", $workbenchKey => null], $cacheValidity]
+        )->once();
 
         $uut->clearWorkbench();
     }
@@ -42,7 +44,7 @@ class ClearWorkbenchTest extends ModuleManagerTest
     /**
      * Test that an exception gets thrown when the modules are not initialised
      */
-    public function testClearingTheWorkbenchWhenModulesAreNotInitialised () : void
+    public function testClearingTheWorkbenchWhenModulesAreNotInitialised(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -52,7 +54,9 @@ class ClearWorkbenchTest extends ModuleManagerTest
         // I expect an exception
         $this->expectException(ModulesNotInitialisedException::class);
         // With a message
-        $this->expectExceptionMessage("The modules need to be initialised first. You can do this by running the module:init command.");
+        $this->expectExceptionMessage(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
 
         // When I try to clear the workbench
         $uut->clearWorkbench();

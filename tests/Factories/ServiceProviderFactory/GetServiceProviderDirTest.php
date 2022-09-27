@@ -10,7 +10,7 @@ class GetServiceProviderDirTest extends ServiceProviderFactoryTest
 {
     private $method = "getServiceProviderDir";
 
-    public function testGetServiceProviderDir () : void
+    public function testGetServiceProviderDir(): void
     {
         // If I have a method to get the service provider directory
         $uut = $this->getMethod($this->method);

@@ -12,7 +12,7 @@ class GetActiveModulesTrackerKeyTest extends ModuleStateRepositoryTest
      * Here we test the default value of the modules tracker key. We do this because we want to this test to fail when
      *  this value gets changed and breaks backward compatibility.
      */
-    public function testGetActiveModulesTrackerKey () : void
+    public function testGetActiveModulesTrackerKey(): void
     {
         // If I have a method
         $uut = $this->getMethod($this->method);

@@ -13,7 +13,7 @@ class LogInRepositoryTest extends ModuleMigratorTest
         parent::setUp();
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If there is no module
         $module = null;
@@ -25,7 +25,7 @@ class LogInRepositoryTest extends ModuleMigratorTest
         $this->uut->invoke($this->migrator, $name, $batch, $module);
     }
 
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If there is a module
         $module = "TestModule";

@@ -15,7 +15,7 @@ class SetWorkbenchTest extends ModuleManagerTest
     /**
      * Test setting a workbench if all goes well
      */
-    public function testSetWorkbenchWithoutACurrentWorkbench () : void
+    public function testSetWorkbenchWithoutACurrentWorkbench(): void
     {
         // If I have a module manager on which I want to set a workbench
         $uut = $this->getMockManager($this->method);
@@ -54,7 +54,7 @@ class SetWorkbenchTest extends ModuleManagerTest
     /**
      * Here we test setting a different module to the workbench
      */
-    public function testSetWorkbenchWithACurrentWorkbench () : void
+    public function testSetWorkbenchWithACurrentWorkbench(): void
     {
         // If I have a module manager on which I want to set a workbench
         $uut = $this->getMockManager($this->method);
@@ -86,12 +86,14 @@ class SetWorkbenchTest extends ModuleManagerTest
         Cache::shouldReceive('get')->withArgs([$actualKey])->andReturn($preexitingCache)->once();
 
         // And in the end, the cache should store the new module under then new cache key
-        Cache::shouldReceive('put')->withArgs([$actualKey, ["somekey" => "somevalue", $workbenchKey => strtolower($moduleName)], $cacheValitidy]);
+        Cache::shouldReceive('put')->withArgs(
+            [$actualKey, ["somekey" => "somevalue", $workbenchKey => strtolower($moduleName)], $cacheValitidy]
+        );
 
         $uut->setWorkbench($moduleName);
     }
 
-    public function testShouldThrowAnExceptionIfNotInitialised () : void
+    public function testShouldThrowAnExceptionIfNotInitialised(): void
     {
         // If I have a module manager on which I want to set a workbench
         $uut = $this->getMockManager($this->method);
@@ -105,7 +107,7 @@ class SetWorkbenchTest extends ModuleManagerTest
         $uut->setWorkbench("test_module");
     }
 
-    public function testShouldThrowAnExceptionIfModuleDoesNotExist () : void
+    public function testShouldThrowAnExceptionIfModuleDoesNotExist(): void
     {
         // If I have a module manager on which I want to set a workbench
         $uut = $this->getMockManager($this->method);

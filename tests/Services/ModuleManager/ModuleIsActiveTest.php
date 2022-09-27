@@ -8,7 +8,7 @@ class ModuleIsActiveTest extends ModuleManagerTest
 {
     private $method = "moduleIsActive";
 
-    public function testModuleIsActive () : void
+    public function testModuleIsActive(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -28,7 +28,7 @@ class ModuleIsActiveTest extends ModuleManagerTest
         $this->assertTrue($uut->moduleIsActive($module));
     }
 
-    public function testModuleIsNotActive () : void
+    public function testModuleIsNotActive(): void
     {
         $uut = $this->getMockManager($this->method);
 

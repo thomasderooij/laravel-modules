@@ -13,7 +13,7 @@ class GetWorkbenchTest extends ModuleManagerTest
     /**
      * Here we check if we get null when we're asking what's in an empty workbench
      */
-    public function testGetWorkbenchWhenEmpty () : void
+    public function testGetWorkbenchWhenEmpty(): void
     {
         // If I have a module manager
         $uut = $this->getMockManager($this->method);
@@ -22,7 +22,8 @@ class GetWorkbenchTest extends ModuleManagerTest
         $cacheKey = "cache_key";
         $uut->shouldReceive("getCacheKey")->andReturn($cacheKey);
 
-        Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn(null)->once(); // We don't care about the arguments here
+        Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn(null)->once(
+        ); // We don't care about the arguments here
 
         // And I ask for the workbench
         // I expect to receive null
@@ -32,7 +33,7 @@ class GetWorkbenchTest extends ModuleManagerTest
     /**
      * Here we check if we get the module from the workbench
      */
-    public function testGetWorkbenchWhenNotEmpty () : void
+    public function testGetWorkbenchWhenNotEmpty(): void
     {
         // If I have a module manager
         $uut = $this->getMockManager($this->method);
@@ -42,7 +43,8 @@ class GetWorkbenchTest extends ModuleManagerTest
         $uut->shouldReceive("getCacheKey")->andReturn($cacheKey);
 
         // And there is an active module
-        Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn(["module" => "testModule"])->once(); // We also don't care about the arguments here
+        Cache::shouldReceive('get')->withArgs([$cacheKey])->andReturn(["module" => "testModule"])->once(
+        ); // We also don't care about the arguments here
         // The manager should know they key
         $uut->shouldReceive("getWorkbenchKey")->andReturn("module")->once();
 

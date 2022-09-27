@@ -21,10 +21,10 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class ModuleFactoryTest extends Test
 {
-    public function testCreate () : void
+    public function testCreate(): void
     {
         /** @var Mockery\MockInterface&ModuleFactory $factory */
-        $factory = Mockery::mock(ModuleFactory::class."[createBaseDirectory]", [
+        $factory = Mockery::mock(ModuleFactory::class . "[createBaseDirectory]", [
             $filesystem = Mockery::mock(Filesystem::class),
             $routeFactory = Mockery::mock(RouteFactory::class),
             $routeServiceProviderFactory = Mockery::mock(RouteServiceProviderFactory::class),
@@ -54,11 +54,11 @@ class ModuleFactoryTest extends Test
         $factory->create($module);
     }
 
-    public function testCreateBaseDirectory () : void
+    public function testCreateBaseDirectory(): void
     {
         $uut = $this->getMethodFromClass("createBaseDirectory", ModuleFactory::class);
         /** @var Mockery\MockInterface&ModuleFactory $factory */
-        $factory = Mockery::mock(ModuleFactory::class."[getDirName]", [
+        $factory = Mockery::mock(ModuleFactory::class . "[getDirName]", [
             $filesystem = Mockery::mock(Filesystem::class),
             $routeFactory = Mockery::mock(RouteFactory::class),
             $routeServiceProviderFactory = Mockery::mock(RouteServiceProviderFactory::class),
@@ -81,7 +81,7 @@ class ModuleFactoryTest extends Test
         $uut->invoke($factory, $module);
     }
 
-    public function testGetDirName () : void
+    public function testGetDirName(): void
     {
         $uut = $this->getMethodFromClass("getDirName", ModuleFactory::class);
         $factory = $this->app->make("module.factory.module");

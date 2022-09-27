@@ -10,7 +10,7 @@ class GetActiveModulesTest extends ModuleStateRepositoryTest
 {
     private $method = "getActiveModules";
 
-    public function testGetActiveModules () : void
+    public function testGetActiveModules(): void
     {
         $uut = $this->getMethod($this->method);
         $repository = $this->getMockRepository($this->method);
@@ -38,7 +38,7 @@ class GetActiveModulesTest extends ModuleStateRepositoryTest
         $this->assertSame($activeModules, $uut->invoke($repository, true));
     }
 
-    public function testGettingActiveModulesWhenModulesAreNotInitialised () : void
+    public function testGettingActiveModulesWhenModulesAreNotInitialised(): void
     {
         $uut = $this->getMethod($this->method);
         $repository = $this->getMockRepository($this->method);
@@ -56,7 +56,7 @@ class GetActiveModulesTest extends ModuleStateRepositoryTest
         $this->assertSame([], $outcome);
     }
 
-    public function testGettingActiveModulesWhenNotInitialisedAndNotSkippingCheck () : void
+    public function testGettingActiveModulesWhenNotInitialisedAndNotSkippingCheck(): void
     {
         $uut = $this->getMethod($this->method);
         $repository = $this->getMockRepository($this->method);
@@ -67,7 +67,9 @@ class GetActiveModulesTest extends ModuleStateRepositoryTest
         // I expect an exception
         $this->expectException(ModulesNotInitialisedException::class);
         // With a message
-        $this->expectExceptionMessage("The modules need to be initialised first. You can do this by running the module:init command.");
+        $this->expectExceptionMessage(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
 
         // When I call for active modules without skipping the check
         $outcome = $uut->invoke($repository, false);

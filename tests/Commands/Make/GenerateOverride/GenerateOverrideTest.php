@@ -65,17 +65,29 @@ abstract class GenerateOverrideTest extends Test
      * @return MockInterface
      * @throws \Exception
      */
-    protected function getCommand (string $class) : MockInterface
+    protected function getCommand(string $class): MockInterface
     {
         // We mock all the functions that are not our unit under test, and we exclude the constructor and option function from these mocks
         $mockableFunctions = $this->getMockableClassMethods($class, $this->method, [
             // We don't want to mock these methods
-            "__construct", "__call", "__callStatic", "getDefaultName", "getDefaultDescription", "getDefinition", "getNativeDefinition",
+            "__construct",
+            "__call",
+            "__callStatic",
+            "getDefaultName",
+            "getDefaultDescription",
+            "getDefinition",
+            "getNativeDefinition",
             // We also don't mock these, since these are taken from the command class itself
-            "setName", "setDescription", "setHelp", "isHidden", "setHidden", "addArgument", "addOption"
+            "setName",
+            "setDescription",
+            "setHelp",
+            "isHidden",
+            "setHidden",
+            "addArgument",
+            "addOption"
         ]);
         $functionString = implode(",", $mockableFunctions);
-        $command = \Mockery::mock($class."[$functionString]", [
+        $command = \Mockery::mock($class . "[$functionString]", [
             $this->app->make('files'),
             $this->moduleManager
         ]);

@@ -13,7 +13,7 @@ class DeactivateModuleTest extends CommandTest
         $this->moduleManager->shouldReceive("getWorkbench")->andReturn(null);
     }
 
-    public function testDeactivateModule () : void
+    public function testDeactivateModule(): void
     {
         // I have a module I want to deactivate
         $module = "activeModule";
@@ -34,7 +34,7 @@ class DeactivateModuleTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesAreNotInitialised () : void
+    public function testModulesAreNotInitialised(): void
     {
         // I have a module I want to deactivate
         $module = "activeModule";
@@ -45,11 +45,13 @@ class DeactivateModuleTest extends CommandTest
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(false);
 
         // I want to get some feedback
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 
-    public function testModuleDoesNotExist () : void
+    public function testModuleDoesNotExist(): void
     {
         // I have a module I want to deactivate
         $module = "activeModule";
@@ -66,7 +68,7 @@ class DeactivateModuleTest extends CommandTest
         $response->run();
     }
 
-    public function testModuleAlreadyInactivate () : void
+    public function testModuleAlreadyInactivate(): void
     {
         // I have a module I want to deactivate
         $module = "activeModule";

@@ -28,7 +28,7 @@ abstract class ModuleMigratorTest extends Test
         // And create a partial mock for the migrator
         $mockMethods = $this->getMockableClassMethods(ModuleMigrator::class, $this->method);
         $methodString = implode(",", $mockMethods);
-        $this->migrator = Mockery::mock(ModuleMigrator::class."[$methodString]", [
+        $this->migrator = Mockery::mock(ModuleMigrator::class . "[$methodString]", [
             $this->repository,
             $this->app->make(ConnectionResolver::class),
             $this->app->make("files"),

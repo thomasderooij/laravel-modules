@@ -10,7 +10,7 @@ class GetProvidersRootTest extends ServiceProviderFactoryTest
 {
     private $method = "getProvidersRoot";
 
-    public function testGetProvidersDirectory () : void
+    public function testGetProvidersDirectory(): void
     {
         $uut = $this->getMethod($this->method);
         $factory = $this->getMockServiceProviderFactory($this->method);

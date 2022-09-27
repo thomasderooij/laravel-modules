@@ -10,7 +10,7 @@ class GetFileNameTest extends ServiceProviderFactoryTest
 {
     private $method = "getFileName";
 
-    public function testGetFileName () : void
+    public function testGetFileName(): void
     {
         $uut = $this->getMethod($this->method);
         $factory = $this->getMockServiceProviderFactory($this->method);

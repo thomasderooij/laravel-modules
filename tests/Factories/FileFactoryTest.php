@@ -15,7 +15,7 @@ class FileFactoryTest extends Test
     /**
      * Here we test populating a file in an exiting directory
      */
-    public function testPopulateFileInExistingDir () : void
+    public function testPopulateFileInExistingDir(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         // If I have a file factory
@@ -26,15 +26,13 @@ class FileFactoryTest extends Test
             ->expects('get')
             ->withArgs([base_path("test_file.php")])
             ->andReturn("I'm a text with {replaceable} elements")
-            ->once()
-        ;
+            ->once();
 
         // And I expect the filesystem to write a new file, based on the stub
         $mockFilesystem
             ->expects('put')
             ->withArgs([base_path("new_file.php"), "I'm a text with cool elements"])
-            ->once()
-        ;
+            ->once();
 
         // And the ensureSlash function should be called
         $mockFactory->expects("ensureSlash")->withArgs([base_path()])->andReturn(base_path() . "/")->once();
@@ -44,13 +42,14 @@ class FileFactoryTest extends Test
         $uut->setAccessible(true);
 
         // When I call the populateFile function
-        $uut->invoke($mockFactory, base_path(), "new_file.php", base_path("test_file.php"), ["{replaceable}" => "cool"]);
+        $uut->invoke($mockFactory, base_path(), "new_file.php", base_path("test_file.php"), ["{replaceable}" => "cool"]
+        );
     }
 
     /**
      * Here we test creating populating a file in a directory that doesn't exit yet
      */
-    public function testPopulateFileInNonExistingDir () : void
+    public function testPopulateFileInNonExistingDir(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         // If I have a file factory
@@ -61,22 +60,19 @@ class FileFactoryTest extends Test
             ->expects('get')
             ->withArgs([base_path("test_file.php")])
             ->andReturn("I'm a text with {replaceable} elements")
-            ->once()
-        ;
+            ->once();
 
         $dir = "new_dir";
         $mockFilesystem
             ->expects("makeDirectory")
             ->withArgs([base_path($dir), 0755, true])
-            ->once()
-        ;
+            ->once();
 
         // And I expect the filesystem to write a new file, based on the stub
         $mockFilesystem
             ->expects('put')
             ->withArgs([base_path("$dir/new_file.php"), "I'm a text with cool elements"])
-            ->once()
-        ;
+            ->once();
 
         // And the ensureSlash function should be called
         $mockFactory->expects("ensureSlash")->withArgs([base_path($dir)])->andReturn(base_path($dir) . "/")->once();
@@ -86,12 +82,18 @@ class FileFactoryTest extends Test
         $uut->setAccessible(true);
 
         // When I call the populateFile function
-        $uut->invoke($mockFactory, base_path($dir), "new_file.php", base_path("test_file.php"), ["{replaceable}" => "cool"]);
+        $uut->invoke(
+            $mockFactory,
+            base_path($dir),
+            "new_file.php",
+            base_path("test_file.php"),
+            ["{replaceable}" => "cool"]
+        );
     }
 
-    private function getMockFactory (Filesystem $filesystem) : Mockery\MockInterface
+    private function getMockFactory(Filesystem $filesystem): Mockery\MockInterface
     {
-        $mockFactory = Mockery::mock(FileFactory::class."[ensureSlash]", [
+        $mockFactory = Mockery::mock(FileFactory::class . "[ensureSlash]", [
             $filesystem,
             $this->app->make(ModuleManager::class)
         ]);

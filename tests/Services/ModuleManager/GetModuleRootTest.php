@@ -9,7 +9,7 @@ class GetModuleRootTest extends ModuleManagerTest
 {
     private $method = "getModuleRoot";
 
-    public function testGetModuleRoot () : void
+    public function testGetModuleRoot(): void
     {
         // If I want to get my modules root dir
         $uut = $this->getMockManager($this->method);

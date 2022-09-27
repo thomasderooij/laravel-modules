@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Config;
 
 class SetWorkbenchCommandTest extends CommandTest
 {
-    public function testSetWorkbench () : void
+    public function testSetWorkbench(): void
     {
         // If I want to set a module to my workbench
         $module = "CurrentModule";
@@ -37,7 +37,7 @@ class SetWorkbenchCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesAreNotInitialised () : void
+    public function testModulesAreNotInitialised(): void
     {
         // If I want to set a module to my workbench
         $module = "CurrentModule";
@@ -51,11 +51,13 @@ class SetWorkbenchCommandTest extends CommandTest
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
 
         // I want to get some feedback
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 
-    public function testModuleDoesNotExist () : void
+    public function testModuleDoesNotExist(): void
     {
         // If I want to set a module to my workbench
         $module = "CurrentModule";

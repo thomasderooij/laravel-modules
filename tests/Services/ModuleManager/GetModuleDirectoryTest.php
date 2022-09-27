@@ -11,7 +11,7 @@ class GetModuleDirectoryTest extends ModuleManagerTest
     /**
      * @todo: This function needs to be updated so make sure the directory has the proper capitalisation
      */
-    public function testGetModuleDirectory () : void
+    public function testGetModuleDirectory(): void
     {
         $uut = $this->getMockManager($this->method);
 

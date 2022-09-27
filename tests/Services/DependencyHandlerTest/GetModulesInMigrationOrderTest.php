@@ -11,7 +11,7 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
 {
     protected string $method = "getModulesInMigrationOrder";
 
-    public function testGetMigrationOrderWhenNoDependenciesHaveBeenSpecified () : void
+    public function testGetMigrationOrderWhenNoDependenciesHaveBeenSpecified(): void
     {
         // If I ask for the modules in migration order
         $this->methodHandler->shouldReceive("getTrackerContent")->andReturn([]);
@@ -31,7 +31,7 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
         $this->assertSame($expected, $this->uut->invoke($this->methodHandler));
     }
 
-    public function testGetMigrationOrderWhenSomeDependenciesHaveBeenSpecified () : void
+    public function testGetMigrationOrderWhenSomeDependenciesHaveBeenSpecified(): void
     {
         // If I ask for the modules in migration order
         $this->methodHandler->shouldReceive("getTrackerContent")->andReturn([
@@ -49,23 +49,41 @@ class GetModulesInMigrationOrderTest extends DependencyHandlerTest
 
         // I should get all active modules
         $this->methodHandler->shouldReceive("getActiveModules")->andReturn([
-            $topModule, $module1 = "module_1", $layer2Module, $layer2Module2,
-            $module2 = "module_2", $topModule2, $layer1Module,
+            $topModule,
+            $module1 = "module_1",
+            $layer2Module,
+            $layer2Module2,
+            $module2 = "module_2",
+            $topModule2,
+            $layer1Module,
         ]);
 
         // Then it should ask which modules are safe to migrate
         $list = [$vanilla];
-        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn($firstIteration = [$topModule, $topModule2]);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies]
+        )->andReturn($firstIteration = [$topModule, $topModule2]);
         // Then it should ask again which modules are safe to migrate
         $list = array_merge($list, $firstIteration);
-        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn($secondIteration = [$layer1Module]);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies]
+        )->andReturn($secondIteration = [$layer1Module]);
         $list = array_merge($list, $secondIteration);
-        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn($thirdIteration = [$layer2Module, $layer2Module2]);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies]
+        )->andReturn($thirdIteration = [$layer2Module, $layer2Module2]);
         $list = array_merge($list, $thirdIteration);
-        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies])->andReturn([]);
+        $this->methodHandler->shouldReceive("getModulesMigratableAfterList")->withArgs([$list, $dependencies]
+        )->andReturn([]);
 
         // And return an array containing vanilla, and the active modules
-        $expected = [$vanilla, $topModule, $topModule2, $layer1Module, $layer2Module, $layer2Module2, $module1, $module2];
+        $expected = [
+            $vanilla,
+            $topModule,
+            $topModule2,
+            $layer1Module,
+            $layer2Module,
+            $layer2Module2,
+            $module1,
+            $module2
+        ];
         $this->assertSame($expected, $this->uut->invoke($this->methodHandler));
     }
 }

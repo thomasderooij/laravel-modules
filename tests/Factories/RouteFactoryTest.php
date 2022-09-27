@@ -13,19 +13,24 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class RouteFactoryTest extends Test
 {
-    public function testCreate () : void
+    public function testCreate(): void
     {
         $filesystem = Mockery::mock(Filesystem::class);
         $routeSource = Mockery::mock(RouteSource::class);
 
         // When I create route files for a module
         $module = "NewModule";
-        $factory = Mockery::mock(RouteFactory::class, [$filesystem, $this->app->make("module.service.manager"), $routeSource]);
+        $factory = Mockery::mock(
+            RouteFactory::class,
+            [$filesystem, $this->app->make("module.service.manager"), $routeSource]
+        );
         $factory->shouldAllowMockingProtectedMethods();
         $uut = $this->getMethodFromClass("create", RouteFactory::class);
 
         // I should fetch the route directory
-        $factory->shouldReceive("getRouteDirectory")->withArgs([$module])->andReturn($routeDirectory = "route_directory");
+        $factory->shouldReceive("getRouteDirectory")->withArgs([$module])->andReturn(
+            $routeDirectory = "route_directory"
+        );
 
         // I should get the route directory
         $filesystem->shouldReceive("exists")->withArgs([$routeDirectory])->andReturn(false);
@@ -43,13 +48,16 @@ class RouteFactoryTest extends Test
         $uut->invoke($factory, $module);
     }
 
-    public function testGetRouteDirectory () : void
+    public function testGetRouteDirectory(): void
     {
         $routeSource = Mockery::mock(RouteSource::class);
 
         // When I get the route directory for a module
         $module = "NewModule";
-        $factory = Mockery::mock(RouteFactory::class, [$this->app->make("files"), $this->app->make("module.service.manager"), $routeSource]);
+        $factory = Mockery::mock(
+            RouteFactory::class,
+            [$this->app->make("files"), $this->app->make("module.service.manager"), $routeSource]
+        );
         $factory->shouldAllowMockingProtectedMethods();
         $uut = $this->getMethodFromClass("getRouteDirectory", RouteFactory::class);
 
@@ -66,12 +74,15 @@ class RouteFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    public function testCreateRouteFile () : void
+    public function testCreateRouteFile(): void
     {
         $routeSource = Mockery::mock(RouteSource::class);
 
         // When create a route file for a module
-        $factory = Mockery::mock(RouteFactory::class, [$this->app->make("files"), $this->app->make("module.service.manager"), $routeSource]);
+        $factory = Mockery::mock(
+            RouteFactory::class,
+            [$this->app->make("files"), $this->app->make("module.service.manager"), $routeSource]
+        );
         $factory->shouldAllowMockingProtectedMethods();
         $uut = $this->getMethodFromClass("createRouteFile", RouteFactory::class);
 
@@ -84,21 +95,29 @@ class RouteFactoryTest extends Test
         $routeSource->shouldReceive("getRouteFileExtension")->andReturn($extension = ".kt");
 
         // And then I need to call the populateFile function
-        $factory->expects("populateFile")->withArgs([$directory, "$fileName$extension", $stub, [
-            "{typeUcfirst}" => ucfirst($fileName),
-            "{type}" => $fileName,
-            "{middleware}"  => $fileName,
-        ]]);
+        $factory->expects("populateFile")->withArgs([
+            $directory,
+            "$fileName$extension",
+            $stub,
+            [
+                "{typeUcfirst}" => ucfirst($fileName),
+                "{type}" => $fileName,
+                "{middleware}" => $fileName,
+            ]
+        ]);
 
         $uut->invoke($factory, $fileName, $directory);
     }
 
-    public function testGetStubByType () : void
+    public function testGetStubByType(): void
     {
         $routeSource = Mockery::mock(RouteSource::class);
 
         // When create a route file for a module
-        $factory = Mockery::mock(RouteFactory::class, [$this->app->make("files"), $this->app->make("module.service.manager"), $routeSource]);
+        $factory = Mockery::mock(
+            RouteFactory::class,
+            [$this->app->make("files"), $this->app->make("module.service.manager"), $routeSource]
+        );
         $factory->shouldAllowMockingProtectedMethods();
         $uut = $this->getMethodFromClass("getStubByType", RouteFactory::class);
 

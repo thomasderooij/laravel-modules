@@ -14,7 +14,7 @@ class GetCacheKeyTest extends ModuleManagerTest
      * Here we test the default value of the cache key. We do this because we want to this test to fail when
      *  this value gets changed and breaks backward compatibility.
      */
-    public function testGetCacheKey () : void
+    public function testGetCacheKey(): void
     {
         // If I have a method
         $uut = $this->getMethod($this->method);

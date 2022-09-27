@@ -8,7 +8,7 @@ class GetTrackerFileNameTest extends ModuleStateRepositoryTest
 {
     private $method = "getTrackerFileName";
 
-    public function testGetTrackerFile () : void
+    public function testGetTrackerFile(): void
     {
         $uut = $this->getMockRepository($this->method);
 

@@ -12,7 +12,7 @@ class DeactivateModuleTest extends ModuleManagerTest
 {
     private $method = "deactivateModule";
 
-    public function testDeactivatingAModuleCurrentlyInOurWorkbench () : void
+    public function testDeactivatingAModuleCurrentlyInOurWorkbench(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -35,19 +35,25 @@ class DeactivateModuleTest extends ModuleManagerTest
         // Next we get the tracker content
         $modulesKey = "modules_key";
         $activeModulesKey = "active_modules_key";
-        $trackerContent = [$modulesKey => [$sanitisedModuleName, $otherModule], $activeModulesKey => [$module, $otherModule]];
+        $trackerContent = [
+            $modulesKey => [$sanitisedModuleName, $otherModule],
+            $activeModulesKey => [$module, $otherModule]
+        ];
         $uut->shouldReceive("getTrackerContent")->andReturn($trackerContent);
         $uut->shouldReceive("getActiveModulesTrackerKey")->andReturn($activeModulesKey);
 
         // And then we should save our updated content to our tracker file
-        $updatedTrackerContent = [$modulesKey => [$sanitisedModuleName, $otherModule], $activeModulesKey => [$otherModule]];
+        $updatedTrackerContent = [
+            $modulesKey => [$sanitisedModuleName, $otherModule],
+            $activeModulesKey => [$otherModule]
+        ];
         $uut->shouldReceive("save")->withArgs([$updatedTrackerContent]);
 
         // When I deactivate the module
         $uut->deactivateModule($module);
     }
 
-    public function testDeactivatingAModuleNotInOurWorkbench () : void
+    public function testDeactivatingAModuleNotInOurWorkbench(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -68,19 +74,25 @@ class DeactivateModuleTest extends ModuleManagerTest
         // Next we get the tracker content
         $modulesKey = "modules_key";
         $activeModulesKey = "active_modules_key";
-        $trackerContent = [$modulesKey => [$sanitisedModuleName, $otherModule], $activeModulesKey => [$module, $otherModule]];
+        $trackerContent = [
+            $modulesKey => [$sanitisedModuleName, $otherModule],
+            $activeModulesKey => [$module, $otherModule]
+        ];
         $uut->shouldReceive("getTrackerContent")->andReturn($trackerContent);
         $uut->shouldReceive("getActiveModulesTrackerKey")->andReturn($activeModulesKey);
 
         // And then we should save our updated content to our tracker file
-        $updatedTrackerContent = [$modulesKey => [$sanitisedModuleName, $otherModule], $activeModulesKey => [$otherModule]];
+        $updatedTrackerContent = [
+            $modulesKey => [$sanitisedModuleName, $otherModule],
+            $activeModulesKey => [$otherModule]
+        ];
         $uut->shouldReceive("save")->withArgs([$updatedTrackerContent]);
 
         // When I deactivate the module
         $uut->deactivateModule($module);
     }
 
-    public function testDeactivatingAModuleWhenModulesAreNotInitialised () : void
+    public function testDeactivatingAModuleWhenModulesAreNotInitialised(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -90,13 +102,15 @@ class DeactivateModuleTest extends ModuleManagerTest
         // I expect an exception
         $this->expectException(ModulesNotInitialisedException::class);
         // With a message
-        $this->expectExceptionMessage("The modules need to be initialised first. You can do this by running the module:init command.");
+        $this->expectExceptionMessage(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
 
         // When I try to deactivate a module
         $uut->deactivateModule("some_module");
     }
 
-    public function testDeactivatingANonExistentModule () : void
+    public function testDeactivatingANonExistentModule(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -116,7 +130,7 @@ class DeactivateModuleTest extends ModuleManagerTest
         $uut->deactivateModule($module);
     }
 
-    public function testDeactivatingAnAlreadyInactiveModule () : void
+    public function testDeactivatingAnAlreadyInactiveModule(): void
     {
         $uut = $this->getMockManager($this->method);
 

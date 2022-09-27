@@ -10,7 +10,7 @@ class GetModuleRoutesTest extends ServiceProviderFactoryTest
 {
     private $method = "getModuleRoutesRoot";
 
-    public function testGetModuleRoutesRoot () : void
+    public function testGetModuleRoutesRoot(): void
     {
         // In order to get the relative module directory
         $uut = $this->getMethod($this->method);

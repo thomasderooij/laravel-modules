@@ -26,7 +26,7 @@ class DeleteDependencyModuleCommandTest extends CommandTest
     /**
      * @group command
      */
-    public function testDeletingAModuleDependency () : void
+    public function testDeletingAModuleDependency(): void
     {
         // If I want to delete a dependency from a module
         $response = $this->artisan("module:delete-dependency", ["name" => $module = "MyModule"]);
@@ -48,10 +48,18 @@ class DeleteDependencyModuleCommandTest extends CommandTest
         $this->dependencyHandler->shouldReceive("removeDependency")->withArgs([$module, $module1]);
         // I should be asked which other dependencies I want to delete, and respond with none
         $optionsAfter = [$noThnx = "No, I'm done removing dependencies", $module2, $module3, $module4];
-        $response->expectsChoice("Done. Would you like to remove another one from \"$module\"?", $module3, $optionsAfter);
+        $response->expectsChoice(
+            "Done. Would you like to remove another one from \"$module\"?",
+            $module3,
+            $optionsAfter
+        );
         $this->dependencyHandler->shouldReceive("removeDependency")->withArgs([$module, $module3]);
         $optionsAfter2 = [$noThnx, $module2, $module4];
-        $response->expectsChoice("Done. Would you like to remove another one from \"$module\"?", $noThnx, $optionsAfter2);
+        $response->expectsChoice(
+            "Done. Would you like to remove another one from \"$module\"?",
+            $noThnx,
+            $optionsAfter2
+        );
         $this->dependencyHandler->shouldReceive("removeDependency")->withArgs([$noThnx]);
 
         // I should get a message saying the process is done and successful

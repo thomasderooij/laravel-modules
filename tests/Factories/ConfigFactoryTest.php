@@ -21,13 +21,13 @@ class ConfigFactoryTest extends Test
     /**
      * Here we test if the create function calls the expected protected functions and dependencies
      */
-    public function testCreate () : void
+    public function testCreate(): void
     {
         $mockEditor = Mockery::mock(ComposerEditor::class);
 
         // If I have a config factory
         /** @var Mockery\MockInterface&ConfigFactory $uut */
-        $uut = Mockery::mock(ConfigFactory::class.'[createConfigFile,, replaceServiceProviders]', [
+        $uut = Mockery::mock(ConfigFactory::class . '[createConfigFile,, replaceServiceProviders]', [
             $this->app->make(Filesystem::class),
             $this->app->make(ModuleManager::class),
             $mockEditor,
@@ -45,13 +45,13 @@ class ConfigFactoryTest extends Test
     /**
      * Here we test if the undo function call all the arguments we expect it to call
      */
-    public function testUndo () : void
+    public function testUndo(): void
     {
         $mockEditor = Mockery::mock(ComposerEditor::class);
 
         // If I have a config factory
         /** @var Mockery\MockInterface&ConfigFactory $uut */
-        $uut = Mockery::mock(ConfigFactory::class.'[removeConfigFile, revertServiceProviders]', [
+        $uut = Mockery::mock(ConfigFactory::class . '[removeConfigFile, revertServiceProviders]', [
             $this->app->make(Filesystem::class),
             $this->app->make(ModuleManager::class),
             $mockEditor,
@@ -66,7 +66,7 @@ class ConfigFactoryTest extends Test
         $uut->undo();
     }
 
-    public function testCreateConfigFile () : void
+    public function testCreateConfigFile(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);
@@ -84,9 +84,9 @@ class ConfigFactoryTest extends Test
         $mockFilesystem
             ->shouldReceive('get')
             ->withArgs([$configStub])
-            ->andReturn(["Config stub content"]) // We don't care about the content. That's something the file factory manages
-            ->once()
-        ;
+            ->andReturn(["Config stub content"]
+            ) // We don't care about the content. That's something the file factory manages
+            ->once();
 
         // And a new config file should be created, based on the stub
         $configFileArgument = null; // This variable will be used to capture the argument content
@@ -96,8 +96,7 @@ class ConfigFactoryTest extends Test
                 base_path('config/modules.php'),
                 Mockery::capture($configFileArgument)
             ])
-            ->once()
-        ;
+            ->once();
 
         // When I call the createConfigFile method with a rootdir as argument
         $factory = $this->app->make(ConfigFactory::class);
@@ -106,7 +105,7 @@ class ConfigFactoryTest extends Test
         $this->assertMatchesSnapshot($configFileArgument);
     }
 
-    public function testReplaceServiceProviders () : void
+    public function testReplaceServiceProviders(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);
@@ -123,8 +122,7 @@ class ConfigFactoryTest extends Test
             ->shouldReceive('get')
             ->withArgs([config_path('app.php')])
             ->andReturn(['File content']) // We don't care about the content
-            ->once()
-        ;
+            ->once();
 
         $appFileArgument = null;
         $mockFilesystem
@@ -133,8 +131,7 @@ class ConfigFactoryTest extends Test
                 config_path('app.php'),
                 Mockery::capture($appFileArgument)
             ])
-            ->once()
-        ;
+            ->once();
 
         // When I call the replaceServiceProviders method
         $factory = $this->app->make(ConfigFactory::class);
@@ -143,7 +140,7 @@ class ConfigFactoryTest extends Test
         $this->assertMatchesSnapshot($appFileArgument);
     }
 
-    public function testRevertServiceProviders () : void
+    public function testRevertServiceProviders(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);
@@ -160,8 +157,7 @@ class ConfigFactoryTest extends Test
             ->shouldReceive('get')
             ->withArgs([config_path('app.php')])
             ->andReturn(['File content']) // We don't care about the content
-            ->once()
-        ;
+            ->once();
 
         $appFileArgument = null;
         $mockFilesystem
@@ -170,8 +166,7 @@ class ConfigFactoryTest extends Test
                 config_path('app.php'),
                 Mockery::capture($appFileArgument)
             ])
-            ->once()
-        ;
+            ->once();
 
         // When I call the replaceServiceProviders method
         $factory = $this->app->make(ConfigFactory::class);
@@ -179,9 +174,10 @@ class ConfigFactoryTest extends Test
 
         $this->assertMatchesSnapshot($appFileArgument);
     }
+
     // todo: Test the fetching of the right array for the replacing of the service providers
 
-    public function testRemoveConfigFile () : void
+    public function testRemoveConfigFile(): void
     {
         $mockFilesystem = Mockery::mock(Filesystem::class);
         $this->instance(Filesystem::class, $mockFilesystem);
@@ -197,8 +193,7 @@ class ConfigFactoryTest extends Test
         $mockFilesystem
             ->shouldReceive('delete')
             ->withArgs([config_path("modules.php")])
-            ->once()
-        ;
+            ->once();
 
         // When I call the replaceServiceProviders method
         $factory = $this->app->make(ConfigFactory::class);

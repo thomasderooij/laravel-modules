@@ -10,7 +10,7 @@ class CreateTest extends ServiceProviderFactoryTest
 {
     private $method = "create";
 
-    public function testCreate () : void
+    public function testCreate(): void
     {
         // When I call create a module
         $uut = $this->getMockServiceProviderFactory($this->method);
@@ -42,10 +42,15 @@ class CreateTest extends ServiceProviderFactoryTest
         $uut->shouldReceive("getClassName")->andReturn($class);
 
         // And finally, the populate file function should be called, which is tested in the FileFactoryTest
-        $uut->shouldReceive("populateFile")->withArgs([$serviceProviderDir, $fileName, $stub, [
-            $namespacePlaceholder => "$moduleNamespace\\$providersRoot",
-            $classNamePlaceholder => $class
-        ]]);
+        $uut->shouldReceive("populateFile")->withArgs([
+            $serviceProviderDir,
+            $fileName,
+            $stub,
+            [
+                $namespacePlaceholder => "$moduleNamespace\\$providersRoot",
+                $classNamePlaceholder => $class
+            ]
+        ]);
 
         $uut->create($module);
     }

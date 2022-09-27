@@ -13,20 +13,22 @@ class GetLastTest extends ModuleMigrationRepositoryTest
         parent::setUp();
     }
 
-    public function testGetLastWithoutModule () : void
+    public function testGetLastWithoutModule(): void
     {
         // If there is no module
         $module = null;
 
         // The parent call should be made
-        $this->repository->shouldReceive("parentCall")->withArgs([$this->method])->andReturn($expected = ["return", "value"]);
+        $this->repository->shouldReceive("parentCall")->withArgs([$this->method])->andReturn(
+            $expected = ["return", "value"]
+        );
 
         // And that value should be returned
         $result = $this->uut->invoke($this->repository, $module);
         $this->assertSame($expected, $result);
     }
 
-    public function testGetLastWithModule () : void
+    public function testGetLastWithModule(): void
     {
         // If there is a module
         $module = "MyModule";
@@ -36,10 +38,12 @@ class GetLastTest extends ModuleMigrationRepositoryTest
         $this->repository->shouldReceive("table")->andReturn($this->builder);
 
         // The builder should filter for the module
-        $this->builder->shouldReceive("where")->withArgs([[
-            ['batch', "=", $lastBatchNumber],
-            ["module", "=", $module]
-        ]])->andReturnSelf();
+        $this->builder->shouldReceive("where")->withArgs([
+            [
+                ['batch', "=", $lastBatchNumber],
+                ["module", "=", $module]
+            ]
+        ])->andReturnSelf();
         $this->builder->shouldReceive("orderBy")->withArgs(["migration", "desc"])->andReturnSelf();
         $this->builder->shouldReceive("get")->andReturn(collect($expected = ["expected", "result"]));
 

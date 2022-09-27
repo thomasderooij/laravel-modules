@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Config;
 
 class DeactivateModuleCommandTest extends CommandTest
 {
-    public function testDeactivateModule () : void
+    public function testDeactivateModule(): void
     {
         // I want to deactivate a module
         $module = "ActiveModule";
@@ -31,10 +31,13 @@ class DeactivateModuleCommandTest extends CommandTest
         );
         // Which should be replaced with one that has added the module to the active key
         $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path($root)])->andReturn(true);
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("$root/.tracker"), json_encode([
-            "modules" => [$module, "OtherModule"],
-            "activeModules" => []
-        ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)]);
+        $this->filesystem->shouldReceive("put")->withArgs([
+            base_path("$root/.tracker"),
+            json_encode([
+                "modules" => [$module, "OtherModule"],
+                "activeModules" => []
+            ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
+        ]);
         // And the module should be removed from the workbench
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $module]);
         Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], 604800]);
@@ -48,7 +51,7 @@ class DeactivateModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesAreNotInitialised () : void
+    public function testModulesAreNotInitialised(): void
     {
         // I want to deactivate a module
         $module = "ActiveModule";
@@ -62,11 +65,13 @@ class DeactivateModuleCommandTest extends CommandTest
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
 
         // I want to get some feedback
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 
-    public function testModuleDoesNotExist () : void
+    public function testModuleDoesNotExist(): void
     {
         // I want to deactivate a module
         $module = "ActiveModule";
@@ -86,7 +91,7 @@ class DeactivateModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModuleAlreadyInactivate () : void
+    public function testModuleAlreadyInactivate(): void
     {
         // I want to deactivate a module
         $module = "ActiveModule";

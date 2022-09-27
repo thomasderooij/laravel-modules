@@ -33,7 +33,7 @@ class DependenciesCommandTest extends Test
         $this->app->instance("module.service.dependency_handler", $this->dependencyHandler);
     }
 
-    public function testListingDependenciesWithModuleArgument () : void
+    public function testListingDependenciesWithModuleArgument(): void
     {
         // If I have a bunch of modules
         $modules = [
@@ -51,10 +51,15 @@ class DependenciesCommandTest extends Test
 
         // And they're partially dependency on each other
         $this->dependencyHandler->shouldReceive("getUpstreamModules")->withArgs([$module])->andReturn([
-            $topModule, $secondPlace, $sharedSecond, $upstream
+            $topModule,
+            $secondPlace,
+            $sharedSecond,
+            $upstream
         ]);
         $this->dependencyHandler->shouldReceive("getDownstreamModules")->withArgs([$module])->andReturn([
-            $downstream, $lowerModule, $bottomModule
+            $downstream,
+            $lowerModule,
+            $bottomModule
         ]);
 
         // The module manager should confirm that the modules are initialised
@@ -82,7 +87,7 @@ class DependenciesCommandTest extends Test
         $response->run();
     }
 
-    public function testListingDependenciesWithWorkbench () : void
+    public function testListingDependenciesWithWorkbench(): void
     {
         // If I have a bunch of modules
         $modules = [
@@ -106,10 +111,15 @@ class DependenciesCommandTest extends Test
 
         // And they're partially dependency on each other
         $this->dependencyHandler->shouldReceive("getUpstreamModules")->withArgs([$module])->andReturn([
-            $topModule, $secondPlace, $sharedSecond, $upstream
+            $topModule,
+            $secondPlace,
+            $sharedSecond,
+            $upstream
         ]);
         $this->dependencyHandler->shouldReceive("getDownstreamModules")->withArgs([$module])->andReturn([
-            $downstream, $lowerModule, $bottomModule
+            $downstream,
+            $lowerModule,
+            $bottomModule
         ]);
 
         // And I ask for the dependencies
@@ -131,7 +141,7 @@ class DependenciesCommandTest extends Test
         $response->run();
     }
 
-    public function testListingModulesWithoutModuleArgumentAndWithoutWorkbench () : void
+    public function testListingModulesWithoutModuleArgumentAndWithoutWorkbench(): void
     {
         // If I have a bunch of modules
         // The module manager should confirm that the modules are initialised
@@ -149,7 +159,7 @@ class DependenciesCommandTest extends Test
         $response->run();
     }
 
-    public function testListingModulesWithNonExistingModule () : void
+    public function testListingModulesWithNonExistingModule(): void
     {
         // If I have a bunch of modules
         // The module manager should confirm that the modules are initialised

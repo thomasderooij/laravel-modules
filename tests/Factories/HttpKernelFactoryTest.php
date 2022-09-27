@@ -13,17 +13,23 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class HttpKernelFactoryTest extends Test
 {
-    public function testCreate () : void
+    public function testCreate(): void
     {
         $moduleManager = Mockery::mock(ModuleManager::class);
         $this->instance("module.service.manager", $moduleManager);
 
         /** @var Mockery\MockInterface&HttpKernelFactory $factory */
-        $factory = Mockery::mock(HttpKernelFactory::class."[" . implode(", ", $this->getMockableClassMethods(HttpKernelFactory::class, "create")) . "]", [
-            $this->app->make('files'),
-            $this->app->make("module.service.manager"),
-            $this->app->make("module.service.route_source")
-        ]);
+        $factory = Mockery::mock(
+            HttpKernelFactory::class . "[" . implode(
+                ", ",
+                $this->getMockableClassMethods(HttpKernelFactory::class, "create")
+            ) . "]",
+            [
+                $this->app->make('files'),
+                $this->app->make("module.service.manager"),
+                $this->app->make("module.service.route_source")
+            ]
+        );
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
@@ -34,18 +40,23 @@ class HttpKernelFactoryTest extends Test
         $factory->shouldReceive("getKernelNamespace")->andReturn($kernelNs = "kernelNs");
         $factory->shouldReceive("getModuleKernelPlaceholder")->andReturn($mkPh = "mkPh");
         $factory->shouldReceive("getModuleKernel")->andReturn($mk = "mk");
-        $factory->shouldReceive("populateFile")->withArgs([$httpDir, $kernelFileName, $stub, [
-            $kernelNsPh => $kernelNs,
-            $mkPh => $mk
-        ]]);
+        $factory->shouldReceive("populateFile")->withArgs([
+            $httpDir,
+            $kernelFileName,
+            $stub,
+            [
+                $kernelNsPh => $kernelNs,
+                $mkPh => $mk
+            ]
+        ]);
 
         $factory->create($module);
     }
 
-    public function testGetHttpDir () : void
+    public function testGetHttpDir(): void
     {
         $uut = $this->getMethodFromClass("getHttpDir", HttpKernelFactory::class);
-        $factory = Mockery::mock(HttpKernelFactory::class."[getHttpDirectory]", [
+        $factory = Mockery::mock(HttpKernelFactory::class . "[getHttpDirectory]", [
             $this->app->make('files'),
             $this->app->make("module.service.manager"),
             $this->app->make("module.service.route_source")
@@ -60,7 +71,7 @@ class HttpKernelFactoryTest extends Test
         $this->assertSame($expected, $uut->invoke($factory, $module));
     }
 
-    public function testGetStub () : void
+    public function testGetStub(): void
     {
         $uut = $this->getMethodFromClass("getStub", HttpKernelFactory::class);
         $factory = $this->app->make("module.factory.http_kernel");
@@ -68,51 +79,56 @@ class HttpKernelFactoryTest extends Test
         $this->assertSame($stub, $uut->invoke($factory));
     }
 
-    public function testGetKernelNamespacePlaceholder () : void
+    public function testGetKernelNamespacePlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getKernelNamespacePlaceholder", HttpKernelFactory::class);
         $factory = $this->app->make("module.factory.http_kernel");
         $this->assertSame("{kernelNamespace}", $uut->invoke($factory));
     }
 
-    public function testGetKernelNamespace () : void
+    public function testGetKernelNamespace(): void
     {
         $moduleManager = Mockery::mock(ModuleManager::class);
 
         $uut = $this->getMethodFromClass("getKernelNamespace", HttpKernelFactory::class);
-        $factory = Mockery::mock(HttpKernelFactory::class."[getHttpDirectory]", [$this->app->make('files'), $moduleManager, $this->app->make('module.service.route_source')]);
+        $factory = Mockery::mock(
+            HttpKernelFactory::class . "[getHttpDirectory]",
+            [$this->app->make('files'), $moduleManager, $this->app->make('module.service.route_source')]
+        );
         $factory->shouldAllowMockingProtectedMethods();
 
         $module = "NewModule";
-        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn($namespace = "Modules\\$module\\");
+        $moduleManager->shouldReceive("getModuleNamespace")->withArgs([$module])->andReturn(
+            $namespace = "Modules\\$module\\"
+        );
 
         $factory->shouldReceive("getHttpDirectory")->andReturn($dir = "directory");
 
         $this->assertSame("$namespace$dir", $uut->invoke($factory, $module));
     }
 
-    public function testGetModuleKernelPlaceholder () : void
+    public function testGetModuleKernelPlaceholder(): void
     {
         $uut = $this->getMethodFromClass("getModuleKernelPlaceholder", HttpKernelFactory::class);
         $factory = $this->app->make("module.factory.http_kernel");
         $this->assertSame("{moduleKernel}", $uut->invoke($factory));
     }
 
-    public function testGetModuleKernel () : void
+    public function testGetModuleKernel(): void
     {
         $uut = $this->getMethodFromClass("getModuleKernel", HttpKernelFactory::class);
         $factory = $this->app->make("module.factory.http_kernel");
         $this->assertSame(CompositeKernel::class, $uut->invoke($factory));
     }
 
-    public function testGetHttpDirectory () : void
+    public function testGetHttpDirectory(): void
     {
         $uut = $this->getMethodFromClass("getHttpDirectory", HttpKernelFactory::class);
         $factory = $this->app->make("module.factory.http_kernel");
         $this->assertSame("Http", $uut->invoke($factory));
     }
 
-    public function testGetKernelFileName () : void
+    public function testGetKernelFileName(): void
     {
         $uut = $this->getMethodFromClass("getKernelFileName", HttpKernelFactory::class);
         $factory = $this->app->make("module.factory.http_kernel");

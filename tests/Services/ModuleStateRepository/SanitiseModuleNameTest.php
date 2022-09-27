@@ -11,7 +11,7 @@ class SanitiseModuleNameTest extends ModuleStateRepositoryTest
     /**
      * Here, we get the module name out of the tracker file, exactly as it was put in originally
      */
-    public function testSanitiseModuleName () : void
+    public function testSanitiseModuleName(): void
     {
         $moduleManager = $this->getMockRepository($this->method);
         $uut = $this->getMethod($this->method);

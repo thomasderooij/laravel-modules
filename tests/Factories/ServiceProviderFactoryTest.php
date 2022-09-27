@@ -31,7 +31,7 @@ abstract class ServiceProviderFactoryTest extends Test
     /**
      * @return Mockery\MockInterface&ServiceProviderFactory
      */
-    protected function getMockServiceProviderFactory (string $method, string $class = null) : Mockery\MockInterface
+    protected function getMockServiceProviderFactory(string $method, string $class = null): Mockery\MockInterface
     {
         $this->moduleManager = Mockery::mock(ModuleManager::class);
         $this->instance("module.service.manager", $this->moduleManager);
@@ -47,13 +47,13 @@ abstract class ServiceProviderFactoryTest extends Test
 
         $functions = implode(", ", $mockMethods);
         // Mock the module manager with all functions except the one we want to test
-        $mock = Mockery::mock($class."[$functions]", [$this->filesystem, $this->moduleManager, $this->routeSource]);
+        $mock = Mockery::mock($class . "[$functions]", [$this->filesystem, $this->moduleManager, $this->routeSource]);
         $mock->shouldAllowMockingProtectedMethods();
 
         return $mock;
     }
 
-    protected function getMethod (string $method, $class = null) : \ReflectionMethod
+    protected function getMethod(string $method, $class = null): \ReflectionMethod
     {
         if ($class === null) {
             $class = \Thomasderooij\LaravelModules\Factories\ServiceProviderFactory::class;

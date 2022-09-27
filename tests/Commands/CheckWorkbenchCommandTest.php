@@ -6,7 +6,7 @@ namespace Thomasderooij\LaravelModules\Tests\Commands;
 
 class CheckWorkbenchCommandTest extends CommandTest
 {
-    public function testCheckWorkbenchIsEmpty () : void
+    public function testCheckWorkbenchIsEmpty(): void
     {
         $response = $this->artisan("module:check");
 
@@ -18,7 +18,7 @@ class CheckWorkbenchCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testCheckWorkbenchContainsAModule () : void
+    public function testCheckWorkbenchContainsAModule(): void
     {
         $response = $this->artisan("module:check");
 
@@ -30,7 +30,7 @@ class CheckWorkbenchCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesNotInitialised (): void
+    public function testModulesNotInitialised(): void
     {
         $response = $this->artisan("module:check");
 
@@ -40,7 +40,9 @@ class CheckWorkbenchCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("isInitialised")->andReturn(false);
 
         // Get info on how to initialise the modules
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 }

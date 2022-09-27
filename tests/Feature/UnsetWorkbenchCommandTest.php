@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Config;
 
 class UnsetWorkbenchCommandTest extends CommandTest
 {
-    public function testUnsetWorkbench () : void
+    public function testUnsetWorkbench(): void
     {
         // If I want to clear my workbench
         $response = $this->artisan("module:unset");
@@ -32,7 +32,7 @@ class UnsetWorkbenchCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesAreNotInitialised () : void
+    public function testModulesAreNotInitialised(): void
     {
         // If I want to clear my workbench
         $response = $this->artisan("module:unset");
@@ -44,7 +44,9 @@ class UnsetWorkbenchCommandTest extends CommandTest
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
 
         // And I should get some feedback
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 }

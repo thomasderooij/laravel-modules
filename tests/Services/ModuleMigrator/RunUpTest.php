@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Services\ModuleMigrator;
@@ -12,7 +13,7 @@ class RunUpTest extends ModuleMigratorTest
         parent::setUp();
     }
 
-    public function testWithoutModule () : void
+    public function testWithoutModule(): void
     {
         // If there is no module
         $module = null;
@@ -27,7 +28,7 @@ class RunUpTest extends ModuleMigratorTest
         $this->uut->invoke($this->migrator, ...$args);
     }
 
-    public function testWithModule () : void
+    public function testWithModule(): void
     {
         // If there is a module
         $module = "SomeModule";

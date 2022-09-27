@@ -10,7 +10,7 @@ class AddModuleTest extends ModuleManagerTest
 {
     private $method = "addModule";
 
-    public function testAddingAModule () : void
+    public function testAddingAModule(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -39,7 +39,7 @@ class AddModuleTest extends ModuleManagerTest
         $uut->addModule($module);
     }
 
-    public function testAddingAModuleTwice () : void
+    public function testAddingAModuleTwice(): void
     {
         $uut = $this->getMockManager($this->method);
 

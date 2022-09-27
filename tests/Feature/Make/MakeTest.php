@@ -32,28 +32,37 @@ abstract class MakeTest extends CommandTest
         $this->files = new Filesystem();
     }
 
-    protected function initialisedModulesSetup () : void
+    protected function initialisedModulesSetup(): void
     {
         // I should be asked for the modules root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($this->modulesDir = "MyModulesDir");
 
         // And the filesystem should get the tracker data
-        $this->filesystem->shouldReceive("isFile")->withArgs([base_path("{$this->modulesDir}/.tracker")])->andReturn(true);
+        $this->filesystem->shouldReceive("isFile")->withArgs([base_path("{$this->modulesDir}/.tracker")])->andReturn(
+            true
+        );
         // It should then get the tracker content
-        $this->filesystem->shouldReceive("get")->withArgs([base_path("{$this->modulesDir}/.tracker")])->andReturn(json_encode([
-            "modules" => ["module_1", $this->module = "MYMODULE"],
-            "activeModules" => [$this->module]
-        ]));
+        $this->filesystem->shouldReceive("get")->withArgs([base_path("{$this->modulesDir}/.tracker")])->andReturn(
+            json_encode([
+                "modules" => ["module_1", $this->module = "MYMODULE"],
+                "activeModules" => [$this->module]
+            ])
+        );
     }
 
-    protected function vanillaModule (string $vanilla = "vanilla") : void
+    protected function vanillaModule(string $vanilla = "vanilla"): void
     {
         // It should check what the vanilla module is in the config
         Config::shouldReceive("get")->withArgs(["modules.vanilla", null])->andReturn($vanilla);
     }
 
-    protected function setFileExpectations (?string $appFileDirectory, string $fileName, bool $module = true, string $base = null, bool $checkIfFileExists = true)
-    {
+    protected function setFileExpectations(
+        ?string $appFileDirectory,
+        string $fileName,
+        bool $module = true,
+        string $base = null,
+        bool $checkIfFileExists = true
+    ) {
         if ($base === null) {
             $base = $module ? "{$this->modulesDir}/{$this->module}" : "app";
         }
@@ -61,7 +70,9 @@ abstract class MakeTest extends CommandTest
         $directory = $appFileDirectory === null ? "$base" : "$base/$appFileDirectory";
 
         if ($checkIfFileExists) {
-            $this->filesystem->shouldReceive("exists")->withArgs([base_path("$directory/$fileName")])->andReturn(false)->once();
+            $this->filesystem->shouldReceive("exists")->withArgs([base_path("$directory/$fileName")])->andReturn(
+                false
+            )->once();
         }
 
         // We should then check if the directory exists
@@ -70,5 +81,5 @@ abstract class MakeTest extends CommandTest
         $this->filesystem->shouldReceive("makeDirectory")->withArgs([base_path("$directory"), 0777, true, true]);
     }
 
-    abstract protected function fetchStub () : void;
+    abstract protected function fetchStub(): void;
 }

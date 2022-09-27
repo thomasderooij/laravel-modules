@@ -10,7 +10,7 @@ class RemoveModuleTest extends ModuleManagerTest
 {
     private $method = "removeModule";
 
-    public function testRemoveModule () : void
+    public function testRemoveModule(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -43,7 +43,7 @@ class RemoveModuleTest extends ModuleManagerTest
         $uut->removeModule($module);
     }
 
-    public function testRemoveModuleWithEmptyWorkbench () : void
+    public function testRemoveModuleWithEmptyWorkbench(): void
     {
         $uut = $this->getMockManager($this->method);
 
@@ -74,7 +74,7 @@ class RemoveModuleTest extends ModuleManagerTest
         $uut->removeModule($module);
     }
 
-    public function testRemoveNonExistingModule () : void
+    public function testRemoveNonExistingModule(): void
     {
         $uut = $this->getMockManager($this->method);
 

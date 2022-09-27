@@ -14,7 +14,7 @@ use Mockery\Matcher\AnyArgs;
 
 class ActivateModuleCommandTest extends CommandTest
 {
-    public function testActivateModule () : void
+    public function testActivateModule(): void
     {
         $module = "InactiveModule";
         $strtolowModule = strtolower($module);
@@ -33,13 +33,16 @@ class ActivateModuleCommandTest extends CommandTest
 
         // We should get the module tracker content
         $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])
-            ->andReturn(json_encode(["modules" => [$module, "OtherModule"], "activeModules" =>  ["OtherModule"]]));
+            ->andReturn(json_encode(["modules" => [$module, "OtherModule"], "activeModules" => ["OtherModule"]]));
         // Which should be replaced with one that has added the module to the active key
         $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path($root)])->andReturn(true);
-        $this->filesystem->shouldReceive("put")->withArgs([base_path("$root/.tracker"), json_encode([
-            "modules" => [$module, "OtherModule"],
-            "activeModules" => ["OtherModule", $module]
-        ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)]);
+        $this->filesystem->shouldReceive("put")->withArgs([
+            base_path("$root/.tracker"),
+            json_encode([
+                "modules" => [$module, "OtherModule"],
+                "activeModules" => ["OtherModule", $module]
+            ], JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)
+        ]);
 
         // And I expect some feedback
         $response->expectsOutput("The module \"$strtolowModule\" has been activated and put in your workbench.");
@@ -50,7 +53,7 @@ class ActivateModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModulesNotInitialised () : void
+    public function testModulesNotInitialised(): void
     {
         $module = "InactiveModule";
         // In order to create a new module
@@ -63,11 +66,13 @@ class ActivateModuleCommandTest extends CommandTest
         // We should not have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
 
-        $response->expectsOutput("The modules need to be initialised first. You can do this by running the module:init command.");
+        $response->expectsOutput(
+            "The modules need to be initialised first. You can do this by running the module:init command."
+        );
         $response->run();
     }
 
-    public function testModuleAlreadyActive () : void
+    public function testModuleAlreadyActive(): void
     {
         $module = "InactiveModule";
         // In order to create a new module
@@ -87,7 +92,7 @@ class ActivateModuleCommandTest extends CommandTest
         $response->run();
     }
 
-    public function testModuleDoesNotExist () : void
+    public function testModuleDoesNotExist(): void
     {
         $module = "InactiveModule";
         // In order to create a new module

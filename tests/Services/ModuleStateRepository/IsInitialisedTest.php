@@ -8,7 +8,7 @@ class IsInitialisedTest extends ModuleStateRepositoryTest
 {
     private $method = "isInitialised";
 
-    public function testIsInitialised () : void
+    public function testIsInitialised(): void
     {
         $uut = $this->getMockRepository($this->method);
 
@@ -21,7 +21,7 @@ class IsInitialisedTest extends ModuleStateRepositoryTest
         $this->assertTrue($uut->isInitialised());
     }
 
-    public function testCheckingInitialisationIfThereIsNoConfig () : void
+    public function testCheckingInitialisationIfThereIsNoConfig(): void
     {
         $uut = $this->getMockRepository($this->method);
 
@@ -34,7 +34,7 @@ class IsInitialisedTest extends ModuleStateRepositoryTest
         $this->assertFalse($uut->isInitialised());
     }
 
-    public function testCheckingInitialisationIfThereIsNoTrackerFile () : void
+    public function testCheckingInitialisationIfThereIsNoTrackerFile(): void
     {
         $uut = $this->getMockRepository($this->method);
 
@@ -47,7 +47,7 @@ class IsInitialisedTest extends ModuleStateRepositoryTest
         $this->assertFalse($uut->isInitialised());
     }
 
-    public function testCheckingInitialisationWhenNeitherFileIsPresent () : void
+    public function testCheckingInitialisationWhenNeitherFileIsPresent(): void
     {
         $uut = $this->getMockRepository($this->method);
 

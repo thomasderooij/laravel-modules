@@ -8,7 +8,7 @@ class HasTrackerFileTest extends ModuleStateRepositoryTest
 {
     private $method = "hasTrackerFile";
 
-    public function testHasTrackerFile () : void
+    public function testHasTrackerFile(): void
     {
         // If want to know if there is a tracker file
         $uut = $this->getMethod($this->method);
@@ -29,7 +29,7 @@ class HasTrackerFileTest extends ModuleStateRepositoryTest
         $this->assertTrue($uut->invoke($moduleManager));
     }
 
-    public function testDoesNotHaveTrackerFile () : void
+    public function testDoesNotHaveTrackerFile(): void
     {
         // If want to know if there is a tracker file
         $uut = $this->getMethod($this->method);
