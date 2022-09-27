@@ -51,7 +51,7 @@ abstract class FileFactory
      */
     protected function ensureSlash (string $directory) : string
     {
-        if (substr($directory, -1, 1) !== "/") {
+        if (!str_ends_with($directory, "/")) {
             $directory.= "/";
         }
 

@@ -14,7 +14,7 @@ trait HasFactory
      * @param  mixed  $parameters
      * @return Factory
      */
-    public static function factory(...$parameters)
+    public static function factory(...$parameters): Factory
     {
         $factory = static::newFactory() ?: EloquentModuleFactory::factoryForModel(get_called_class());
 
@@ -28,8 +28,8 @@ trait HasFactory
      *
      * @return Factory
      */
-    protected static function newFactory()
+    protected static function newFactory(...$parameters): Factory
     {
-        //
+        return static::factory(...$parameters);
     }
 }

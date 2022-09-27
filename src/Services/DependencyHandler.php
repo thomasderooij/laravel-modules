@@ -140,7 +140,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
             throw new ModuleNotFoundException("There is no module named \"$upstream\".");
         }
 
-        // Make sure there is not confusion about module names
+        // Make sure there is no confusion about module names
         $downstream = $this->sanitiseModuleName($downstream);
         $upstream = $this->sanitiseModuleName($upstream);
 

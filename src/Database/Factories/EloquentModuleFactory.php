@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\Database\Factories;
 
 use Faker\Generator as Faker;
@@ -9,7 +11,7 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 abstract class EloquentModuleFactory extends Factory
 {
-    public static function construct(Faker $faker, $pathToFactories = null)
+    public static function construct(Faker $faker, $pathToFactories = null): static
     {
         $instance = new static($faker);
 
@@ -34,7 +36,7 @@ abstract class EloquentModuleFactory extends Factory
      * @param  string  $modelName
      * @return string
      */
-    public static function resolveFactoryName(string $modelName)
+    public static function resolveFactoryName(string $modelName):string
     {
         $resolver = static::$factoryNameResolver ?: function (string $modelName) {
             /** @var ModuleManager $moduleManager */

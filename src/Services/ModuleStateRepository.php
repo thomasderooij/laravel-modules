@@ -238,7 +238,7 @@ abstract class ModuleStateRepository
         // Get the qualified file name
         $trackerFile = $storageDir . "/" . $this->getTrackerFileName();
 
-        // If the directory does not exist, create it with rw rw r access
+        // If the directory does not exist, create it with rwx rw r access
         if (!$this->files->isDirectory($storageDir)) {
             $this->files->makeDirectory($storageDir, 0755, true);
         }
