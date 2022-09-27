@@ -20,7 +20,7 @@ class DeactivateModuleCommand extends ModuleCommand
      */
     protected $description = 'Deactivate a module in your project';
 
-    public function handle()
+    public function handle(): void
     {
         $module = $this->getNameArgument();
 

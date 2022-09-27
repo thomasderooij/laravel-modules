@@ -32,7 +32,7 @@ class DependenciesCommand extends ModuleCommand
         $this->handler = $handler;
     }
 
-    public function handle()
+    public function handle(): ?bool
     {
         // Get the module from the options
         $module = $this->option("module");
@@ -50,7 +50,7 @@ class DependenciesCommand extends ModuleCommand
         // If neither are used, return an error message
         if ($module === null) {
             $this->noModuleProvidedResponse();
-            return;
+            return null;
         }
 
         // And if the module does not exist, I should also get an error message
@@ -66,6 +66,7 @@ class DependenciesCommand extends ModuleCommand
         $unrelatedModules = $this->moduleManager->getActiveModules();
         $this->displayUnrelatedModules(array_diff($unrelatedModules, $upstream, $downstream, [$module]));
 
+        return null;
     }
 
     protected function noModuleProvidedResponse () : void

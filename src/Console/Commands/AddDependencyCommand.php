@@ -9,7 +9,7 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class AddDependencyCommand extends ModuleCommand
 {
-    protected $dependencyHandler;
+    protected DependencyHandler $dependencyHandler;
 
     /**
      * The name and signature of the console command.
@@ -32,7 +32,7 @@ class AddDependencyCommand extends ModuleCommand
         $this->dependencyHandler = $dependencyHandler;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $module = $this->getNameArgument();
 

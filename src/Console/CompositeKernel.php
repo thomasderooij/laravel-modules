@@ -71,12 +71,11 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
      * @param Schedule $schedule
      * @throws ReflectionException
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         foreach ($this->kernels as $kernel) {
             $reflection = new \ReflectionClass(get_class($kernel));
             $method = $reflection->getMethod('schedule');
-            $method->setAccessible(true);
 
             $method->invoke($kernel, $schedule);
         }
@@ -92,7 +91,6 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
         foreach ($this->kernels as $kernel) {
             $reflection = new \ReflectionClass(get_class($kernel));
             $method = $reflection->getMethod('commands');
-            $method->setAccessible(true);
 
             $method->invoke($kernel);
         }

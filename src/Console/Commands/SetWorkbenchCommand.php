@@ -20,7 +20,7 @@ class SetWorkbenchCommand extends ModuleCommand
      */
     protected $description = 'Set a module as your current workbench';
 
-    public function handle()
+    public function handle(): void
     {
         $module = $this->getNameArgument();
 

@@ -32,7 +32,7 @@ class DeleteDependencyCommand extends ModuleCommand
         $this->dependencyHandler = $dependencyHandler;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $module = $this->getNameArgument();
 
