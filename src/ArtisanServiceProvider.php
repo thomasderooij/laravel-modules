@@ -35,27 +35,27 @@ use Thomasderooij\LaravelModules\Console\Commands\Extensions\Migrate\RollbackCom
 class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     protected array $makeCommands = [
-        "Channel"       => \Illuminate\Foundation\Console\ChannelMakeCommand::class,
-        "Controller"    => \Illuminate\Routing\Console\ControllerMakeCommand::class,
-        "Console"       => \Illuminate\Foundation\Console\ConsoleMakeCommand::class,
-        "Event"         => \Illuminate\Foundation\Console\EventMakeCommand::class,
-        "Exception"     => \Illuminate\Foundation\Console\ExceptionMakeCommand::class,
-        "Factory"       => \Illuminate\Database\Console\Factories\FactoryMakeCommand::class,
-        "Job"           => \Illuminate\Foundation\Console\JobMakeCommand::class,
-        "Listener"      => \Illuminate\Foundation\Console\ListenerMakeCommand::class,
-        "Mail"          => \Illuminate\Foundation\Console\MailMakeCommand::class,
-        "Middleware"    => \Illuminate\Routing\Console\MiddlewareMakeCommand::class,
-        "Migrate"       => \Illuminate\Database\Console\Migrations\MigrateMakeCommand::class,
-        "Model"         => \Illuminate\Foundation\Console\ModelMakeCommand::class,
-        "Notification"  => \Illuminate\Foundation\Console\NotificationMakeCommand::class,
-        "Observer"      => \Illuminate\Foundation\Console\ObserverMakeCommand::class,
-        "Policy"        => \Illuminate\Foundation\Console\PolicyMakeCommand::class,
-        "Provider"      => \Illuminate\Foundation\Console\ProviderMakeCommand::class,
-        "Request"       => \Illuminate\Foundation\Console\RequestMakeCommand::class,
-        "Resource"      => \Illuminate\Foundation\Console\ResourceMakeCommand::class,
-        "Rule"          => \Illuminate\Foundation\Console\RuleMakeCommand::class,
-        "Seeder"        => \Illuminate\Database\Console\Seeds\SeederMakeCommand::class,
-        "Test"          => \Illuminate\Foundation\Console\TestMakeCommand::class,
+        "Channel" => \Illuminate\Foundation\Console\ChannelMakeCommand::class,
+        "Controller" => \Illuminate\Routing\Console\ControllerMakeCommand::class,
+        "Console" => \Illuminate\Foundation\Console\ConsoleMakeCommand::class,
+        "Event" => \Illuminate\Foundation\Console\EventMakeCommand::class,
+        "Exception" => \Illuminate\Foundation\Console\ExceptionMakeCommand::class,
+        "Factory" => \Illuminate\Database\Console\Factories\FactoryMakeCommand::class,
+        "Job" => \Illuminate\Foundation\Console\JobMakeCommand::class,
+        "Listener" => \Illuminate\Foundation\Console\ListenerMakeCommand::class,
+        "Mail" => \Illuminate\Foundation\Console\MailMakeCommand::class,
+        "Middleware" => \Illuminate\Routing\Console\MiddlewareMakeCommand::class,
+        "Migrate" => \Illuminate\Database\Console\Migrations\MigrateMakeCommand::class,
+        "Model" => \Illuminate\Foundation\Console\ModelMakeCommand::class,
+        "Notification" => \Illuminate\Foundation\Console\NotificationMakeCommand::class,
+        "Observer" => \Illuminate\Foundation\Console\ObserverMakeCommand::class,
+        "Policy" => \Illuminate\Foundation\Console\PolicyMakeCommand::class,
+        "Provider" => \Illuminate\Foundation\Console\ProviderMakeCommand::class,
+        "Request" => \Illuminate\Foundation\Console\RequestMakeCommand::class,
+        "Resource" => \Illuminate\Foundation\Console\ResourceMakeCommand::class,
+        "Rule" => \Illuminate\Foundation\Console\RuleMakeCommand::class,
+        "Seeder" => \Illuminate\Database\Console\Seeds\SeederMakeCommand::class,
+        "Test" => \Illuminate\Foundation\Console\TestMakeCommand::class,
     ];
 
     protected array $migrateCommands = [
@@ -69,26 +69,26 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         "Seed" => "command.seed"
     ];
 
-    public function register() : void
+    public function register(): void
     {
         $this->registerDatabaseCommands();
         $this->registerMakeCommands();
         $this->registerMigrateCommands();
     }
 
-    protected function registerDatabaseCommands () : void
+    protected function registerDatabaseCommands(): void
     {
         $this->registerSeedCommand();
     }
 
-    protected function registerMakeCommands () : void
+    protected function registerMakeCommands(): void
     {
         foreach (array_keys($this->makeCommands) as $command) {
             call_user_func_array([$this, "register{$command}MakeCommand"], []);
         }
     }
 
-    protected function registerMigrateCommands () : void
+    protected function registerMigrateCommands(): void
     {
         foreach (array_keys($this->migrateCommands) as $command) {
             call_user_func_array([$this, "register{$command}MigrateCommand"], []);
@@ -98,7 +98,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /*************************************************************************
      * Database commands
      *************************************************************************/
-    protected function registerSeedCommand () : void
+    protected function registerSeedCommand(): void
     {
         $this->app->singleton($this->databaseCommands["Seed"], function ($app) {
             return new SeedCommand(
@@ -111,7 +111,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /*************************************************************************
      * Make commands
      *************************************************************************/
-    protected function registerChannelMakeCommand () : void
+    protected function registerChannelMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Channel"], function ($app) {
             return new ChannelMakeCommand(
@@ -121,7 +121,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerControllerMakeCommand () : void
+    protected function registerControllerMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Controller"], function ($app) {
             return new ControllerMakeCommand(
@@ -131,7 +131,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerConsoleMakeCommand () : void
+    protected function registerConsoleMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Console"], function ($app) {
             return new ConsoleMakeCommand(
@@ -141,7 +141,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerEventMakeCommand () : void
+    protected function registerEventMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Event"], function ($app) {
             return new EventMakeCommand(
@@ -151,7 +151,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerExceptionMakeCommand () : void
+    protected function registerExceptionMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Exception"], function ($app) {
             return new ExceptionMakeCommand(
@@ -161,7 +161,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerFactoryMakeCommand () : void
+    protected function registerFactoryMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Factory"], function ($app) {
             return new FactoryMakeCommand(
@@ -171,7 +171,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerJobMakeCommand () : void
+    protected function registerJobMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Job"], function ($app) {
             return new JobMakeCommand(
@@ -181,7 +181,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerListenerMakeCommand () : void
+    protected function registerListenerMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Listener"], function ($app) {
             return new ListenerMakeCommand(
@@ -191,7 +191,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerMailMakeCommand () : void
+    protected function registerMailMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Mail"], function ($app) {
             return new MailMakeCommand(
@@ -201,7 +201,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerMiddlewareMakeCommand () : void
+    protected function registerMiddlewareMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Middleware"], function ($app) {
             return new MiddlewareMakeCommand(
@@ -211,7 +211,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerMigrateMakeCommand () : void
+    protected function registerMigrateMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Migrate"], function ($app) {
             return new MigrateMakeCommand(
@@ -223,7 +223,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerModelMakeCommand () : void
+    protected function registerModelMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Model"], function ($app) {
             return new ModelMakeCommand(
@@ -233,7 +233,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerNotificationMakeCommand () : void
+    protected function registerNotificationMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Notification"], function ($app) {
             return new NotificationMakeCommand(
@@ -243,7 +243,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerObserverMakeCommand () : void
+    protected function registerObserverMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Observer"], function ($app) {
             return new ObserverMakeCommand(
@@ -253,7 +253,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerPolicyMakeCommand () : void
+    protected function registerPolicyMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Policy"], function ($app) {
             return new PolicyMakeCommand(
@@ -263,7 +263,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerProviderMakeCommand () : void
+    protected function registerProviderMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Provider"], function ($app) {
             return new ProviderMakeCommand(
@@ -273,7 +273,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerRequestMakeCommand () : void
+    protected function registerRequestMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Request"], function ($app) {
             return new RequestMakeCommand(
@@ -283,7 +283,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerResourceMakeCommand () : void
+    protected function registerResourceMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Resource"], function ($app) {
             return new ResourceMakeCommand(
@@ -293,7 +293,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerRuleMakeCommand () : void
+    protected function registerRuleMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Rule"], function ($app) {
             return new RuleMakeCommand(
@@ -303,7 +303,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerSeederMakeCommand () : void
+    protected function registerSeederMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Seeder"], function ($app) {
             return new SeederMakeCommand(
@@ -313,7 +313,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerTestMakeCommand () : void
+    protected function registerTestMakeCommand(): void
     {
         $this->app->singleton($this->makeCommands["Test"], function ($app) {
             return new TestMakeCommand(
@@ -326,7 +326,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /*************************************************************************
      * Migrate commands
      *************************************************************************/
-    protected function registerMigrateMigrateCommand () : void
+    protected function registerMigrateMigrateCommand(): void
     {
         $this->app->singleton($this->migrateCommands["Migrate"], function ($app) {
             return new MigrateCommand(
@@ -338,7 +338,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerFreshMigrateCommand () : void
+    protected function registerFreshMigrateCommand(): void
     {
         $this->app->singleton($this->migrateCommands["Fresh"], function ($app) {
             return new FreshCommand(
@@ -348,7 +348,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function registerRollbackMigrateCommand () : void
+    protected function registerRollbackMigrateCommand(): void
     {
         $this->app->singleton($this->migrateCommands["Rollback"], function ($app) {
             return new RollbackCommand(
@@ -358,7 +358,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    public function provides() : array
+    public function provides(): array
     {
         return array_merge(
             array_values($this->makeCommands),

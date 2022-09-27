@@ -15,7 +15,7 @@ class ModelMakeCommand extends OriginalCommand
     /**
      * Build the class with the given name.
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      *
      * @throws FileNotFoundException
@@ -26,11 +26,10 @@ class ModelMakeCommand extends OriginalCommand
 
         return $this->replaceNamespace($stub, $name)
             ->replaceUsedClasses($stub)
-            ->replaceClass($stub, $name)
-        ;
+            ->replaceClass($stub, $name);
     }
 
-    protected function replaceUsedClasses (string &$stub) : self
+    protected function replaceUsedClasses(string &$stub): self
     {
         $stub = str_replace("{hasFactory}", config("modules.has_factory_trait"), $stub);
         $stub = str_replace("{model}", config("modules.base_model"), $stub);
@@ -41,12 +40,12 @@ class ModelMakeCommand extends OriginalCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace.'\\'.config("modules.models_dir");
+        return $rootNamespace . '\\' . config("modules.models_dir");
     }
 
     protected function getStub(): string
@@ -56,10 +55,10 @@ class ModelMakeCommand extends OriginalCommand
             : $this->resolveModuleStubPath('/stubs/model.stub');
     }
 
-    protected function resolveModuleStubPath ($stub) : string
+    protected function resolveModuleStubPath($stub): string
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : realpath(__DIR__."/../../../../Factories".$stub);
+            : realpath(__DIR__ . "/../../../../Factories" . $stub);
     }
 }

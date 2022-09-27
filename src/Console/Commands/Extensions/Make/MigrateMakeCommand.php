@@ -15,8 +15,12 @@ class MigrateMakeCommand extends OriginalCommand
     protected ModuleManager $moduleManager;
     protected Filesystem $files;
 
-    public function __construct (Filesystem $files, MigrationCreator $creator, Composer $composer, ModuleManager $moduleManager)
-    {
+    public function __construct(
+        Filesystem $files,
+        MigrationCreator $creator,
+        Composer $composer,
+        ModuleManager $moduleManager
+    ) {
         $this->moduleManager = $moduleManager;
         $this->files = $files;
 
@@ -25,7 +29,7 @@ class MigrateMakeCommand extends OriginalCommand
         }
 
         // Add a module option to the option list
-        $this->signature.= "\n{--module= : The module to which to apply this.}";
+        $this->signature .= "\n{--module= : The module to which to apply this.}";
         parent::__construct($creator, $composer);
     }
 
@@ -34,9 +38,9 @@ class MigrateMakeCommand extends OriginalCommand
      */
     protected function getMigrationPath(): bool|string|null
     {
-        if (! is_null($targetPath = $this->input->getOption('path'))) {
-            return ! $this->usingRealPath()
-                ? $this->laravel->basePath().'/'.$targetPath
+        if (!is_null($targetPath = $this->input->getOption('path'))) {
+            return !$this->usingRealPath()
+                ? $this->laravel->basePath() . '/' . $targetPath
                 : $targetPath;
         }
 
@@ -64,10 +68,10 @@ class MigrateMakeCommand extends OriginalCommand
      * @param string $module
      * @return string
      */
-    protected function getModuleMigrationPath (string $module) : string
+    protected function getModuleMigrationPath(string $module): string
     {
         // Get the base directory where migrations should go
-        $dir = $this->moduleManager->getModuleDirectory($module)."/Database/Migrations";
+        $dir = $this->moduleManager->getModuleDirectory($module) . "/Database/Migrations";
 
         // If the directory does not exist, create it with rwrwr access
         if (!is_dir($dir)) {

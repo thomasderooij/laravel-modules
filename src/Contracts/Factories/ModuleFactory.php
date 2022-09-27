@@ -9,5 +9,5 @@ interface ModuleFactory
     /**
      * Create a new module
      */
-    public function create (string $module) : void;
+    public function create(string $module): void;
 }

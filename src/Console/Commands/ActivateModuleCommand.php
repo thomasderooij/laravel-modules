@@ -20,7 +20,7 @@ class ActivateModuleCommand extends ModuleCommand
      */
     protected $description = 'Activate a module in your project';
 
-    public function handle() : void
+    public function handle(): void
     {
         $module = $this->argument('name');
 
@@ -51,7 +51,7 @@ class ActivateModuleCommand extends ModuleCommand
      *
      * @param string $module
      */
-    protected function displayModuleAlreadyActiveWarning (string $module) : void
+    protected function displayModuleAlreadyActiveWarning(string $module): void
     {
         $this->warn("The module \"$module\" is already active.");
     }
@@ -61,13 +61,13 @@ class ActivateModuleCommand extends ModuleCommand
      *
      * @param string $module
      */
-    protected function displayConfirmationMessage (string $module, bool $isSetToBench) : void
+    protected function displayConfirmationMessage(string $module, bool $isSetToBench): void
     {
         $message = "The module \"$module\" has been activated";
         if ($isSetToBench) {
-            $message.= " and put in your workbench";
+            $message .= " and put in your workbench";
         }
-        $message.= ".";
+        $message .= ".";
 
         $this->info($message);
     }

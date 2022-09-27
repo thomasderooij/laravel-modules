@@ -14,12 +14,14 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      * @param string $module
      * @throws FileNotFoundException
      */
-    public function create (string $module) : void
+    public function create(string $module): void
     {
         $relativePath = $this->getModuleRoutesRoot($module);
 
         $this->populateFile($this->getServiceProviderDir($module), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersRoot(),
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace(
+                    $module
+                ) . $this->getProvidersRoot(),
             $this->getControllerNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module, false),
             $this->getClassNamePlaceholder() => $this->getClassName(),
             $this->getWebRouteFilePlaceholder() => $this->getWebFile($relativePath),
@@ -32,7 +34,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/routeServiceProvider.stub';
     }
@@ -43,7 +45,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      * @param string $relativePath
      * @return string
      */
-    protected function getWebFile (string $relativePath) : string
+    protected function getWebFile(string $relativePath): string
     {
         return $relativePath . "/" . $this->routeSource->getWebRoute() . $this->routeSource->getRouteFileExtension();
     }
@@ -54,7 +56,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      * @param string $relativePath
      * @return string
      */
-    protected function getApiFile (string $relativePath) : string
+    protected function getApiFile(string $relativePath): string
     {
         return $relativePath . "/" . $this->routeSource->getApiRoute() . $this->routeSource->getRouteFileExtension();
     }
@@ -64,7 +66,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getClassName () : string
+    protected function getClassName(): string
     {
         return "RouteServiceProvider";
     }
@@ -74,7 +76,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getControllerNamespacePlaceholder () : string
+    protected function getControllerNamespacePlaceholder(): string
     {
         return "{controllerNamespace}";
     }
@@ -84,7 +86,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getWebRouteFilePlaceholder () : string
+    protected function getWebRouteFilePlaceholder(): string
     {
         return "{webRouteFile}";
     }
@@ -94,7 +96,7 @@ class RouteServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getApiRouteFilePlaceholder () : string
+    protected function getApiRouteFilePlaceholder(): string
     {
         return "{apiRouteFile}";
     }

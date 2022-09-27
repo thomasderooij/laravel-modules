@@ -19,7 +19,7 @@ class ModuleMigrator extends Migrator
      * @param array $migrations
      * @param array $options
      */
-    public function runPending(array $migrations, array $options = []) : void
+    public function runPending(array $migrations, array $options = []): void
     {
         // First we will just make sure that there are any migrations to run. If there
         // aren't, we will just make a note of it to the developer so they're aware
@@ -65,7 +65,7 @@ class ModuleMigrator extends Migrator
      * @param bool $pretend
      * @param null|string $module
      */
-    public function runUp($file, $batch, $pretend, string $module = null) : void
+    public function runUp($file, $batch, $pretend, string $module = null): void
     {
         if ($module === null) {
             $this->parentCall("runUp", [$file, $batch, $pretend]);
@@ -81,7 +81,7 @@ class ModuleMigrator extends Migrator
      * @param $pretend
      * @param null|string $module
      */
-    protected function baseRunUpFunction ($file, $batch, $pretend, string $module = null)
+    protected function baseRunUpFunction($file, $batch, $pretend, string $module = null)
     {
         $migration = $this->resolve(
             $name = $this->getMigrationName($file)
@@ -114,7 +114,7 @@ class ModuleMigrator extends Migrator
      * @param int $batch
      * @param string|null $module
      */
-    protected function logInRepository (string $name, int $batch, string $module = null)
+    protected function logInRepository(string $name, int $batch, string $module = null)
     {
         if ($module === null) {
             $this->repository->log($name, $batch);

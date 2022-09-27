@@ -9,10 +9,10 @@ interface ControllerFactory
     /**
      * Create a base controller for a new module
      */
-    public function create (string $module) : void;
+    public function create(string $module): void;
 
     /**
      * Get the qualified classname of the base controller for a given module
      */
-    public function getQualifiedClassName (string $module) : string;
+    public function getQualifiedClassName(string $module): string;
 }

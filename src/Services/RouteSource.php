@@ -13,7 +13,7 @@ class RouteSource implements Contract
      *
      * @return string
      */
-    public function getWebRoute () : string
+    public function getWebRoute(): string
     {
         return "web";
     }
@@ -23,7 +23,7 @@ class RouteSource implements Contract
      *
      * @return string
      */
-    public function getApiRoute () : string
+    public function getApiRoute(): string
     {
         return "api";
     }
@@ -33,7 +33,7 @@ class RouteSource implements Contract
      *
      * @return string
      */
-    public function getConsoleRoute () : string
+    public function getConsoleRoute(): string
     {
         return "console";
     }
@@ -43,7 +43,7 @@ class RouteSource implements Contract
      *
      * @return string
      */
-    public function getChannelsRoute () : string
+    public function getChannelsRoute(): string
     {
         return "channels";
     }
@@ -53,7 +53,7 @@ class RouteSource implements Contract
      *
      * @return string
      */
-    public function getRouteRootDir () : string
+    public function getRouteRootDir(): string
     {
         return "routes";
     }
@@ -63,7 +63,7 @@ class RouteSource implements Contract
      *
      * @return string
      */
-    public function getRouteFileExtension () : string
+    public function getRouteFileExtension(): string
     {
         return ".php";
     }
@@ -73,7 +73,7 @@ class RouteSource implements Contract
      *
      * @return array
      */
-    public function getRouteFiles () : array
+    public function getRouteFiles(): array
     {
         return [
             $this->getWebRoute(),

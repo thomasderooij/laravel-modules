@@ -34,13 +34,15 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      * Create a new file based on a stub
      *
      * @param string $module
-     * @throws FileNotFoundException
      * @return void
+     * @throws FileNotFoundException
      */
-    public function create (string $module) : void
+    public function create(string $module): void
     {
         $this->populateFile($this->getServiceProviderDir($module), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersRoot(),
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace(
+                    $module
+                ) . $this->getProvidersRoot(),
             $this->getClassNamePlaceholder() => $this->getClassName(),
         ]);
     }
@@ -51,7 +53,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getModuleRoutesRoot (string $module) : string
+    protected function getModuleRoutesRoot(string $module): string
     {
         return $this->moduleManager->getModuleRoot($module) . "/" . $this->routeSource->getRouteRootDir();
     }
@@ -61,14 +63,14 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    abstract protected function getStub () : string;
+    abstract protected function getStub(): string;
 
     /**
      * Get the route service provider classname
      *
      * @return string
      */
-    abstract protected function getClassName () : string;
+    abstract protected function getClassName(): string;
 
     /**
      * Get the service provider directory for a given module
@@ -76,7 +78,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getServiceProviderDir (string $module) : string
+    protected function getServiceProviderDir(string $module): string
     {
         return "{$this->moduleManager->getModuleDirectory($module)}/{$this->getProvidersRoot()}";
     }
@@ -86,7 +88,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getFileName () : string
+    protected function getFileName(): string
     {
         return "{$this->getClassName()}.php";
     }
@@ -96,7 +98,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getProvidersRoot () : string
+    protected function getProvidersRoot(): string
     {
         return "Providers";
     }
@@ -106,7 +108,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getNamespacePlaceholder () : string
+    protected function getNamespacePlaceholder(): string
     {
         return "{namespace}";
     }
@@ -116,7 +118,7 @@ abstract class ServiceProviderFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getClassNamePlaceholder () : string
+    protected function getClassNamePlaceholder(): string
     {
         return "{className}";
     }

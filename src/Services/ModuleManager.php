@@ -28,7 +28,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws ModulesNotInitialisedException
      * @throws FileNotFoundException
      */
-    public function activateModule (string $module) : void
+    public function activateModule(string $module): void
     {
         if (!$this->hasModule($module)) {
             throw new ModuleNotFoundException("There is no module named \"$module\".");
@@ -58,7 +58,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws ModulesNotInitialisedException
      * @throws FileNotFoundException
      */
-    public function addModule (string $module) : void
+    public function addModule(string $module): void
     {
         if ($this->hasModule($module)) {
             throw new ModuleCreationException("The module \"$module\" already exists.");
@@ -79,10 +79,12 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @throws ModulesNotInitialisedException
      */
-    public function clearWorkbench () : void
+    public function clearWorkbench(): void
     {
         if (!$this->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+            throw new ModulesNotInitialisedException(
+                "The modules need to be initialised first. You can do this by running the module:init command."
+            );
         }
 
         if (($content = Cache::get($this->getCacheKey())) === null) {
@@ -105,10 +107,12 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws ModuleNotActiveException
      * @throws FileNotFoundException
      */
-    public function deactivateModule (string $module) : void
+    public function deactivateModule(string $module): void
     {
         if (!$this->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+            throw new ModulesNotInitialisedException(
+                "The modules need to be initialised first. You can do this by running the module:init command."
+            );
         }
 
         if (!$this->hasModule($module)) {
@@ -124,7 +128,12 @@ class ModuleManager extends ModuleStateRepository implements Contract
 
         $content = $this->getTrackerContent();
         $modules = $content[$this->getActiveModulesTrackerKey()];
-        $activeKey = array_search($this->sanitiseModuleName($module), array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $modules));
+        $activeKey = array_search(
+            $this->sanitiseModuleName($module),
+            array_map(function (string $mod) {
+                return $this->sanitiseModuleName($mod);
+            }, $modules)
+        );
         unset($modules[$activeKey]);
         $content[$this->getActiveModulesTrackerKey()] = array_values($modules);
 
@@ -138,7 +147,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    public function getModuleDirectory (string $module) : string
+    public function getModuleDirectory(string $module): string
     {
         return $this->getModulesDirectory() . "/" . $this->sanitiseModuleName($module);
     }
@@ -151,7 +160,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @return string
      * @throws ConfigFileNotFoundException
      */
-    public function getModuleNamespace (string $module, bool $includeBackslash = true) : string
+    public function getModuleNamespace(string $module, bool $includeBackslash = true): string
     {
         if (!$this->hasConfig()) {
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
@@ -159,7 +168,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
 
         $namespace = ucfirst(config("modules.root")) . "\\" . ucfirst($this->sanitiseModuleName($module));
         if ($includeBackslash) {
-            $namespace.= "\\";
+            $namespace .= "\\";
         }
 
         return $namespace;
@@ -170,7 +179,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @return string
      */
-    public function getModulesNamespace () : string
+    public function getModulesNamespace(): string
     {
         return ucfirst(config("modules.root"));
     }
@@ -193,7 +202,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @return string|null
      */
-    public function getWorkbench () : ?string
+    public function getWorkbench(): ?string
     {
         $cache = Cache::get($this->getCacheKey());
 
@@ -216,9 +225,11 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws TrackerFileNotFoundException
      * @throws FileNotFoundException
      */
-    public function moduleIsActive (string $module) : bool
+    public function moduleIsActive(string $module): bool
     {
-        $modules = array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $this->getActiveModules());
+        $modules = array_map(function (string $mod) {
+            return $this->sanitiseModuleName($mod);
+        }, $this->getActiveModules());
 
         return array_search($this->sanitiseModuleName($module), $modules) !== false;
     }
@@ -233,7 +244,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws TrackerFileNotFoundException
      * @throws FileNotFoundException
      */
-    public function removeModule (string $module) : void
+    public function removeModule(string $module): void
     {
         if (!$this->hasModule($module)) {
             throw new ModuleNotFoundException("There is no module named \"$module\".");
@@ -253,8 +264,11 @@ class ModuleManager extends ModuleStateRepository implements Contract
         $module = $this->sanitiseModuleName($module);
         $content = $this->getTrackerContent();
         $modules = $content[$this->getModulesTrackerKey()];
-        $moduleKey = array_search($module, array_map(function ($mod) {
-            return $this->sanitiseModuleName($mod); }, $modules)
+        $moduleKey = array_search(
+            $module,
+            array_map(function ($mod) {
+                return $this->sanitiseModuleName($mod);
+            }, $modules)
         );
         unset($modules[$moduleKey]);
         $content[$this->getModulesTrackerKey()] = array_values($modules);
@@ -278,10 +292,12 @@ class ModuleManager extends ModuleStateRepository implements Contract
      * @throws TrackerFileNotFoundException
      * @throws FileNotFoundException
      */
-    public function setWorkbench (string $module) : void
+    public function setWorkbench(string $module): void
     {
         if (!$this->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+            throw new ModulesNotInitialisedException(
+                "The modules need to be initialised first. You can do this by running the module:init command."
+            );
         }
         if (!$this->hasModule($module)) {
             throw new ModuleNotFoundException("There is no module named $module.");
@@ -303,7 +319,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @return string
      */
-    protected function getCacheKey () : string
+    protected function getCacheKey(): string
     {
         return "modules-cache";
     }
@@ -313,7 +329,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @return int
      */
-    protected function getDefaultCacheValidity () : int
+    protected function getDefaultCacheValidity(): int
     {
         return 60 * 60 * 24 * 7;
     }
@@ -323,7 +339,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      *
      * @return string
      */
-    protected function getWorkbenchKey () : string
+    protected function getWorkbenchKey(): string
     {
         return "workbench";
     }

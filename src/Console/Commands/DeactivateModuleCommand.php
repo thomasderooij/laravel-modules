@@ -42,7 +42,7 @@ class DeactivateModuleCommand extends ModuleCommand
      *
      * @param string $module
      */
-    protected function displayModuleAlreadyDeactivatedWarning (string $module) : void
+    protected function displayModuleAlreadyDeactivatedWarning(string $module): void
     {
         $this->warn("The module \"$module\" is already deactivated.");
     }
@@ -52,7 +52,7 @@ class DeactivateModuleCommand extends ModuleCommand
      *
      * @param string $module
      */
-    protected function displayConfirmationMessage(string $module) : void
+    protected function displayConfirmationMessage(string $module): void
     {
         $this->info("The module \"$module\" has been deactivated.");
     }

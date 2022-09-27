@@ -11,7 +11,7 @@ class AuthServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/authServiceProvider.stub';
     }
@@ -21,7 +21,7 @@ class AuthServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getClassName () : string
+    protected function getClassName(): string
     {
         return "AuthServiceProvider";
     }

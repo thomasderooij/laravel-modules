@@ -45,7 +45,7 @@ class RollbackCommand extends OriginalCommand
      *
      * @return null|string
      */
-    protected function getLastMigrationModule (): ?string
+    protected function getLastMigrationModule(): ?string
     {
         if (Schema::hasColumn("migrations", "module") === false) {
             return null;
@@ -56,8 +56,7 @@ class RollbackCommand extends OriginalCommand
             ->groupBy(["module", "batch"])
             ->orderBy("batch")
             ->get("module")
-            ->last()->module;
-        ;
+            ->last()->module;;
 
         return $result;
     }

@@ -31,7 +31,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @throws FileNotFoundException
      */
-    public function create (string $module) : void
+    public function create(string $module): void
     {
         $this->populateFile($this->getConsoleDir($module), $this->getKernelFileName(), $this->getStub(), [
             $this->getKernelNamespacePlaceholder() => $this->getKernelNamespace($module),
@@ -47,7 +47,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getConsoleDir (string $module) : string
+    protected function getConsoleDir(string $module): string
     {
         return base_path(config("modules.root")) . "/$module/{$this->getConsoleDirectory()}";
     }
@@ -58,10 +58,11 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getRelativeRouteFilePath (string $module) : string
+    protected function getRelativeRouteFilePath(string $module): string
     {
         $directory = $this->getRelativeRouteRootDir($module);
-        return $this->ensureSlash($directory) . $this->routeSource->getConsoleRoute() . $this->routeSource->getRouteFileExtension();
+        return $this->ensureSlash($directory) . $this->routeSource->getConsoleRoute(
+            ) . $this->routeSource->getRouteFileExtension();
     }
 
     /**
@@ -70,7 +71,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getRelativeRouteRootDir (string $module) : string
+    protected function getRelativeRouteRootDir(string $module): string
     {
         return config('modules.root') . "/" . ucfirst($module) . "/" . $this->routeSource->getRouteRootDir();
     }
@@ -81,7 +82,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getKernelNamespace (string $module) : string
+    protected function getKernelNamespace(string $module): string
     {
         return $this->moduleManager->getModuleNamespace($module) . $this->getConsoleDirectory();
     }
@@ -91,7 +92,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleKernel () : string
+    protected function getModuleKernel(): string
     {
         return Kernel::class;
     }
@@ -100,7 +101,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getKernelConsoleDir (string $module) : string
+    protected function getKernelConsoleDir(string $module): string
     {
         return config('modules.root') . "/" . ucfirst($module) . "/Console/Commands";
     }
@@ -110,7 +111,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/consoleKernel.stub';
     }
@@ -120,7 +121,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getKernelNamespacePlaceholder () : string
+    protected function getKernelNamespacePlaceholder(): string
     {
         return "{kernelNamespace}";
     }
@@ -130,7 +131,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleKernelPlaceholder ( ): string
+    protected function getModuleKernelPlaceholder(): string
     {
         return "{moduleKernel}";
     }
@@ -140,7 +141,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getKernelConsoleDirPlaceholder () : string
+    protected function getKernelConsoleDirPlaceholder(): string
     {
         return "{kernelConsolePath}";
     }
@@ -150,7 +151,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getRouteFilePlaceholder () : string
+    protected function getRouteFilePlaceholder(): string
     {
         return "{kernelConsoleRouteFile}";
     }
@@ -160,7 +161,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getConsoleDirectory () : string
+    protected function getConsoleDirectory(): string
     {
         return "Console";
     }
@@ -170,7 +171,7 @@ class ConsoleKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getKernelFileName () : string
+    protected function getKernelFileName(): string
     {
         return "Kernel.php";
     }

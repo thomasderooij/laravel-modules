@@ -33,7 +33,7 @@ class NewModuleCommand extends ModuleCommand
         $this->factory = $moduleFactory;
     }
 
-    public function handle() : void
+    public function handle(): void
     {
         // standardise module name
         $name = $this->getNameArgument();
@@ -71,7 +71,7 @@ class NewModuleCommand extends ModuleCommand
      *
      * @param string $module
      */
-    public function displayModuleAlreadyExistsWarning (string $module) : void
+    public function displayModuleAlreadyExistsWarning(string $module): void
     {
         $this->warn("Module $module already exists.");
     }
@@ -81,7 +81,7 @@ class NewModuleCommand extends ModuleCommand
      *
      * @param string $name
      */
-    protected function displayModuleCreatedMessage (string $name) : void
+    protected function displayModuleCreatedMessage(string $name): void
     {
         $this->info("Your module has been created in the " . config("modules.root") . "/$name directory.");
     }

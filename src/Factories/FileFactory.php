@@ -13,7 +13,7 @@ abstract class FileFactory
     protected Filesystem $filesystem;
     protected ModuleManager $moduleManager;
 
-    public function __construct (Filesystem $filesystem, ModuleManager $moduleManager)
+    public function __construct(Filesystem $filesystem, ModuleManager $moduleManager)
     {
         $this->filesystem = $filesystem;
         $this->moduleManager = $moduleManager;
@@ -28,7 +28,7 @@ abstract class FileFactory
      * @param array $values
      * @throws FileNotFoundException
      */
-    protected function populateFile (string $dir, string $fileName, string $stub, array $values = []) : void
+    protected function populateFile(string $dir, string $fileName, string $stub, array $values = []): void
     {
         $content = $this->filesystem->get($stub);
 
@@ -40,7 +40,7 @@ abstract class FileFactory
             $this->filesystem->makeDirectory($dir, 0755, true);
         }
 
-        $this->filesystem->put($this->ensureSlash($dir). $fileName, $content);
+        $this->filesystem->put($this->ensureSlash($dir) . $fileName, $content);
     }
 
     /**
@@ -49,10 +49,10 @@ abstract class FileFactory
      * @param string $directory
      * @return string
      */
-    protected function ensureSlash (string $directory) : string
+    protected function ensureSlash(string $directory): string
     {
         if (!str_ends_with($directory, "/")) {
-            $directory.= "/";
+            $directory .= "/";
         }
 
         return $directory;

@@ -47,7 +47,11 @@ class DeleteDependencyCommand extends ModuleCommand
             $this->dependencyHandler->removeDependency($module, $response);
 
             // If a module has been removed, we ask for the next, until indicate the process is done
-            while (($response = $this->askForModule($module, $this->dependencyHandler->getAvailableModules($module), true)) !== "No, I'm done removing dependencies") {
+            while (($response = $this->askForModule(
+                    $module,
+                    $this->dependencyHandler->getAvailableModules($module),
+                    true
+                )) !== "No, I'm done removing dependencies") {
                 $this->dependencyHandler->removeDependency($module, $response);
             }
         }
@@ -56,7 +60,7 @@ class DeleteDependencyCommand extends ModuleCommand
         $this->giveConfirmation();
     }
 
-    protected function askForModule (string $module, array $modules, bool $followUp) : string
+    protected function askForModule(string $module, array $modules, bool $followUp): string
     {
         $options = [($followUp ? "No, I'm done removing dependencies" : "None. I changed my mind")];
         $options = array_merge($options, $modules);
@@ -67,7 +71,7 @@ class DeleteDependencyCommand extends ModuleCommand
         return $this->choice($followUp ? $followUpQuestion : $firstQuestion, $options);
     }
 
-    protected function giveConfirmation () : void
+    protected function giveConfirmation(): void
     {
         $this->info("Alright. Your module dependencies have been updated.");
     }

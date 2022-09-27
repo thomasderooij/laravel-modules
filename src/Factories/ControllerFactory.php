@@ -15,7 +15,7 @@ class ControllerFactory extends FileFactory implements Contract
      * @param string $module
      * @throws FileNotFoundExceptionAlias
      */
-    public function create (string $module) : void
+    public function create(string $module): void
     {
         $this->populateFile($this->getDir($module), $this->getFileName(), $this->getStub(), [
             $this->getNamespacePlaceholder() => $this->getNamespace($module),
@@ -29,7 +29,7 @@ class ControllerFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    public function getQualifiedClassName (string $module) : string
+    public function getQualifiedClassName(string $module): string
     {
         return $this->getNamespace($module) . "\\" . $this->getClassName();
     }
@@ -39,7 +39,7 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getClassName () : string
+    protected function getClassName(): string
     {
         return "Controller";
     }
@@ -50,7 +50,7 @@ class ControllerFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getNamespace (string $module) : string
+    protected function getNamespace(string $module): string
     {
         return $this->moduleManager->getModuleNamespace($module) . "Http\\Controllers";
     }
@@ -60,7 +60,7 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getClassNamePlaceHolder () : string
+    protected function getClassNamePlaceHolder(): string
     {
         return "{class}";
     }
@@ -70,7 +70,7 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getNamespacePlaceholder () : string
+    protected function getNamespacePlaceholder(): string
     {
         return "{namespace}";
     }
@@ -81,7 +81,7 @@ class ControllerFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getDir (string $module) : string
+    protected function getDir(string $module): string
     {
         return $this->moduleManager->getModuleDirectory($module) . "/Http/Controllers";
     }
@@ -91,7 +91,7 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
         return __DIR__ . "/stubs/controller.stub";
     }
@@ -101,7 +101,7 @@ class ControllerFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getFileName () : string
+    protected function getFileName(): string
     {
         return $this->getClassName() . ".php";
     }

@@ -18,10 +18,14 @@ class MigrateCommand extends OriginalCommand
     use ModulesCommandTrait;
     use MigrateOverrideTrait;
 
-    public function __construct(Migrator $migrator, Dispatcher $dispatcher, ModuleManager $moduleManager, DependencyHandler $dependencyHandler)
-    {
+    public function __construct(
+        Migrator $migrator,
+        Dispatcher $dispatcher,
+        ModuleManager $moduleManager,
+        DependencyHandler $dependencyHandler
+    ) {
         // Add a modules option to the command signature
-        $this->signature.= "\n                {--modules= : Migrate a only migrations in the scope of a given modules }";
+        $this->signature .= "\n                {--modules= : Migrate a only migrations in the scope of a given modules }";
         $this->moduleManager = $moduleManager;
         $this->dependencyHandler = $dependencyHandler;
 
@@ -75,7 +79,7 @@ class MigrateCommand extends OriginalCommand
         // Finally, if the "seed" option has been given, we will re-run the database
         // seed task to re-populate the database, which is convenient when adding
         // a migration and a seed at the same time, as it is only this command.
-        if ($this->option('seed') && ! $this->option('pretend')) {
+        if ($this->option('seed') && !$this->option('pretend')) {
             $this->call('db:seed', ['--force' => true]);
         }
     }

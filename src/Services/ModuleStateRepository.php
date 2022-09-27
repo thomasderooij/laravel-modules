@@ -32,7 +32,7 @@ abstract class ModuleStateRepository
      *
      * @return string
      */
-    public function getTrackerFileName () : string
+    public function getTrackerFileName(): string
     {
         return ".tracker";
     }
@@ -44,7 +44,7 @@ abstract class ModuleStateRepository
      *
      * @throws ConfigFileNotFoundException
      */
-    public function getModulesDirectory () : string
+    public function getModulesDirectory(): string
     {
         if (!$this->hasConfig()) {
             throw new ConfigFileNotFoundException("Could not locate modules file in the config directory.");
@@ -52,6 +52,7 @@ abstract class ModuleStateRepository
 
         return base_path(config("modules.root"));
     }
+
     /**
      * Check if a module exists
      *
@@ -61,9 +62,11 @@ abstract class ModuleStateRepository
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException|FileNotFoundException
      */
-    public function hasModule (string $module) : bool
+    public function hasModule(string $module): bool
     {
-        $sanitised = array_map(function (string $mod) { return $this->sanitiseModuleName($mod); }, $this->getModules());
+        $sanitised = array_map(function (string $mod) {
+            return $this->sanitiseModuleName($mod);
+        }, $this->getModules());
 
         return array_search($this->sanitiseModuleName($module), $sanitised) !== false;
     }
@@ -73,7 +76,7 @@ abstract class ModuleStateRepository
      *
      * @return bool
      */
-    public function isInitialised () : bool
+    public function isInitialised(): bool
     {
         return $this->hasConfig() && $this->hasTrackerFile();
     }
@@ -90,7 +93,9 @@ abstract class ModuleStateRepository
     protected function getModules(): array
     {
         if (!$this->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+            throw new ModulesNotInitialisedException(
+                "The modules need to be initialised first. You can do this by running the module:init command."
+            );
         }
 
         return $this->getTrackerContent()[$this->getModulesTrackerKey()];
@@ -105,10 +110,12 @@ abstract class ModuleStateRepository
      * @throws ModulesNotInitialisedException
      * @throws TrackerFileNotFoundException
      */
-    public function getActiveModules (bool $skipCheck = false) : array
+    public function getActiveModules(bool $skipCheck = false): array
     {
         if (!$skipCheck && !$this->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+            throw new ModulesNotInitialisedException(
+                "The modules need to be initialised first. You can do this by running the module:init command."
+            );
         } elseif ($skipCheck && !$this->hasTrackerFile()) {
             return [];
         }
@@ -121,7 +128,7 @@ abstract class ModuleStateRepository
      *
      * @return string
      */
-    protected function getActiveModulesTrackerKey () : string
+    protected function getActiveModulesTrackerKey(): string
     {
         return "activeModules";
     }
@@ -131,7 +138,7 @@ abstract class ModuleStateRepository
      *
      * @return string
      */
-    protected function getModulesTrackerKey () : string
+    protected function getModulesTrackerKey(): string
     {
         return "modules";
     }
@@ -144,7 +151,7 @@ abstract class ModuleStateRepository
      * @throws TrackerFileNotFoundException
      * @throws FileNotFoundException
      */
-    protected function getTrackerContent () : array
+    protected function getTrackerContent(): array
     {
         if ($this->tracker !== null) {
             return $this->tracker;
@@ -165,7 +172,7 @@ abstract class ModuleStateRepository
      *
      * @return bool
      */
-    protected function hasConfig () : bool
+    protected function hasConfig(): bool
     {
         return config("modules.root") !== null;
     }
@@ -175,7 +182,7 @@ abstract class ModuleStateRepository
      *
      * @return bool
      */
-    protected function hasTrackerFile () : bool
+    protected function hasTrackerFile(): bool
     {
         try {
             $trackerFile = $this->getModulesDirectory() . "/" . $this->getTrackerFileName();
@@ -191,7 +198,7 @@ abstract class ModuleStateRepository
      *
      * @return array
      */
-    protected function getJsonOptions () : array
+    protected function getJsonOptions(): array
     {
         return [
             JSON_PRETTY_PRINT,
@@ -210,10 +217,12 @@ abstract class ModuleStateRepository
      * @throws FileNotFoundException
      *
      */
-    protected function sanitiseModuleName (string $module) : string
+    protected function sanitiseModuleName(string $module): string
     {
         $modules = $this->getModules();
-        $lower = array_map(function (string $mod) { return strtolower($mod); }, $modules);
+        $lower = array_map(function (string $mod) {
+            return strtolower($mod);
+        }, $modules);
         $key = array_search(strtolower($module), $lower);
 
         // If we don't have the module in the modules array, we assume its a new module
@@ -230,7 +239,7 @@ abstract class ModuleStateRepository
      * @param array $trackerContent
      * @throws ConfigFileNotFoundException
      */
-    protected function save (array $trackerContent): void
+    protected function save(array $trackerContent): void
     {
         // Get the qualified directory to store the tracker file in
         $storageDir = $this->getModulesDirectory();

@@ -37,7 +37,7 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getMigrationClassPlaceholder () : string
+    protected function getMigrationClassPlaceholder(): string
     {
         return "{MigrationClassName}";
     }
@@ -47,7 +47,7 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getMigrationClassName () : string
+    protected function getMigrationClassName(): string
     {
         return "ModuleInitMigration";
     }
@@ -57,7 +57,7 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getMigrationName () : string
+    protected function getMigrationName(): string
     {
         return "2010_11_01_000000_module_init_migration.php";
     }
@@ -67,7 +67,7 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getRelativeMigrationDir () : string
+    protected function getRelativeMigrationDir(): string
     {
         return "database/migrations";
     }
@@ -77,7 +77,7 @@ class ModuleMigrationFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
         return __DIR__ . "/stubs/moduleMigration.stub";
     }

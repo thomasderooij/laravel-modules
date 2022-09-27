@@ -25,7 +25,7 @@ class SeederMakeCommand extends OriginalCommand
         parent::__construct($files);
     }
 
-    protected function getStub () : string
+    protected function getStub(): string
     {
         if ($this->getModule() !== null) {
             return realpath(__DIR__ . '/../../../../Factories/stubs/seeder.stub');
@@ -39,7 +39,7 @@ class SeederMakeCommand extends OriginalCommand
      * @param $name
      * @return string
      */
-    protected function getPath ($name) : string
+    protected function getPath($name): string
     {
         $name = str_replace('\\', '/', Str::replaceFirst($this->rootNamespace(), '', $name));
         // If there is no module, return default values
@@ -52,7 +52,7 @@ class SeederMakeCommand extends OriginalCommand
         // Parse the namespace to a directory location
         $base = $this->moduleManager->getModuleDirectory($module);
 
-        return  $base . "/Database/Seeders/$name.php";
+        return $base . "/Database/Seeders/$name.php";
     }
 
     protected function getNamespace($name): string

@@ -80,9 +80,8 @@ class InitModuleCommand extends Command
         Filesystem $filesystem,
         ModuleManager $moduleManager,
         ModuleMigrationFactory $moduleMigrationFactory,
-        TrackerFactory  $trackerFactory
-    )
-    {
+        TrackerFactory $trackerFactory
+    ) {
         $this->bootstrapFactory = $bootstrapFactory;
         $this->composer = $composer;
         $this->composerEditor = $composerEditor;
@@ -98,7 +97,7 @@ class InitModuleCommand extends Command
     /**
      * Handle the module initialisation
      */
-    public function handle() : void
+    public function handle(): void
     {
         // Check if the module is already initialised
         if ($this->moduleManager->isInitialised() === true) {
@@ -146,7 +145,7 @@ class InitModuleCommand extends Command
      *
      * @return string
      */
-    protected function askForRootDir () : string
+    protected function askForRootDir(): string
     {
         return $this->ask("What will be the root directory of your modules?", "Modules");
     }
@@ -156,7 +155,7 @@ class InitModuleCommand extends Command
      *
      * @param Exception $e
      */
-    protected function displayConfigErrorMessage (Exception $e) : void
+    protected function displayConfigErrorMessage(Exception $e): void
     {
         $this->displayErrorMessage($e);
     }
@@ -166,7 +165,7 @@ class InitModuleCommand extends Command
      *
      * @param Exception $e
      */
-    protected function displayMigrationErrorMessage (Exception $e) : void
+    protected function displayMigrationErrorMessage(Exception $e): void
     {
         $this->displayErrorMessage($e);
     }
@@ -176,7 +175,7 @@ class InitModuleCommand extends Command
      *
      * @param Exception $e
      */
-    protected function displayErrorMessage (Exception $e) : void
+    protected function displayErrorMessage(Exception $e): void
     {
         $this->error($e->getMessage());
     }
@@ -184,7 +183,7 @@ class InitModuleCommand extends Command
     /**
      * Display a message indicating the module initialisation is successful
      */
-    protected function displayInitialisedInfoMessage () : void
+    protected function displayInitialisedInfoMessage(): void
     {
         $this->info("Modules initialised.");
     }
@@ -192,7 +191,7 @@ class InitModuleCommand extends Command
     /**
      * Display a message indicating the module initialisation has already happened
      */
-    protected function displayInitiatedErrorMessage () : void
+    protected function displayInitiatedErrorMessage(): void
     {
         $this->error("Modules are already initiated.");
     }
@@ -200,7 +199,7 @@ class InitModuleCommand extends Command
     /**
      * Display a message indicating a dump-autoload is in progress
      */
-    protected function displayAutoloadInfoMessage () : void
+    protected function displayAutoloadInfoMessage(): void
     {
         $this->info("Dumping autoloads. This might take a minute.");
     }
@@ -208,7 +207,7 @@ class InitModuleCommand extends Command
     /**
      * Display initialisation complete message
      */
-    protected function displayCompleteInfoMessage () : void
+    protected function displayCompleteInfoMessage(): void
     {
         $this->info("You are set to go. Make sure to run migration command to get your module migrations working.");
     }
@@ -216,8 +215,10 @@ class InitModuleCommand extends Command
     /**
      * Give base instructions on how to make a new module
      */
-    protected function displayInstructionsInfoMessage () : void
+    protected function displayInstructionsInfoMessage(): void
     {
-        $this->info("Call for module:new your-module-name-here to create a module. For any other info, check out the readme.md file.");
+        $this->info(
+            "Call for module:new your-module-name-here to create a module. For any other info, check out the readme.md file."
+        );
     }
 }

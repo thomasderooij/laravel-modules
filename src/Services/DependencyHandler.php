@@ -28,11 +28,19 @@ class DependencyHandler extends ModuleStateRepository implements Contract
 
         // Throw an exception if the dependency already exists
         if ($this->dependencyExists($downstream, $upstream)) {
-            throw new DependencyAlreadyExistsException($downstream, $upstream, "module \"{$downstream}\" is already dependent on \"{$upstream}\".");
+            throw new DependencyAlreadyExistsException(
+                $downstream,
+                $upstream,
+                "module \"{$downstream}\" is already dependent on \"{$upstream}\"."
+            );
         }
 
         if ($this->wouldCreateCircularReference($downstream, $upstream)) {
-            throw new CircularReferenceException($downstream, $upstream, "module \"{$upstream}\" is already upstream of \"{$downstream}\".");
+            throw new CircularReferenceException(
+                $downstream,
+                $upstream,
+                "module \"{$upstream}\" is already upstream of \"{$downstream}\"."
+            );
         }
 
         // Get that sweet, sweet content
@@ -65,9 +73,11 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         });
 
         // Then we map everything that is upstream
-        $directUpstream = array_values(array_map(function (array $dependency) {
-            return $dependency["up"];
-        }, $filtered));
+        $directUpstream = array_values(
+            array_map(function (array $dependency) {
+                return $dependency["up"];
+            }, $filtered)
+        );
         $downstream = $this->getDownstreamModules($module, $dependencies);
 
         // We remove direct upstream modules from the list
@@ -80,7 +90,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_values($modules);
     }
 
-    public function getModulesInMigrationOrder (): array
+    public function getModulesInMigrationOrder(): array
     {
         // We get the tracker content, and the active modules
         $trackerContent = $this->getTrackerContent();
@@ -111,7 +121,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_merge($list, $unrelatedModules);
     }
 
-    protected function getModulesMigratableAfterList (array $list, array $dependencies) : array
+    protected function getModulesMigratableAfterList(array $list, array $dependencies): array
     {
         $upReferences = [];
         $downReferences = [];
@@ -130,7 +140,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_values(array_diff(array_unique($upReferences), array_unique($downReferences), $list));
     }
 
-    public function removeDependency (string $downstream, string $upstream) : void
+    public function removeDependency(string $downstream, string $upstream): void
     {
         // Throw an exception if a module does not exist
         if (!$this->hasModule($downstream)) {
@@ -174,19 +184,21 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         $this->save($fileContent);
     }
 
-    protected function dependencyExists(string $downstream, string $upstream) : bool
+    protected function dependencyExists(string $downstream, string $upstream): bool
     {
         $fileContent = $this->getTrackerContent();
 
         // Return false if the dependencies key is not set
-        if (!isset($fileContent[$this->getDependenciesKey()])) { return false; }
+        if (!isset($fileContent[$this->getDependenciesKey()])) {
+            return false;
+        }
 
         $result = array_search(["up" => $upstream, "down" => $downstream], $fileContent[$this->getDependenciesKey()]);
 
         return $result !== false;
     }
 
-    protected function getDependenciesKey () : string
+    protected function getDependenciesKey(): string
     {
         return "dependencies";
     }
@@ -196,7 +208,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
      * @param string $upstream
      * @return bool
      */
-    protected function wouldCreateCircularReference (string $downstream, string $upstream) : bool
+    protected function wouldCreateCircularReference(string $downstream, string $upstream): bool
     {
         // A module can not be its down dependency
         if ($downstream === $upstream) {
@@ -207,7 +219,9 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         $fileContent = $this->getTrackerContent();
 
         // Return false if the dependencies key is not set
-        if (!isset($fileContent[$this->getDependenciesKey()])) { return false; }
+        if (!isset($fileContent[$this->getDependenciesKey()])) {
+            return false;
+        }
 
         // single out the dependencies
         $dependencies = $fileContent[$this->getDependenciesKey()];
@@ -225,7 +239,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
      * @param array|null $dependencies
      * @return array
      */
-    public function getUpstreamModules (string $module, array $dependencies = null) : array
+    public function getUpstreamModules(string $module, array $dependencies = null): array
     {
         return $this->getModulesFromStream($module, $dependencies, true);
     }
@@ -237,12 +251,12 @@ class DependencyHandler extends ModuleStateRepository implements Contract
      * @param array|null $dependencies
      * @return array
      */
-    public function getDownstreamModules (string $module, array $dependencies = null) : array
+    public function getDownstreamModules(string $module, array $dependencies = null): array
     {
         return $this->getModulesFromStream($module, $dependencies, false);
     }
 
-    protected function getModulesFromStream (string $module, array $dependencies = null, bool $up = true) : array
+    protected function getModulesFromStream(string $module, array $dependencies = null, bool $up = true): array
     {
         if ($dependencies === null) {
             // get the tracker content
@@ -258,9 +272,11 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         });
 
         // Then we map everything that is upstream
-        $mapped = array_values(array_map(function (array $dependency) use ($up) {
-            return $dependency[($up ? "up" : "down")];
-        }, $filtered));
+        $mapped = array_values(
+            array_map(function (array $dependency) use ($up) {
+                return $dependency[($up ? "up" : "down")];
+            }, $filtered)
+        );
 
         // Foreach of these, we take the module that is upstream
         foreach ($mapped as $dependency) {
@@ -273,7 +289,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
         return array_unique($mapped);
     }
 
-    public function removeDependencies (string $module): void
+    public function removeDependencies(string $module): void
     {
         if (!$this->hasTrackerFile()) {
             return;
@@ -286,7 +302,9 @@ class DependencyHandler extends ModuleStateRepository implements Contract
 
         $dependencies = $trackerContent[$this->getDependenciesKey()];
         foreach ($dependencies as $key => $dependency) {
-            if (strtolower($dependency["up"]) === strtolower($module) || strtolower($dependency["down"]) === strtolower($module)) {
+            if (strtolower($dependency["up"]) === strtolower($module) || strtolower($dependency["down"]) === strtolower(
+                    $module
+                )) {
                 unset($dependencies[$key]);
             }
         }

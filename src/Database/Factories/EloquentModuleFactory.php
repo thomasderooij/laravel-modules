@@ -33,10 +33,10 @@ abstract class EloquentModuleFactory extends Factory
     /**
      * Get the factory name for the given model name.
      *
-     * @param  string  $modelName
+     * @param string $modelName
      * @return string
      */
-    public static function resolveFactoryName(string $modelName):string
+    public static function resolveFactoryName(string $modelName): string
     {
         $resolver = static::$factoryNameResolver ?: function (string $modelName) {
             /** @var ModuleManager $moduleManager */
@@ -53,11 +53,11 @@ abstract class EloquentModuleFactory extends Factory
                 return implode("\\", $parts) . "Factory";
             }
 
-            $modelName = Str::startsWith($modelName, $appNamespace.config("modules.models_dir").'\\')
-                ? Str::after($modelName, $appNamespace.'\\'.config("modules.models_dir"))
+            $modelName = Str::startsWith($modelName, $appNamespace . config("modules.models_dir") . '\\')
+                ? Str::after($modelName, $appNamespace . '\\' . config("modules.models_dir"))
                 : Str::after($modelName, $appNamespace);
 
-            return static::$namespace.$modelName.'Factory';
+            return static::$namespace . $modelName . 'Factory';
         };
 
         return $resolver($modelName);

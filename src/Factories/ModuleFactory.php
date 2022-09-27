@@ -75,8 +75,7 @@ class ModuleFactory implements Contract
         ServiceProviderFactory $broadcastServiceProviderFactory,
         ServiceProviderFactory $eventServiceProviderFactory,
         ModuleManager $moduleManager
-    )
-    {
+    ) {
         $this->files = $files;
         $this->routeFactory = $routeFactory;
         $this->routeServiceProviderFactory = $routeServiceProviderFactory;
@@ -96,10 +95,12 @@ class ModuleFactory implements Contract
      * @throws ModuleCreationException
      * @throws ModulesNotInitialisedException
      */
-    public function create (string $module) : void
+    public function create(string $module): void
     {
         if (!$this->moduleManager->isInitialised()) {
-            throw new ModulesNotInitialisedException("The modules need to be initialised first. You can do this by running the module:init command.");
+            throw new ModulesNotInitialisedException(
+                "The modules need to be initialised first. You can do this by running the module:init command."
+            );
         }
 
         if ($this->moduleManager->hasModule($module)) {
@@ -122,7 +123,7 @@ class ModuleFactory implements Contract
      *
      * @param string $module
      */
-    protected function createBaseDirectory (string $module) : void
+    protected function createBaseDirectory(string $module): void
     {
         $dir = $this->getDirName($module);
 
@@ -137,7 +138,7 @@ class ModuleFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getDirName (string $module) : string
+    protected function getDirName(string $module): string
     {
         $root = config('modules.root');
 

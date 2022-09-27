@@ -14,7 +14,7 @@ abstract class ModuleCommand extends Command
 {
     protected ModuleManager $moduleManager;
 
-    public function __construct (ModuleManager $moduleManager)
+    public function __construct(ModuleManager $moduleManager)
     {
         $this->moduleManager = $moduleManager;
 
@@ -27,7 +27,7 @@ abstract class ModuleCommand extends Command
      * @param string $module
      * @return bool
      */
-    protected function passesCheck (string $module) : bool
+    protected function passesCheck(string $module): bool
     {
         if (!$this->moduleManager->isInitialised()) {
             $this->displayInitialisationError();
@@ -47,7 +47,7 @@ abstract class ModuleCommand extends Command
      *
      * @return string
      */
-    protected function getNameArgument () : string
+    protected function getNameArgument(): string
     {
         return $this->argument("name");
     }
@@ -57,7 +57,7 @@ abstract class ModuleCommand extends Command
      *
      * @param string $module
      */
-    protected function displayModuleNotFoundError (string $module) : void
+    protected function displayModuleNotFoundError(string $module): void
     {
         $this->error("There is no module named \"$module\".");
     }
@@ -65,7 +65,7 @@ abstract class ModuleCommand extends Command
     /**
      * Display a message indicating the modules have not been initialised yet.
      */
-    protected function displayInitialisationError () : void
+    protected function displayInitialisationError(): void
     {
         $this->error("The modules need to be initialised first. You can do this by running the module:init command.");
     }

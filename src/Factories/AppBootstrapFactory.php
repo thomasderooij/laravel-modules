@@ -16,8 +16,12 @@ class AppBootstrapFactory extends FileFactory implements Contract
     protected string $compositeConsoleKernelClassName;
     protected string $compositeHttpKernelClassName;
 
-    public function __construct(Filesystem $filesystem, ConsoleCompositeKernel $consoleCompositeKernel, HttpCompositeKernel $httpCompositeKernel, ModuleManager $moduleManager)
-    {
+    public function __construct(
+        Filesystem $filesystem,
+        ConsoleCompositeKernel $consoleCompositeKernel,
+        HttpCompositeKernel $httpCompositeKernel,
+        ModuleManager $moduleManager
+    ) {
         parent::__construct($filesystem, $moduleManager);
 
         $this->compositeConsoleKernelClassName = get_class($consoleCompositeKernel);
@@ -29,7 +33,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    public function create () : void
+    public function create(): void
     {
         $this->renameBootstrapFile();
         $this->writeNewBootstrapFile();
@@ -38,10 +42,13 @@ class AppBootstrapFactory extends FileFactory implements Contract
     /**
      * Revert the bootstrap file to its original
      */
-    public function undo () : void
+    public function undo(): void
     {
         $this->filesystem->delete(base_path("bootstrap/{$this->getBootstrapFileName()}"));
-        $this->filesystem->move(base_path("bootstrap/{$this->getBootstrapOrigFileName()}"), base_path("bootstrap/{$this->getBootstrapFileName()}"));
+        $this->filesystem->move(
+            base_path("bootstrap/{$this->getBootstrapOrigFileName()}"),
+            base_path("bootstrap/{$this->getBootstrapFileName()}")
+        );
     }
 
     /**
@@ -49,7 +56,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    protected function writeNewBootstrapFile () : void
+    protected function writeNewBootstrapFile(): void
     {
         touch(base_path("bootstrap/{$this->getBootstrapFileName()}"));
 
@@ -64,9 +71,9 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
-        return  __DIR__ . "/stubs/bootstrapFile.stub";
+        return __DIR__ . "/stubs/bootstrapFile.stub";
     }
 
     /**
@@ -74,7 +81,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getConsoleCompositeKernelPlaceHolder () : string
+    protected function getConsoleCompositeKernelPlaceHolder(): string
     {
         return "{ConsoleCompositeKernel}";
     }
@@ -84,17 +91,17 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getCompositeKernelClassNameStatic () : string
+    protected function getCompositeKernelClassNameStatic(): string
     {
         return $this->compositeConsoleKernelClassName . "::class";
     }
 
-    protected function getHttpCompositeKernelPlaceHolder () : string
+    protected function getHttpCompositeKernelPlaceHolder(): string
     {
         return "{HttpCompositeKernel}";
     }
 
-    public function getHttpKernelClassNameStatic () : string
+    public function getHttpKernelClassNameStatic(): string
     {
         return $this->compositeHttpKernelClassName . "::class";
     }
@@ -102,9 +109,12 @@ class AppBootstrapFactory extends FileFactory implements Contract
     /**
      * Rename the original bootstrap file
      */
-    protected function renameBootstrapFile () : void
+    protected function renameBootstrapFile(): void
     {
-        $this->filesystem->move(base_path("bootstrap/{$this->getBootstrapFileName()}"), base_path("bootstrap/{$this->getBootstrapOrigFileName()}"));
+        $this->filesystem->move(
+            base_path("bootstrap/{$this->getBootstrapFileName()}"),
+            base_path("bootstrap/{$this->getBootstrapOrigFileName()}")
+        );
     }
 
     /**
@@ -112,7 +122,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getBootstrapFileName () : string
+    protected function getBootstrapFileName(): string
     {
         return "app.php";
     }
@@ -122,7 +132,7 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getBootstrapOrigFileName () : string
+    protected function getBootstrapOrigFileName(): string
     {
         return "app_orig.php";
     }

@@ -29,7 +29,7 @@ class FreshCommand extends OriginalCommand
      *
      * @return void
      */
-    public function handle () : void
+    public function handle(): void
     {
         // Try to get the workbench module and clear the workbench. If the modules are no initialised, default to default functionality
         if (!$this->moduleManager->isInitialised()) {
@@ -39,22 +39,28 @@ class FreshCommand extends OriginalCommand
 
         $database = $this->input->getOption('database');
         // Wipe the db
-        $this->parentCall("call", ["db:wipe", array_filter([
-            '--database' => $database,
-            '--drop-views' => $this->option('drop-views'),
-            '--drop-types' => $this->option('drop-types'),
-            '--force' => true,
-        ])]);
+        $this->parentCall("call", [
+            "db:wipe",
+            array_filter([
+                '--database' => $database,
+                '--drop-views' => $this->option('drop-views'),
+                '--drop-types' => $this->option('drop-types'),
+                '--force' => true,
+            ])
+        ]);
 
         // And run migrate with the modules command
-        $this->parentCall("call", ["migrate", array_filter([
-            '--database' => $database,
-            '--path' => $this->input->getOption('path'),
-            '--realpath' => $this->input->getOption('realpath'),
-            '--force' => true,
-            '--step' => $this->option('step'),
-            '--modules' => $this->option('modules')
-        ])]);
+        $this->parentCall("call", [
+            "migrate",
+            array_filter([
+                '--database' => $database,
+                '--path' => $this->input->getOption('path'),
+                '--realpath' => $this->input->getOption('realpath'),
+                '--force' => true,
+                '--step' => $this->option('step'),
+                '--modules' => $this->option('modules')
+            ])
+        ]);
     }
 
     /**
@@ -62,7 +68,7 @@ class FreshCommand extends OriginalCommand
      *
      * @return array
      */
-    protected function getOptions() : array
+    protected function getOptions(): array
     {
         $options = $this->parentCall("getOptions");
         $options[] = ["modules", null, InputOption::VALUE_OPTIONAL, "The modules you want included in this migration."];

@@ -31,12 +31,12 @@ class SeedCommand extends OriginalCommand
         $baseClass = $class;
 
         if (strpos($class, '\\') === false) {
-            $class = 'Database\\Seeders\\'.$class;
+            $class = 'Database\\Seeders\\' . $class;
 
-            if (!class_exists('Database\\Seeders\\'.$class)) {
+            if (!class_exists('Database\\Seeders\\' . $class)) {
                 foreach ($this->moduleManager->getActiveModules() as $module) {
                     $moduleNs = $this->moduleManager->getModuleNamespace($module);
-                    $seeder = $moduleNs . "Database\\Seeders\\".$baseClass;
+                    $seeder = $moduleNs . "Database\\Seeders\\" . $baseClass;
                     if (class_exists($seeder)) {
                         $class = $seeder;
                         break;
@@ -46,7 +46,7 @@ class SeedCommand extends OriginalCommand
         }
 
         if ($class === 'Database\\Seeders\\DatabaseSeeder' &&
-            ! class_exists($class)) {
+            !class_exists($class)) {
             $class = 'DatabaseSeeder';
         }
 

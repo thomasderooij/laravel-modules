@@ -15,10 +15,10 @@ class FactoryMakeCommand extends OriginalCommand
     /**
      * Get the destination class path.
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
-    protected function getPath($name) : string
+    protected function getPath($name): string
     {
         $module = $this->getModule();
 
@@ -28,16 +28,18 @@ class FactoryMakeCommand extends OriginalCommand
         }
 
         $name = str_replace(
-            ['\\', '/'], '', $this->argument('name')
+            ['\\', '/'],
+            '',
+            $this->argument('name')
         );
 
-        return $this->moduleManager->getModuleDirectory($module)."/Database/Factories/{$name}.php";
+        return $this->moduleManager->getModuleDirectory($module) . "/Database/Factories/{$name}.php";
     }
 
     /**
      * @return string|null
      */
-    protected function getModule () : ?string
+    protected function getModule(): ?string
     {
         $module = $this->option("module");
         if ($module === null) {
@@ -54,17 +56,20 @@ class FactoryMakeCommand extends OriginalCommand
     /**
      * Add to the parent buildClass function by checking if the default factory namespace needs to be changed
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
-    protected function buildClass($name) : string
+    protected function buildClass($name): string
     {
         $namespaceModel = $this->option('model')
             ? $this->qualifyModel($this->option('model'))
             : $this->qualifyModel($this->guessModelName($name));
 
-        if (Str::startsWith($namespaceModel, $this->rootNamespace().'Models')) {
-            $namespace = Str::beforeLast('Database\\Factories\\'.Str::after($namespaceModel, $this->rootNamespace().'Models\\'), '\\');
+        if (Str::startsWith($namespaceModel, $this->rootNamespace() . 'Models')) {
+            $namespace = Str::beforeLast(
+                'Database\\Factories\\' . Str::after($namespaceModel, $this->rootNamespace() . 'Models\\'),
+                '\\'
+            );
         } else {
             $namespace = 'Database\\Factories';
         }
@@ -80,7 +85,9 @@ class FactoryMakeCommand extends OriginalCommand
         ];
 
         return str_replace(
-            array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
         );
     }
 }

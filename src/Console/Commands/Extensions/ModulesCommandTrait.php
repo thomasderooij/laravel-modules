@@ -21,7 +21,7 @@ trait ModulesCommandTrait
      *
      * @return array
      */
-    protected function getModules () : array
+    protected function getModules(): array
     {
         $modulesString = $this->option("modules") ?: null;
         if ($modulesString !== null) {
@@ -42,7 +42,7 @@ trait ModulesCommandTrait
      *
      * @return string|null
      */
-    protected function getModule (): ?string
+    protected function getModule(): ?string
     {
         $module = $this->option("module") ?: null;
         if ($module !== null) {
@@ -62,7 +62,7 @@ trait ModulesCommandTrait
      * @param string $string
      * @return array
      */
-    protected function parseModulesString (string $string) : array
+    protected function parseModulesString(string $string): array
     {
         return explode(",", $string);
     }
@@ -72,7 +72,7 @@ trait ModulesCommandTrait
      *
      * @param string $module
      */
-    protected function displayModuleNotFoundWarning (string $module) : void
+    protected function displayModuleNotFoundWarning(string $module): void
     {
         $this->warn("Module \"$module\" does not exist.");
     }
@@ -82,7 +82,7 @@ trait ModulesCommandTrait
      *
      * @param string $errorMessage
      */
-    protected function displayModulesNotInitialisedError (string $errorMessage) : void
+    protected function displayModulesNotInitialisedError(string $errorMessage): void
     {
         $this->error($errorMessage);
     }

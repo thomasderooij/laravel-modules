@@ -14,9 +14,8 @@ trait ParentCallTrait
      * @param array $args
      * @return mixed
      */
-    protected function parentCall (string $function, array $args = [])
+    protected function parentCall(string $function, array $args = [])
     {
-
         return parent::$function(...$args);
     }
 }

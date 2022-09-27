@@ -51,7 +51,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
      * @param Dispatcher $events
      * @throws BindingResolutionException
      */
-    protected function activeModulesToKernels (Application $app, Dispatcher $events) : void
+    protected function activeModulesToKernels(Application $app, Dispatcher $events): void
     {
         /** @var ModuleManager $moduleManager */
         $moduleManager = $app->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);

@@ -18,7 +18,7 @@ class ModuleMigrationRepository extends DatabaseMigrationRepository
      * @param int $batch
      * @param null $module
      */
-    public function log ($file, $batch, $module = null) : void
+    public function log($file, $batch, $module = null): void
     {
         if ($module === null) {
             $this->parentCall("log", [$file, $batch]);
@@ -34,7 +34,7 @@ class ModuleMigrationRepository extends DatabaseMigrationRepository
      * @param string|null $module
      * @return array
      */
-    public function getMigrations($steps, string $module = null) : array
+    public function getMigrations($steps, string $module = null): array
     {
         if ($module === null) {
             return $this->parentCall("getMigrations", [$steps]);
@@ -56,7 +56,7 @@ class ModuleMigrationRepository extends DatabaseMigrationRepository
      * @param string|null $module
      * @return array
      */
-    public function getLast(string $module = null) : array
+    public function getLast(string $module = null): array
     {
         if ($module === null) {
             return $this->parentCall("getLast");

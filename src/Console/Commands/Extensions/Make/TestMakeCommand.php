@@ -24,16 +24,16 @@ class TestMakeCommand extends OriginalCommand
 
         parent::__construct($files);
 
-        $this->signature.= "{--module= : The module to which to apply this.}";
+        $this->signature .= "{--module= : The module to which to apply this.}";
     }
 
     /**
      * Get the destination class path.
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
-    protected function getPath($name) : string
+    protected function getPath($name): string
     {
         // If there is no module, return default values
         $module = $this->option("module");
@@ -47,12 +47,16 @@ class TestMakeCommand extends OriginalCommand
         }
 
         $name = str_replace(
-            ['\\', '/'], '', $this->argument('name')
+            ['\\', '/'],
+            '',
+            $this->argument('name')
         );
 
         $isUnit = $this->option("unit");
 
-        return $this->moduleManager->getModuleDirectory($module)."/Tests/" . ($isUnit ? "Unit" : "Feature") . "/{$name}.php";
+        return $this->moduleManager->getModuleDirectory(
+                $module
+            ) . "/Tests/" . ($isUnit ? "Unit" : "Feature") . "/{$name}.php";
     }
 
     /**
@@ -60,7 +64,7 @@ class TestMakeCommand extends OriginalCommand
      *
      * @return string
      */
-    protected function rootNamespace () : string
+    protected function rootNamespace(): string
     {
         // If there is no module option provided, grab the workbench module
         $module = $this->option("module");

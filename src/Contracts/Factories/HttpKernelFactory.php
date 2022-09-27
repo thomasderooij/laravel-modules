@@ -9,5 +9,5 @@ interface HttpKernelFactory
     /**
      * Create a console kernel
      */
-    public function create (string $module) : void;
+    public function create(string $module): void;
 }

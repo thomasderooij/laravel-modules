@@ -23,7 +23,7 @@ class UnsetWorkbenchCommand extends ModuleCommand
     /**
      * Handle the workbench clearing
      */
-    public function handle ()
+    public function handle()
     {
         if (!$this->moduleManager->isInitialised()) {
             $this->displayInitialisationError();
@@ -38,7 +38,7 @@ class UnsetWorkbenchCommand extends ModuleCommand
     /**
      * Display a notice of successfully having cleared the workbench
      */
-    protected function displayConfirmationMessage () : void
+    protected function displayConfirmationMessage(): void
     {
         $this->info("Your workbench has been cleared.");
     }

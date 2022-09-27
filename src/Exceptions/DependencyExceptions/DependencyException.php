@@ -11,8 +11,13 @@ abstract class DependencyException extends \Exception
     protected string $upstream;
     protected string $downstream;
 
-    public function __construct(string $downstream, string $upstream, $message = "", $code = 0, Throwable $previous = null)
-    {
+    public function __construct(
+        string $downstream,
+        string $upstream,
+        $message = "",
+        $code = 0,
+        Throwable $previous = null
+    ) {
         parent::__construct($message, $code, $previous);
 
         $this->downstream = $downstream;

@@ -30,7 +30,7 @@ class RouteFactory extends FileFactory implements Contract
      * @param string $moduleName
      * @throws FileNotFoundException
      */
-    public function create (string $moduleName) : void
+    public function create(string $moduleName): void
     {
         $directory = $this->getRouteDirectory($moduleName);
         if (!$this->filesystem->exists($directory)) {
@@ -48,7 +48,7 @@ class RouteFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getRouteDirectory (string $module) : string
+    protected function getRouteDirectory(string $module): string
     {
         return base_path(config('modules.root') . "/$module/" . $this->routeSource->getRouteRootDir());
     }
@@ -60,13 +60,18 @@ class RouteFactory extends FileFactory implements Contract
      * @param string $directory
      * @throws FileNotFoundException
      */
-    protected function createRouteFile (string $type, string $directory) : void
+    protected function createRouteFile(string $type, string $directory): void
     {
-        $this->populateFile($directory, $type . $this->routeSource->getRouteFileExtension(), $this->getStubByType($type), [
-            "{typeUcfirst}" => ucfirst($type),
-            "{type}" => $type,
-            "{middleware}"  => $type,
-        ]);
+        $this->populateFile(
+            $directory,
+            $type . $this->routeSource->getRouteFileExtension(),
+            $this->getStubByType($type),
+            [
+                "{typeUcfirst}" => ucfirst($type),
+                "{type}" => $type,
+                "{middleware}" => $type,
+            ]
+        );
     }
 
     /**
@@ -75,7 +80,7 @@ class RouteFactory extends FileFactory implements Contract
      * @param string $type
      * @return string
      */
-    protected function getStubByType (string $type) : string
+    protected function getStubByType(string $type): string
     {
         switch ($type) {
             case $this->routeSource->getWebRoute():

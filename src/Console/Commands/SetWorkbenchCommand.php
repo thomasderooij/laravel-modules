@@ -38,7 +38,7 @@ class SetWorkbenchCommand extends ModuleCommand
      *
      * @param string $module
      */
-    protected function displayConfirmationMessage (string $module) : void
+    protected function displayConfirmationMessage(string $module): void
     {
         $this->info("The module \"$module\" is now set to your workbench.");
     }

@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
      * @return void
      * @throws ReflectionException
      */
-    protected function load($paths) : void
+    protected function load($paths): void
     {
         $paths = array_unique(Arr::wrap($paths));
 
@@ -37,24 +37,26 @@ class Kernel extends ConsoleKernel
         $namespace = $this->app->getNamespace();
         /** @var SplFileInfo $command */
         foreach ((new Finder)->in($paths)->files() as $command) {
-
             // Determine if the command needs to be added from the module namespace or the vanilla namespace
             if (str_starts_with($command->getPath(), base_path(config('modules.root')))) {
-                $command = ucfirst(config('modules.root')) . "\\".str_replace(
+                $command = ucfirst(config('modules.root')) . "\\" . str_replace(
                         ['/', '.php'],
                         ['\\', ''],
-                        Str::after($command->getPathname(), realpath(base_path(config('modules.root'))).DIRECTORY_SEPARATOR)
+                        Str::after(
+                            $command->getPathname(),
+                            realpath(base_path(config('modules.root'))) . DIRECTORY_SEPARATOR
+                        )
                     );
             } else {
-                $command = $namespace.str_replace(
+                $command = $namespace . str_replace(
                         ['/', '.php'],
                         ['\\', ''],
-                        Str::after($command->getPathname(), realpath(app_path()).DIRECTORY_SEPARATOR)
+                        Str::after($command->getPathname(), realpath(app_path()) . DIRECTORY_SEPARATOR)
                     );
             }
 
             if (is_subclass_of($command, Command::class) &&
-                ! (new \ReflectionClass($command))->isAbstract()) {
+                !(new \ReflectionClass($command))->isAbstract()) {
                 Artisan::starting(function ($artisan) use ($command) {
                     $artisan->resolve($command);
                 });

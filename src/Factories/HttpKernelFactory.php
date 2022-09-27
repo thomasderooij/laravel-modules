@@ -28,7 +28,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getHttpDir (string $module) : string
+    protected function getHttpDir(string $module): string
     {
         return base_path(config("modules.root")) . "/$module/{$this->getHttpDirectory()}";
     }
@@ -38,7 +38,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getStub () : string
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/httpKernel.stub';
     }
@@ -48,7 +48,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getKernelNamespacePlaceholder () : string
+    protected function getKernelNamespacePlaceholder(): string
     {
         return "{kernelNamespace}";
     }
@@ -59,7 +59,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      * @param string $module
      * @return string
      */
-    protected function getKernelNamespace (string $module) : string
+    protected function getKernelNamespace(string $module): string
     {
         return $this->moduleManager->getModuleNamespace($module) . $this->getHttpDirectory();
     }
@@ -69,7 +69,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleKernelPlaceholder ( ): string
+    protected function getModuleKernelPlaceholder(): string
     {
         return "{moduleKernel}";
     }
@@ -79,7 +79,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleKernel () : string
+    protected function getModuleKernel(): string
     {
         return CompositeKernel::class;
     }
@@ -89,7 +89,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getHttpDirectory () : string
+    protected function getHttpDirectory(): string
     {
         return "Http";
     }
@@ -99,7 +99,7 @@ class HttpKernelFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getKernelFileName () : string
+    protected function getKernelFileName(): string
     {
         return "Kernel.php";
     }

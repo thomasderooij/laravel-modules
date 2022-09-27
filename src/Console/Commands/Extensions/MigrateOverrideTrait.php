@@ -16,7 +16,7 @@ trait MigrateOverrideTrait
      * @param null|string $module
      * @return array
      */
-    protected function getMigrationPaths (string $module = null) : array
+    protected function getMigrationPaths(string $module = null): array
     {
         // If there is no path specified, and there is a module, return the module migration path
         if (!$this->option("path") && $module !== null) {
@@ -33,7 +33,7 @@ trait MigrateOverrideTrait
      * @param string $module
      * @return string
      */
-    protected function getMigrationPathByModule (string $module) : string
+    protected function getMigrationPathByModule(string $module): string
     {
         return base_path(config("modules.root") . "/$module/Database/Migrations");
     }

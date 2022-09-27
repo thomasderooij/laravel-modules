@@ -97,7 +97,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
     /**
      * @throws ReflectionException
      */
-    protected function resolveProperties () : void
+    protected function resolveProperties(): void
     {
         foreach ($this->kernels as $kernel) {
             $reflection = new ReflectionClass(get_class($kernel));
@@ -110,7 +110,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
         }
     }
 
-    protected function getPropNames () : array
+    protected function getPropNames(): array
     {
         return [
             "middleware",

@@ -15,7 +15,7 @@ class ComposerEditor implements Contract
      */
     protected Filesystem $filesystem;
 
-    public function __construct (Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
     }
@@ -25,7 +25,7 @@ class ComposerEditor implements Contract
      * @return bool
      * @throws FileNotFoundException
      */
-    public function hasNamespaceInAutoload (string $namespace) : bool
+    public function hasNamespaceInAutoload(string $namespace): bool
     {
         $data = $this->getComposerData();
 
@@ -38,7 +38,7 @@ class ComposerEditor implements Contract
      * @param string $rootDir
      * @throws FileNotFoundException
      */
-    public function addNamespaceToAutoload (string $rootDir) : void
+    public function addNamespaceToAutoload(string $rootDir): void
     {
         $json = $this->getUpdatedFileContent($rootDir, "add");
         $this->filesystem->put(base_path("composer.json"), $json);
@@ -50,7 +50,7 @@ class ComposerEditor implements Contract
      * @param null|string $rootDir
      * @throws FileNotFoundException
      */
-    public function removeNamespaceFromAutoload (string $rootDir = null) : void
+    public function removeNamespaceFromAutoload(string $rootDir = null): void
     {
         if ($rootDir === null) {
             $rootDir = config("modules.autoload");
@@ -70,7 +70,7 @@ class ComposerEditor implements Contract
      * @return string
      * @throws FileNotFoundException
      */
-    protected function getUpdatedFileContent ($rootDir, string $action) : string
+    protected function getUpdatedFileContent($rootDir, string $action): string
     {
         $data = $this->getComposerData();
         if ($action === "add") {
@@ -89,7 +89,7 @@ class ComposerEditor implements Contract
      * @return array
      * @throws FileNotFoundException
      */
-    protected function getComposerData () : array
+    protected function getComposerData(): array
     {
         $fileContent = $this->filesystem->get(base_path("composer.json"));
 
@@ -102,9 +102,9 @@ class ComposerEditor implements Contract
      * @param string $rootDir
      * @return string
      */
-    protected function getPsr4Key (string $rootDir) : string
+    protected function getPsr4Key(string $rootDir): string
     {
-        return ucfirst($rootDir). "\\";
+        return ucfirst($rootDir) . "\\";
     }
 
     /**
@@ -113,9 +113,9 @@ class ComposerEditor implements Contract
      * @param string $rootDir
      * @return string
      */
-    protected function getPsr4Value (string $rootDir) : string
+    protected function getPsr4Value(string $rootDir): string
     {
-        return $rootDir."/";
+        return $rootDir . "/";
     }
 
     /**
@@ -123,7 +123,7 @@ class ComposerEditor implements Contract
      *
      * @return int
      */
-    protected function getJsonOptions () : int
+    protected function getJsonOptions(): int
     {
         $options = [
             JSON_PRETTY_PRINT,

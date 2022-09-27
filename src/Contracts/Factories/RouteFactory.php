@@ -9,5 +9,5 @@ interface RouteFactory
     /**
      * Create route files
      */
-    public function create (string $moduleNameName) : void;
+    public function create(string $moduleNameName): void;
 }

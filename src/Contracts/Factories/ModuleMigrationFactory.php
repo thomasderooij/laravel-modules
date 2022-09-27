@@ -9,10 +9,10 @@ interface ModuleMigrationFactory
     /**
      * Create a new migration file
      */
-    public function create () : void;
+    public function create(): void;
 
     /**
      * Remove the migration file
      */
-    public function undo () : void;
+    public function undo(): void;
 }

@@ -25,7 +25,7 @@ class DependenciesCommand extends ModuleCommand
 
     protected DependencyHandler $handler;
 
-    public function __construct (ModuleManager $manager, DependencyHandler $handler)
+    public function __construct(ModuleManager $manager, DependencyHandler $handler)
     {
         parent::__construct($manager);
 
@@ -69,31 +69,31 @@ class DependenciesCommand extends ModuleCommand
         return null;
     }
 
-    protected function noModuleProvidedResponse () : void
+    protected function noModuleProvidedResponse(): void
     {
         $this->error("No module option was provided, nor was a module found in your workbench.");
     }
 
-    protected function displayUpstreamModules (array $modules) : void
+    protected function displayUpstreamModules(array $modules): void
     {
         foreach ($modules as $module) {
             $this->info("$module (upstream)");
         }
     }
 
-    protected function displayCurrentModule (string $module) : void
+    protected function displayCurrentModule(string $module): void
     {
         $this->info("$module (current)");
     }
 
-    protected function displayDownstreamModules (array $modules) : void
+    protected function displayDownstreamModules(array $modules): void
     {
         foreach ($modules as $module) {
             $this->info("$module (downstream)");
         }
     }
 
-    protected function displayUnrelatedModules (array $modules) : void
+    protected function displayUnrelatedModules(array $modules): void
     {
         foreach ($modules as $module) {
             $this->info("$module (unrelated)");

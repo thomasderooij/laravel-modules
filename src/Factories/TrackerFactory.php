@@ -25,7 +25,7 @@ class TrackerFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getTrackerStub () : string
+    protected function getTrackerStub(): string
     {
         return __DIR__ . '/stubs/tracker.stub';
     }

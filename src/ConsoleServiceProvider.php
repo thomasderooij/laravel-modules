@@ -21,17 +21,17 @@ use Thomasderooij\LaravelModules\Console\Commands\UnsetWorkbenchCommand;
 class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     protected array $moduleCommands = [
-        "Activate"          => "module.command.activate",
-        "AddDependency"     => "module.command.add_dependency",
-        "Check"             => "module.command.check",
-        "Deactivate"        => "module.command.deactivate",
-        "Delete"            => "module.command.delete",
-        "DeleteDependency"  => "module.command.delete_dependency",
-        "Dependencies"      => "module.command.dependencies",
-        "Init"              => "module.command.init",
-        "New"               => "module.command.new",
-        "Set"               => "module.command.set",
-        "Unset"             => "module.command.unset",
+        "Activate" => "module.command.activate",
+        "AddDependency" => "module.command.add_dependency",
+        "Check" => "module.command.check",
+        "Deactivate" => "module.command.deactivate",
+        "Delete" => "module.command.delete",
+        "DeleteDependency" => "module.command.delete_dependency",
+        "Dependencies" => "module.command.dependencies",
+        "Init" => "module.command.init",
+        "New" => "module.command.new",
+        "Set" => "module.command.set",
+        "Unset" => "module.command.unset",
     ];
 
     /**
@@ -39,7 +39,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
      *
      * @return void
      */
-    public function register() : void
+    public function register(): void
     {
         $commands = array_values($this->moduleCommands);
         $this->commands($commands);
@@ -50,7 +50,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
      *
      * @return void
      */
-    public function boot() : void
+    public function boot(): void
     {
         $this->registerModuleCommands();
     }
@@ -62,10 +62,10 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
      *
      * These services should be triggered by the loop in the registerServices function
      */
-    protected function registerModuleCommands () : void
+    protected function registerModuleCommands(): void
     {
         foreach (array_keys($this->moduleCommands) as $key) {
-            call_user_func([$this, "create".$key."Command"]);
+            call_user_func([$this, "create" . $key . "Command"]);
         }
     }
 
@@ -77,7 +77,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
      * These commands should be triggered by the loop in the registerModuleCommands function
      */
 
-    protected function createActivateCommand () : void
+    protected function createActivateCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Activate"], function ($app) {
             return new ActivateModuleCommand(
@@ -86,7 +86,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createAddDependencyCommand () : void
+    protected function createAddDependencyCommand(): void
     {
         $this->app->singleton($this->moduleCommands["AddDependency"], function ($app) {
             return new AddDependencyCommand(
@@ -96,7 +96,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createCheckCommand () : void
+    protected function createCheckCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Check"], function ($app) {
             return new CheckWorkbenchCommand(
@@ -105,7 +105,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createDeactivateCommand () : void
+    protected function createDeactivateCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Deactivate"], function ($app) {
             return new DeactivateModuleCommand(
@@ -114,7 +114,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createDeleteCommand () : void
+    protected function createDeleteCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Delete"], function ($app) {
             return new DeleteModuleCommand(
@@ -124,7 +124,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createDeleteDependencyCommand () : void
+    protected function createDeleteDependencyCommand(): void
     {
         $this->app->singleton($this->moduleCommands["DeleteDependency"], function ($app) {
             return new DeleteDependencyCommand(
@@ -134,7 +134,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createDependenciesCommand () : void
+    protected function createDependenciesCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Dependencies"], function ($app) {
             return new DependenciesCommand(
@@ -144,7 +144,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createInitCommand () : void
+    protected function createInitCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Init"], function ($app) {
             return new InitModuleCommand(
@@ -160,7 +160,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createNewCommand () : void
+    protected function createNewCommand(): void
     {
         $this->app->singleton($this->moduleCommands["New"], function ($app) {
             return new NewModuleCommand(
@@ -170,7 +170,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createSetCommand () : void
+    protected function createSetCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Set"], function ($app) {
             return new SetWorkbenchCommand(
@@ -179,7 +179,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
-    protected function createUnsetCommand () : void
+    protected function createUnsetCommand(): void
     {
         $this->app->singleton($this->moduleCommands["Unset"], function ($app) {
             return new UnsetWorkbenchCommand(
@@ -194,7 +194,7 @@ class ConsoleServiceProvider extends ServiceProvider implements DeferrableProvid
      *******************************************************************************************
      */
 
-    public function provides() : array
+    public function provides(): array
     {
         return array_values($this->moduleCommands);
     }

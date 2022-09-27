@@ -16,7 +16,7 @@ trait GenerateOverrideTrait
 
     protected ModuleManager $moduleManager;
 
-    public function __construct (Filesystem $files, ModuleManager $moduleManager)
+    public function __construct(Filesystem $files, ModuleManager $moduleManager)
     {
         $this->moduleManager = $moduleManager;
 
@@ -34,7 +34,7 @@ trait GenerateOverrideTrait
      * @param $name
      * @return string
      */
-    protected function getPath($name) : string
+    protected function getPath($name): string
     {
         // If there is no module, return default values
         $module = $this->option("module");
@@ -48,7 +48,7 @@ trait GenerateOverrideTrait
         }
 
         // Parse the namespace to a directory location
-        return base_path().'/'.str_replace('\\', '/', $name).'.php';
+        return base_path() . '/' . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -57,7 +57,7 @@ trait GenerateOverrideTrait
      * @param string $module
      * @return bool
      */
-    protected function isVanilla (string $module) : bool
+    protected function isVanilla(string $module): bool
     {
         return strtolower($module) === strtolower(config("modules.vanilla"));
     }
@@ -67,7 +67,7 @@ trait GenerateOverrideTrait
      *
      * @param string $module
      */
-    protected function attachDescriptionSuffix (string $module) : void
+    protected function attachDescriptionSuffix(string $module): void
     {
         $this->description = $this->description . " for " . ucfirst($module);
     }
@@ -77,7 +77,7 @@ trait GenerateOverrideTrait
      *
      * @return string
      */
-    protected function rootNamespace () : string
+    protected function rootNamespace(): string
     {
         // If there is no module option provided, grab the workbench module
         $module = $this->option("module");
@@ -99,7 +99,7 @@ trait GenerateOverrideTrait
      *
      * @return array
      */
-    protected function getOptions () : array
+    protected function getOptions(): array
     {
         $options = $this->parentCall("getOptions");
         $options[] = ["module", null, InputOption::VALUE_OPTIONAL, "Apply to this module."];
@@ -110,10 +110,10 @@ trait GenerateOverrideTrait
     /**
      * Qualify the given model class base name.
      *
-     * @param  string  $model
+     * @param string $model
      * @return string
      */
-    protected function qualifyModel (string $model) : string
+    protected function qualifyModel(string $model): string
     {
         $model = ltrim($model, '\\/');
 
@@ -125,13 +125,13 @@ trait GenerateOverrideTrait
             return $model;
         }
 
-        return $rootNamespace.config("modules.models_dir")."\\$model";
+        return $rootNamespace . config("modules.models_dir") . "\\$model";
     }
 
     /**
      * @return string|null
      */
-    protected function getModule () : string|null
+    protected function getModule(): string|null
     {
         // If there is no module, return default values
         $module = $this->option("module");

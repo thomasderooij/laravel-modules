@@ -17,7 +17,7 @@ use Thomasderooij\LaravelModules\Database\Factories\HasFactory;
 
 class ConfigFactory extends FileFactory implements Contract
 {
-    public function __construct (Filesystem $filesystem, ModuleManager $moduleManager)
+    public function __construct(Filesystem $filesystem, ModuleManager $moduleManager)
     {
         parent::__construct($filesystem, $moduleManager);
 
@@ -30,7 +30,7 @@ class ConfigFactory extends FileFactory implements Contract
      * @param string $rootDir
      * @throws FileNotFoundException
      */
-    public function create (string $rootDir) : void
+    public function create(string $rootDir): void
     {
         $this->createConfigFile($rootDir);
         $this->replaceServiceProviders();
@@ -41,7 +41,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    public function undo () : void
+    public function undo(): void
     {
         $this->removeConfigFile();
         $this->revertServiceProviders();
@@ -50,7 +50,7 @@ class ConfigFactory extends FileFactory implements Contract
     /**
      * Remove the modules config file
      */
-    protected function removeConfigFile () : void
+    protected function removeConfigFile(): void
     {
         $this->filesystem->delete(base_path('config') . "/{$this->getConfigFileName()}");
     }
@@ -61,7 +61,7 @@ class ConfigFactory extends FileFactory implements Contract
      * @param string $rootDir
      * @throws FileNotFoundException
      */
-    protected function createConfigFile (string $rootDir) : void
+    protected function createConfigFile(string $rootDir): void
     {
         $this->populateFile(base_path("config"), $this->getConfigFileName(), $this->getStub(), [
             $this->getModuleDirPlaceholder() => $rootDir,
@@ -78,7 +78,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    protected function replaceServiceProviders () : void
+    protected function replaceServiceProviders(): void
     {
         $this->populateFile(
             config_path(),
@@ -93,7 +93,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    protected function revertServiceProviders () : void
+    protected function revertServiceProviders(): void
     {
         $this->populateFile(
             config_path(),
@@ -103,7 +103,7 @@ class ConfigFactory extends FileFactory implements Contract
         );
     }
 
-    protected function getServiceProvidersArray () : array
+    protected function getServiceProvidersArray(): array
     {
         return [
             "App\Providers\AuthServiceProvider" => AuthCompositeServiceProvider::class,
@@ -128,7 +128,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getTrackerStub () : string
+    protected function getTrackerStub(): string
     {
         return __DIR__ . '/stubs/tracker.stub';
     }
@@ -138,7 +138,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleDirPlaceholder () : string
+    protected function getModuleDirPlaceholder(): string
     {
         return "{moduleDirectory}";
     }
@@ -148,7 +148,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleNamespacePlaceholder () : string
+    protected function getModuleNamespacePlaceholder(): string
     {
         return "{moduleDirectoryUcfirst}";
     }
@@ -158,7 +158,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleAutoloadPlaceholder () : string
+    protected function getModuleAutoloadPlaceholder(): string
     {
         return "{moduleAutoload}";
     }
@@ -168,7 +168,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleBaseModelPlaceholder () : string
+    protected function getModuleBaseModelPlaceholder(): string
     {
         return "{moduleModel}";
     }
@@ -178,7 +178,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getModuleHasFactoryPlaceholder () : string
+    protected function getModuleHasFactoryPlaceholder(): string
     {
         return "{moduleHasFactory}";
     }
@@ -188,7 +188,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getConfigFileName () : string
+    public function getConfigFileName(): string
     {
         return "modules.php";
     }
@@ -198,7 +198,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getModuleRoot (string $rootDir) : string
+    public function getModuleRoot(string $rootDir): string
     {
         return base_path($rootDir);
     }
@@ -208,7 +208,7 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getVanillaModuleNamePlaceholder () : string
+    public function getVanillaModuleNamePlaceholder(): string
     {
         return "{vanillaModule}";
     }
@@ -218,17 +218,17 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    public function getDefaultVanillaModuleName () : string
+    public function getDefaultVanillaModuleName(): string
     {
         return "Vanilla";
     }
 
-    public function getDefaultModel () : string
+    public function getDefaultModel(): string
     {
         return Model::class;
     }
 
-    public function getDefaultHasFactoryTrait () : string
+    public function getDefaultHasFactoryTrait(): string
     {
         return HasFactory::class;
     }

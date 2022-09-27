@@ -29,8 +29,8 @@ class ControllerMakeCommand extends OriginalCommand
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (! Str::startsWith($model, $rootNamespace = $this->rootNamespace())) {
-            $model = $rootNamespace.$model;
+        if (!Str::startsWith($model, $rootNamespace = $this->rootNamespace())) {
+            $model = $rootNamespace . $model;
         }
 
         return $model;

@@ -14,7 +14,7 @@ class EventCompositeServiceProvider extends ServiceProvider
     protected string $name = "EventServiceProvider";
     protected $listen = [];
 
-    public function listens (): array
+    public function listens(): array
     {
         // Merge all the provider listens into one listen property
         foreach ($this->providers as $providerClass) {

@@ -12,12 +12,14 @@ class BroadcastServiceProviderFactory extends ServiceProviderFactory
      * @param string $module
      * @throws FileNotFoundException
      */
-    public function create (string $module) : void
+    public function create(string $module): void
     {
         $relativePath = $this->getModuleRoutesRoot($module);
 
         $this->populateFile($this->getServiceProviderDir($module), $this->getFileName(), $this->getStub(), [
-            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace($module) . $this->getProvidersRoot(),
+            $this->getNamespacePlaceholder() => $this->moduleManager->getModuleNamespace(
+                    $module
+                ) . $this->getProvidersRoot(),
             $this->getClassNamePlaceholder() => $this->getClassName(),
             $this->getRouteFilePlaceholder() => $this->getRelativeRouteFile($relativePath),
         ]);
@@ -28,14 +30,15 @@ class BroadcastServiceProviderFactory extends ServiceProviderFactory
      *
      * @return string
      */
-    protected function getRouteFilePlaceholder () : string
+    protected function getRouteFilePlaceholder(): string
     {
         return "{routeFile}";
     }
 
-    protected function getRelativeRouteFile (string $relativePath) : string
+    protected function getRelativeRouteFile(string $relativePath): string
     {
-        return $relativePath . "/" . $this->routeSource->getChannelsRoute() . $this->routeSource->getRouteFileExtension();
+        return $relativePath . "/" . $this->routeSource->getChannelsRoute() . $this->routeSource->getRouteFileExtension(
+            );
     }
 
     /**

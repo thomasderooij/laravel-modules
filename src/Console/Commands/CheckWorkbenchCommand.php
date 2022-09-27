@@ -20,7 +20,7 @@ class CheckWorkbenchCommand extends ModuleCommand
      */
     protected $description = 'Check your currently active module';
 
-    public function handle () : void
+    public function handle(): void
     {
         if (!$this->moduleManager->isInitialised()) {
             $this->displayInitialisationError();
