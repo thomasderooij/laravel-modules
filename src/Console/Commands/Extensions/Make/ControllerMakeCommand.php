@@ -21,7 +21,7 @@ class ControllerMakeCommand extends OriginalCommand
      *
      * @throws InvalidArgumentException
      */
-    protected function parseModel($model)
+    protected function parseModel($model): string
     {
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
             throw new InvalidArgumentException('Model name contains invalid characters.');

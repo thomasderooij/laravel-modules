@@ -33,7 +33,7 @@ class MigrateCommand extends OriginalCommand
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         if (!$this->confirmToProceed()) {
             return;

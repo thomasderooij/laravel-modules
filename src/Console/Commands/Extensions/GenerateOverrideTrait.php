@@ -147,7 +147,7 @@ trait GenerateOverrideTrait
         return $module;
     }
 
-    protected function replaceClass($stub, $name)
+    protected function replaceClass($stub, $name): string
     {
         // todo: update this to use the original replaceClass functionality while still keeping subdirs for test directories etc in mind
         $parts = explode("\\", $name);

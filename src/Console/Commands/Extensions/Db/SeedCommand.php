@@ -6,6 +6,7 @@ namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Db;
 
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use Illuminate\Database\Console\Seeds\SeedCommand as OriginalCommand;
+use Illuminate\Database\Seeder;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class SeedCommand extends OriginalCommand
@@ -24,7 +25,7 @@ class SeedCommand extends OriginalCommand
      *
      * @return \Illuminate\Database\Seeder
      */
-    protected function getSeeder()
+    protected function getSeeder(): Seeder
     {
         $class = $this->input->getArgument('class') ?? $this->input->getOption('class');
         $baseClass = $class;

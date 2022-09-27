@@ -30,9 +30,9 @@ class MigrateMakeCommand extends OriginalCommand
     }
 
     /**
-     * @return bool|string|string[]|null
+     * @return bool|string|null
      */
-    protected function getMigrationPath()
+    protected function getMigrationPath(): bool|string|null
     {
         if (! is_null($targetPath = $this->input->getOption('path'))) {
             return ! $this->usingRealPath()

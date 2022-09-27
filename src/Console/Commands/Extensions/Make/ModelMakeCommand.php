@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands\Extensions\Make;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Console\ModelMakeCommand as OriginalCommand;
 use Thomasderooij\LaravelModules\Console\Commands\Extensions\GenerateOverrideTrait;
 
@@ -17,9 +18,9 @@ class ModelMakeCommand extends OriginalCommand
      * @param  string  $name
      * @return string
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
-    protected function buildClass($name)
+    protected function buildClass($name): string
     {
         $stub = $this->files->get($this->getStub());
 
@@ -43,12 +44,12 @@ class ModelMakeCommand extends OriginalCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return $rootNamespace.'\\'.config("modules.models_dir");
     }
 
-    protected function getStub()
+    protected function getStub(): string
     {
         return $this->option('pivot')
             ? $this->resolveStubPath('/stubs/model.pivot.stub')

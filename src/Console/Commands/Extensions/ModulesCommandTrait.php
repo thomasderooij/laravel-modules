@@ -42,7 +42,7 @@ trait ModulesCommandTrait
      *
      * @return string|null
      */
-    protected function getModule ()
+    protected function getModule (): ?string
     {
         $module = $this->option("module") ?: null;
         if ($module !== null) {

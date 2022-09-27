@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomasderooij\LaravelModules\CompositeProviders;
 
 use App\Providers\EventServiceProvider;
@@ -9,10 +11,10 @@ class EventCompositeServiceProvider extends ServiceProvider
 {
     use CompositeProviderTrait;
 
-    protected $name = "EventServiceProvider";
+    protected string $name = "EventServiceProvider";
     protected $listen = [];
 
-    public function listens ()
+    public function listens (): array
     {
         // Merge all the provider listens into one listen property
         foreach ($this->providers as $providerClass) {

@@ -29,7 +29,7 @@ class RollbackCommand extends OriginalCommand
      *
      * @return array|string
      */
-    protected function getMigrationPaths()
+    protected function getMigrationPaths(): array|string
     {
         $module = $this->getLastMigrationModule();
 
@@ -45,7 +45,7 @@ class RollbackCommand extends OriginalCommand
      *
      * @return null|string
      */
-    protected function getLastMigrationModule ()
+    protected function getLastMigrationModule (): ?string
     {
         if (Schema::hasColumn("migrations", "module") === false) {
             return null;
