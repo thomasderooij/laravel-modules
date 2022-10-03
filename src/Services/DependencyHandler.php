@@ -263,7 +263,7 @@ class DependencyHandler extends ModuleStateRepository implements Contract
             $fileContent = $this->getTrackerContent();
 
             // single out the dependencies
-            $dependencies = $fileContent[$this->getDependenciesKey()];
+            $dependencies = $fileContent[$this->getDependenciesKey()] ?? [];
         }
 
         // Filter the dependencies in which the module is downstream
