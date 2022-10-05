@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Services;
 
+use Illuminate\Console\View\Components\Info;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\MigrationsStarted;
 use Illuminate\Database\Migrations\Migrator;
@@ -25,7 +26,7 @@ class ModuleMigrator extends Migrator
         // aren't, we will just make a note of it to the developer so they're aware
         // that all the migrations have been run against this database system.
         if (count($migrations) === 0) {
-            $this->note('<info>Nothing to migrate.</info>');
+            $this->write(Info::class, '<info>Nothing to migrate.</info>');
 
             return;
         }
@@ -91,7 +92,7 @@ class ModuleMigrator extends Migrator
             $this->pretendToRun($migration, 'up');
         }
 
-        $this->note("<comment>Migrating:</comment> {$name}");
+        $this->write(Info::class, "<comment>Migrating:</comment> {$name}");
 
         $startTime = microtime(true);
 
@@ -104,7 +105,7 @@ class ModuleMigrator extends Migrator
         // in the application. A migration repository keeps the migrate order.
         $this->logInRepository($name, $batch, $module);
 
-        $this->note("<info>Migrated:</info>  {$name} ({$runTime} seconds)");
+        $this->write(Info::class, "<info>Migrated:</info>  {$name} ({$runTime} seconds)");
     }
 
     /**
