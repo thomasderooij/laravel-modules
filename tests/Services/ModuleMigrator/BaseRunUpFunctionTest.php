@@ -24,7 +24,7 @@ class BaseRunUpFunctionTest extends ModuleMigratorTest
         $this->migrator->shouldReceive("getMigrationName")->withArgs([$file = "filename"])->andReturn($file);
         $this->migrator->shouldReceive("resolve")->withArgs([$file])->andReturn($file);
         // It should notify us of the migration
-        $this->migrator->shouldReceive("note")->andReturn("<comment>Migrating:</comment> {$file}");
+        $this->migrator->shouldReceive("write")->andReturn("<comment>Migrating:</comment> {$file}");
         // Run it
         $this->migrator->shouldReceive("runMigration")->withArgs([$file, "up"]);
         // Log it
@@ -44,7 +44,7 @@ class BaseRunUpFunctionTest extends ModuleMigratorTest
         $this->migrator->shouldReceive("getMigrationName")->withArgs([$file = "filename"])->andReturn($file);
         $this->migrator->shouldReceive("resolve")->withArgs([$file])->andReturn($file);
         // It should notify us of the migration
-        $this->migrator->shouldReceive("note")->andReturn("<comment>Migrating:</comment> {$file}");
+        $this->migrator->shouldReceive("write")->andReturn("<comment>Migrating:</comment> {$file}");
         // Run it
         $this->migrator->shouldReceive("runMigration")->withArgs([$file, "up"]);
         // Log it
