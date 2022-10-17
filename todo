@@ -1,4 +1,0 @@
-make the tracker file name configurable in the config
-implement a check to see if a module exists before running a make command, e.g., make:model
-implement kernel tests
-implement seeders in the modules
