@@ -331,7 +331,7 @@ class ModuleManager extends ModuleStateRepository implements Contract
      */
     protected function getDefaultCacheValidity(): int
     {
-        return 60 * 60 * 24 * 7;
+        return config('modules.cache_validity');
     }
 
     /**
