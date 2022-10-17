@@ -22,5 +22,5 @@ return [
     "autoload" => env("MODULES_AUTOLOAD", "MyModules"),
     "base_model" => env("MODULES_MODEL", "Illuminate\Database\Eloquent\Model"),
     "has_factory_trait" => env("MODULES_HAS_FACTORY", "Thomasderooij\LaravelModules\Database\Factories\HasFactory"),
-    "cache_validity" => env("MODULES_CACHE_VALIDITY", "604800",
+    "cache_validity" => env("MODULES_CACHE_VALIDITY", "604800"),
 ];
