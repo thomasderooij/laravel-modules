@@ -20,7 +20,7 @@ class DeleteModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
@@ -40,7 +40,7 @@ class DeleteModuleCommandTest extends CommandTest
 
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $module]);
         // Since the module is in the workbench, the workbench should be cleared
-        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], 604800]);
+        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], $validity]);
         // We check the modules root
         $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$root")])->andReturn(true);
         // We remove the module from the tracker file

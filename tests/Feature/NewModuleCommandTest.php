@@ -23,7 +23,7 @@ class NewModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
@@ -192,7 +192,7 @@ class NewModuleCommandTest extends CommandTest
         // Add the module to our workbench
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
         $cacheInput = null;
-        Cache::shouldReceive("put")->withArgs(["modules-cache", Mockery::capture($cacheInput), 604800]);
+        Cache::shouldReceive("put")->withArgs(["modules-cache", Mockery::capture($cacheInput), $validity]);
 
         $response->expectsOutput("Your module has been created in the $root/$newModule directory.");
 

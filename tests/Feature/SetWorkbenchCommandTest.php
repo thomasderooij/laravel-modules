@@ -20,7 +20,7 @@ class SetWorkbenchCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => null]);
 
 
@@ -30,7 +30,7 @@ class SetWorkbenchCommandTest extends CommandTest
             ->andReturn(json_encode(["modules" => [$module], "activeModules" => []]));
 
         // The module should be put in the workbench
-        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => $module], 604800]);
+        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => $module], $validity]);
 
         // And I should get some feedback
         $response->expectsOutput("The module \"$strtolower\" is now set to your workbench.");

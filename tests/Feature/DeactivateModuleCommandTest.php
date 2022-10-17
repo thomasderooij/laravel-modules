@@ -20,8 +20,7 @@ class DeactivateModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-//        // With a cache driver
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
@@ -40,7 +39,7 @@ class DeactivateModuleCommandTest extends CommandTest
         ]);
         // And the module should be removed from the workbench
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => $module]);
-        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], 604800]);
+        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], $validity]);
 
         // See if the module directory exists
         $this->filesystem->shouldReceive("isDirectory")->withArgs([base_path("$root")])->andReturn(true);

@@ -18,11 +18,11 @@ class UnsetWorkbenchCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => null]);
 
         // The workbench should be cleared
-        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], 604800]);
+        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => null], $validity]);
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
         $this->filesystem->shouldReceive("get")->withArgs([base_path("$root/.tracker")])
             ->andReturn(json_encode(["modules" => ["SomeModule"], "activeModules" => []]));

@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Feature;
 
-use Illuminate\Cache\CacheManager;
-use Illuminate\Cache\FileStore;
-use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Mockery\Matcher\Any;
-use Mockery\Matcher\AnyArgs;
 
 class ActivateModuleCommandTest extends CommandTest
 {
@@ -18,6 +13,7 @@ class ActivateModuleCommandTest extends CommandTest
     {
         $module = "InactiveModule";
         $strtolowModule = strtolower($module);
+        Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
 
         // Case should not matter when activating a module
         $response = $this->artisan("module:activate", ["name" => $strtolowModule]);
@@ -26,8 +22,6 @@ class ActivateModuleCommandTest extends CommandTest
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
         // The cache should check the workbench
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(null);
-//        // With a cache driver
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         // And there should be a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
 
@@ -48,7 +42,7 @@ class ActivateModuleCommandTest extends CommandTest
         $response->expectsOutput("The module \"$strtolowModule\" has been activated and put in your workbench.");
 
         // And the module should be put in the workbench
-        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => $module], 604800]);
+        Cache::shouldReceive("put")->withArgs(["modules-cache", ["workbench" => $module], $validity]);
 
         $response->run();
     }
