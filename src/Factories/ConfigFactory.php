@@ -70,6 +70,7 @@ class ConfigFactory extends FileFactory implements Contract
             $this->getVanillaModuleNamePlaceholder() => $this->getDefaultVanillaModuleName(),
             $this->getModuleBaseModelPlaceholder() => $this->getDefaultModel(),
             $this->getModuleHasFactoryPlaceholder() => $this->getDefaultHasFactoryTrait(),
+            $this->getCacheValidityPlaceholder() => (string) $this->getCacheValidity(),
         ]);
     }
 
@@ -181,6 +182,26 @@ class ConfigFactory extends FileFactory implements Contract
     protected function getModuleHasFactoryPlaceholder(): string
     {
         return "{moduleHasFactory}";
+    }
+
+    /**
+     * Get the cache validity placeholder
+     *
+     * @return string
+     */
+    protected function getCacheValidityPlaceholder(): string
+    {
+        return "{cacheValidity}";
+    }
+
+    /**
+     * Get the cache validity. Defaults to one week.
+     *
+     * @return int
+     */
+    protected function getCacheValidity(): int
+    {
+        return 60 * 60 * 24 * 7;
     }
 
     /**

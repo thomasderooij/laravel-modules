@@ -8,7 +8,7 @@ use Thomasderooij\LaravelModules\Services\ModuleManager;
 
 class GetCacheValidityTest extends ModuleManagerTest
 {
-    private $method = "getDefaultCacheValidity";
+    private string $method = "getDefaultCacheValidity";
 
     /**
      * Here we test the default value of the cache validity. We do this because we want to this test to fail when

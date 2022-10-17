@@ -151,11 +151,14 @@ This project seems to be pretty functional, but might have bugs. Should you find
  free to create an issue.
 
 ### Settings
-In the settings, you will find a few things things:
+In the settings, you will find a few things:
 * [`root`] <-- This is the default for your modules directory
 * [`vanilla`] <-- Your app directory is considered a module, and its name can be found here. It defaults to "Vanilla"
 * [`models_dir`] <-- The directory in which your models will be placed. It defaults to "Models"
 * [`autoload`] <-- The directory your composer.json uses for psr4 autoloads
+* [`base_model`] <-- the class of your base model for your model:make command,
+* [`has_factory_trait`] <-- the class for your hasFactory trait. It's overwritten to use the module directory by default,
+* [`cache_validity`] <-- How long a module will stay in your workbench. Defaults to one week.
 
 The vanilla Laravel name is just a module name for the default behaviour. If you want to change that name, either
 change it in the config/modules file, or add 'MODULES_VANILLA={your preferred name here}' to your .env file

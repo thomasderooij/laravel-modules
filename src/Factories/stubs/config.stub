@@ -22,4 +22,5 @@ return [
     "autoload" => env("MODULES_AUTOLOAD", "{moduleAutoload}"),
     "base_model" => env("MODULES_MODEL", "{moduleModel}"),
     "has_factory_trait" => env("MODULES_HAS_FACTORY", "{moduleHasFactory}"),
+    "cache_validity" => env("MODULES_CACHE_VALIDITY", "{cacheValidity}",
 ];
