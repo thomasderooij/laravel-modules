@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Services;
 
 use Illuminate\Console\View\Components\Info;
+use Illuminate\Console\View\Components\Task;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\MigrationsStarted;
 use Illuminate\Database\Migrations\Migrator;
@@ -80,32 +81,24 @@ class ModuleMigrator extends Migrator
      * @param $file
      * @param $batch
      * @param $pretend
-     * @param null|string $module
+     * @param ?string $module
      */
-    protected function baseRunUpFunction($file, $batch, $pretend, string $module = null)
+    protected function baseRunUpFunction($file, $batch, $pretend, string $module = null): void
     {
-        $migration = $this->resolve(
-            $name = $this->getMigrationName($file)
-        );
+        $migration = $this->resolvePath($file);
+
+        $name = $this->getMigrationName($file);
 
         if ($pretend) {
             $this->pretendToRun($migration, 'up');
         }
 
-        $this->write(Info::class, "<comment>Migrating:</comment> {$name}");
-
-        $startTime = microtime(true);
-
-        $this->runMigration($migration, 'up');
-
-        $runTime = round(microtime(true) - $startTime, 2);
+        $this->write(Task::class, $name, fn () => $this->runMigration($migration, 'up'));
 
         // Once we have run a migrations class, we will log that it was run in this
         // repository so that we don't try to run it next time we do a migration
-        // in the application. A migration repository keeps the migrate order.
+        // in the application. A migration repository keeps the migration order.
         $this->logInRepository($name, $batch, $module);
-
-        $this->write(Info::class, "<info>Migrated:</info>  {$name} ({$runTime} seconds)");
     }
 
     /**
