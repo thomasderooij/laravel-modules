@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Console\Commands;
 
-use Thomasderooij\LaravelModules\Contracts\Services\DependencyHandler;
 use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Contracts\Factories\ModuleFactory;
 
