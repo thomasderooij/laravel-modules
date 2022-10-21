@@ -15,7 +15,7 @@ use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager;
 
 class ConfigFactory extends FileFactory implements Contract
 {
-    public function __construct (Filesystem $filesystem, ModuleManager $moduleManager)
+    public function __construct(Filesystem $filesystem, ModuleManager $moduleManager)
     {
         parent::__construct($filesystem, $moduleManager);
 
@@ -25,13 +25,14 @@ class ConfigFactory extends FileFactory implements Contract
     /**
      * Create modules config files and metadata files
      *
+     * @param string $appNamespace
      * @param string $rootDir
      * @throws FileNotFoundException
      */
-    public function create (string $rootDir) : void
+    public function create(string $appNamespace, string $rootDir): void
     {
-        $this->createConfigFile($rootDir);
-        $this->replaceServiceProviders();
+        $this->createConfigFile($appNamespace, $rootDir);
+        $this->replaceServiceProviders($appNamespace);
     }
 
     /**
@@ -39,16 +40,16 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    public function undo () : void
+    public function undo(): void
     {
+        $this->revertServiceProviders(config('modules.app_namespace'));
         $this->removeConfigFile();
-        $this->revertServiceProviders();
     }
 
     /**
      * Remove the modules config file
      */
-    protected function removeConfigFile () : void
+    protected function removeConfigFile(): void
     {
         $this->filesystem->delete(base_path('config') . "/{$this->getConfigFileName()}");
     }
@@ -56,12 +57,14 @@ class ConfigFactory extends FileFactory implements Contract
     /**
      * Create a modules config file
      *
+     * @param string $appNamespace
      * @param string $rootDir
      * @throws FileNotFoundException
      */
-    protected function createConfigFile (string $rootDir) : void
+    protected function createConfigFile(string $appNamespace, string $rootDir): void
     {
         $this->populateFile(base_path("config"), $this->getConfigFileName(), $this->getStub(), [
+            $this->getAppNamespacePlaceholder() => $appNamespace,
             $this->getModuleDirPlaceholder() => $rootDir,
             $this->getModuleNamespacePlaceholder() => ucfirst($rootDir),
             $this->getModuleAutoloadPlaceholder() => $rootDir,
@@ -74,13 +77,13 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    protected function replaceServiceProviders () : void
+    protected function replaceServiceProviders(string $appNamespace): void
     {
         $this->populateFile(
             config_path(),
             "app.php",
             config_path("app.php"),
-            $this->getServiceProvidersArray()
+            $this->getServiceProvidersArray($appNamespace)
         );
     }
 
@@ -89,23 +92,23 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    protected function revertServiceProviders () : void
+    protected function revertServiceProviders(string $appNamespace): void
     {
         $this->populateFile(
             config_path(),
             "app.php",
             config_path("app.php"),
-            array_flip($this->getServiceProvidersArray())
+            array_flip($this->getServiceProvidersArray($appNamespace))
         );
     }
 
-    protected function getServiceProvidersArray () : array
+    protected function getServiceProvidersArray(string $appNamespace): array
     {
         return [
-            "App\Providers\AuthServiceProvider" => AuthCompositeServiceProvider::class,
-            "App\Providers\BroadcastServiceProvider" => BroadcastCompositeServiceProvider::class,
-            "App\Providers\EventServiceProvider" => EventCompositeServiceProvider::class,
-            "App\Providers\RouteServiceProvider" => RouteCompositeServiceProvider::class,
+            "$appNamespace\Providers\AuthServiceProvider" => AuthCompositeServiceProvider::class,
+            "$appNamespace\Providers\BroadcastServiceProvider" => BroadcastCompositeServiceProvider::class,
+            "$appNamespace\Providers\EventServiceProvider" => EventCompositeServiceProvider::class,
+            "$appNamespace\Providers\RouteServiceProvider" => RouteCompositeServiceProvider::class,
         ];
     }
 
@@ -124,11 +127,15 @@ class ConfigFactory extends FileFactory implements Contract
      *
      * @return string
      */
-    protected function getTrackerStub () : string
+    protected function getTrackerStub(): string
     {
         return __DIR__ . '/stubs/tracker.stub';
     }
 
+    protected function getAppNamespacePlaceholder(): string
+    {
+        return "{appNamespace}";
+    }
     /**
      * Get the module stub directory placeholder
      *

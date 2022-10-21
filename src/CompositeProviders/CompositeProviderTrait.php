@@ -22,8 +22,8 @@ trait CompositeProviderTrait
         $providers = [];
 
         // Check if the vanilla provider exists. If so, add it to the list of providers.
-        if (class_exists("App\\Providers\\{$this->name}")) {
-            $providers[] = "App\\Providers\\{$this->name}";
+        if (class_exists(config('modules.app_namespace')."\\Providers\\{$this->name}")) {
+            $providers[] = config('modules.app_namespace')."\\Providers\\{$this->name}";
         }
 
         // Get all the active modules
