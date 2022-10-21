@@ -25,6 +25,7 @@ class InitModulesCommandTest extends CommandTest
 
         // We config should check for a modules root, and return null
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // Building the app bootstrap file
         $this->filesystem->shouldReceive("move")->withArgs([base_path("bootstrap/app.php"), base_path("bootstrap/app_orig.php")])->once();
@@ -84,6 +85,7 @@ class InitModulesCommandTest extends CommandTest
 
         // We config should check for a modules root, and return a root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn("Modules");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // And the file system should check for a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("Modules/.tracker")])->andReturn(true);

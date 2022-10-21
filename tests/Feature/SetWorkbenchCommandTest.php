@@ -20,6 +20,7 @@ class SetWorkbenchCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
         Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => null]);
 
@@ -46,6 +47,7 @@ class SetWorkbenchCommandTest extends CommandTest
 
         // The configuration should not exist
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = null);
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // We should not have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
@@ -60,8 +62,10 @@ class SetWorkbenchCommandTest extends CommandTest
         // If I want to set a module to my workbench
         $module = "CurrentModule";
         $strtolower = strtolower($module);
-        $response = $this->artisan("module:set", ["name" => $strtolower]);// The configuration should know its root
+        $response = $this->artisan("module:set", ["name" => $strtolower]);
+        // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
