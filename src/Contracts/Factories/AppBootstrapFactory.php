@@ -9,7 +9,7 @@ interface AppBootstrapFactory
     /**
      * Rename the bootstrap file and replace it with a new one
      */
-    public function create(): void;
+    public function create(string $appNamespace): void;
 
     /**
      * Revert the bootstrap file to its original

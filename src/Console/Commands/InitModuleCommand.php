@@ -112,7 +112,7 @@ class InitModuleCommand extends Command
         $rootDir = $this->askForRootDir();
 
         // Replace the bootstrap/app.php with a new version using the composite kernel
-        $this->bootstrapFactory->create();
+        $this->bootstrapFactory->create($namespace);
 
         // Create a config and tracker file named modules.php and $rootdir and add your module root to the psr4 namespace
         //  in your composer.json file.

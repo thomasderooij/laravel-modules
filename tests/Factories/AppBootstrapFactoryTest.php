@@ -37,7 +37,7 @@ class AppBootstrapFactoryTest extends Test
         /** @var AppBootstrapFactoryContract $uut $uut */
         $uut = $this->app->make(AppBootstrapFactory::class);
 
-        // The original bootstrap file should renamed to app_orig.php
+        // The original bootstrap file should rename to app_orig.php
         $mockFilesystem
             ->shouldReceive('move')
             ->withArgs([
@@ -67,7 +67,7 @@ class AppBootstrapFactoryTest extends Test
             ->once();
 
         // Call the create function
-        $uut->create();
+        $uut->create("MyNamespace");
         // Check if the captured put arguments matches the snapshot
         $this->assertMatchesSnapshot($argumentContent);
     }
