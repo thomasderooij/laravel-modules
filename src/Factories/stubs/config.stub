@@ -16,7 +16,7 @@ return [
      | }
      | And run "composer dump-autoload" in your terminal.
      */
-    "app_namespace" => env("APP_NAMESPACE", "{appNamespace})",
+    "app_namespace" => env("APP_NAMESPACE", "{appNamespace}"),
     "root" => env("MODULES_ROOT", "{moduleDirectory}"),
     "vanilla" => env("VANILLA_LARAVEL", "{vanillaModule}"),
     "models_dir" => env("MODELS_DIR", "Models"),
