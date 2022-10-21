@@ -29,10 +29,10 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    public function create () : void
+    public function create (string $appNamespace) : void
     {
         $this->renameBootstrapFile();
-        $this->writeNewBootstrapFile();
+        $this->writeNewBootstrapFile($appNamespace);
     }
 
     /**
@@ -49,11 +49,12 @@ class AppBootstrapFactory extends FileFactory implements Contract
      *
      * @throws FileNotFoundException
      */
-    protected function writeNewBootstrapFile () : void
+    protected function writeNewBootstrapFile (string $appNamespace) : void
     {
         touch(base_path("bootstrap/{$this->getBootstrapFileName()}"));
 
         $this->populateFile(base_path("bootstrap"), $this->getBootstrapFileName(), $this->getStub(), [
+            $this->getAppNamespacePlaceholder() => $appNamespace,
             $this->getConsoleCompositeKernelPlaceHolder() => $this->getCompositeKernelClassNameStatic(),
             $this->getHttpCompositeKernelPlaceHolder() => $this->getHttpKernelClassNameStatic(),
         ]);
@@ -67,6 +68,11 @@ class AppBootstrapFactory extends FileFactory implements Contract
     protected function getStub () : string
     {
         return  __DIR__ . "/stubs/bootstrapFile.stub";
+    }
+
+    protected function getAppNamespacePlaceholder(): string
+    {
+        return "{appNamespace}";
     }
 
     /**
