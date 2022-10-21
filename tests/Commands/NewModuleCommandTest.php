@@ -41,6 +41,7 @@ class NewModuleCommandTest extends CommandTest
         $this->moduleManager->shouldReceive("setWorkbench")->withArgs([$newModule]);
 
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
         Config::shouldReceive("offsetGet")->withArgs(["app.timezone"])->andReturn("UTC");
         Config::shouldReceive("offsetGet")->withArgs(["cache.default"])->andReturn("file");
         Config::shouldReceive("offsetGet")->withArgs(["cache.stores.file"])->andReturn([
@@ -49,7 +50,7 @@ class NewModuleCommandTest extends CommandTest
         ]);
         Config::shouldReceive("offsetGet")->withArgs(["database.migrations"])->andReturn("migrations");
 
-        // We then expect to be told where we can find our brand new module
+        // We then expect to be told where we can find our brand-new module
         $response->expectsOutput("Your module has been created in the $root/$newModule directory.");
 
         $response->run();

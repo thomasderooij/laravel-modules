@@ -32,7 +32,7 @@ class CompositeKernel extends ConsoleKernel implements ConsoleCompositeKernel
             $this->kernels = [];
 
             // Include the default kernel if it still exists
-            $class = "App\Console\Kernel";
+            $class = config('modules.app_namespace', 'App') . "\Console\Kernel";
             if (class_exists($class)) {
                 $this->kernels[] = new $class($app, $events);
             }

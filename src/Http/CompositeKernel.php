@@ -70,7 +70,7 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
             return parent::__construct($app, $router);
         }
 
-        $vanilla = "App\\Http\\Kernel";
+        $vanilla = config('modules.app_namespace', 'App') . "\\Http\\Kernel";
         if (class_exists($vanilla)) {
             $this->kernels[] = new $vanilla($app, $router);
         }

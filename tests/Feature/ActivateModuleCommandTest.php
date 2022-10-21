@@ -14,6 +14,7 @@ class ActivateModuleCommandTest extends CommandTest
         $module = "InactiveModule";
         $strtolowModule = strtolower($module);
         Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // Case should not matter when activating a module
         $response = $this->artisan("module:activate", ["name" => $strtolowModule]);
@@ -56,6 +57,7 @@ class ActivateModuleCommandTest extends CommandTest
         // The configuration should know its root
         $root = "Root";
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // We should not have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);
@@ -74,6 +76,7 @@ class ActivateModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
@@ -94,6 +97,7 @@ class ActivateModuleCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // We should have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);

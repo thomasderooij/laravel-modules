@@ -18,6 +18,7 @@ class UnsetWorkbenchCommandTest extends CommandTest
 
         // The configuration should know its root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
         Config::shouldReceive('get')->withArgs(['modules.cache_validity', null])->andReturn($validity = 123);
         Cache::shouldReceive("get")->withArgs(["modules-cache"])->andReturn(["workbench" => null]);
 
@@ -39,6 +40,7 @@ class UnsetWorkbenchCommandTest extends CommandTest
 
         // The configuration should not exist
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = null);
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // We should not have a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(false);

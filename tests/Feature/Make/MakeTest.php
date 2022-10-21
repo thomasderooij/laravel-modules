@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Feature\Make;
 
-use Illuminate\Cache\FileStore;
-use Illuminate\Cache\Repository;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Thomasderooij\LaravelModules\Tests\Feature\CommandTest;
 
@@ -21,7 +18,6 @@ abstract class MakeTest extends CommandTest
     {
         parent::setUp();
 
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
         // The config should get the auth guard
         Config::shouldReceive("get")->withArgs(["auth.defaults.guard"])->andReturn("api");
         // And provider
@@ -36,6 +32,7 @@ abstract class MakeTest extends CommandTest
     {
         // I should be asked for the modules root
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($this->modulesDir = "MyModulesDir");
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         // And the filesystem should get the tracker data
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("{$this->modulesDir}/.tracker")])->andReturn(

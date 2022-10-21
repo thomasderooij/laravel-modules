@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Tests\Feature;
 
-use Illuminate\Cache\FileStore;
-use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
@@ -18,7 +16,7 @@ class CheckWorkbenchCommandTest extends CommandTest
         // The configuration should know its root
         $root = "Root";
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn("Root");
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
         // And there should be a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
         $module = "SomeModule";
@@ -44,7 +42,7 @@ class CheckWorkbenchCommandTest extends CommandTest
         // The configuration should know its root
         $root = "Root";
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn($root = "Root");
-//        Cache::shouldReceive("driver")->andReturn(new Repository(new FileStore($this->app['files'], base_path("storage/cache"))))->once();
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
         // And there should be a tracker file
         $this->filesystem->shouldReceive("isFile")->withArgs([base_path("$root/.tracker")])->andReturn(true);
         $module = "SomeModule";
@@ -70,6 +68,7 @@ class CheckWorkbenchCommandTest extends CommandTest
         // The configuration should know its root
         $root = "Root";
         Config::shouldReceive("get")->withArgs(["modules.root", null])->andReturn(null);
+        Config::shouldReceive("get")->withArgs(["modules.app_namespace", "App"])->andReturn("MyNamespace");
 
         $response->expectsOutput(
             "The modules need to be initialised first. You can do this by running the module:init command."
