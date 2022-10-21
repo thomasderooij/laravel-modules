@@ -17,6 +17,8 @@ class InitModulesCommandTest extends CommandTest
         $filesystem = new Filesystem();
         // When I init the modules
         $response = $this->artisan("module:init");
+        // I expect to be asked the app directory namespace
+        $response->expectsQuestion("What is the namespace of your app directory?", $namespace = "MyNamespace");
         // I should be asked what my modules root directory will be
         $response->expectsQuestion("What will be the root directory of your modules?", $this->root);
 

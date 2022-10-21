@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Factories;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Config;
 use Mockery;
 use Thomasderooij\LaravelModules\Contracts\Factories\ConfigFactory as ConfigFactoryContract;
 use Thomasderooij\LaravelModules\Contracts\Services\ComposerEditor as ComposerEditorContract;
@@ -16,7 +17,8 @@ use Thomasderooij\LaravelModules\Tests\Test;
 
 class ConfigFactoryTest extends Test
 {
-    private $rootDir = "test_root";
+    private string $rootDir = "test_root";
+    private string $appNamespace = "MyNamespace";
 
     /**
      * Here we test if the create function calls the expected protected functions and dependencies
@@ -35,11 +37,11 @@ class ConfigFactoryTest extends Test
 
         // The following methods should be called
         $uut->shouldAllowMockingProtectedMethods();
-        $uut->shouldReceive('createConfigFile')->withArgs([$this->rootDir])->once();
+        $uut->shouldReceive('createConfigFile')->withArgs([$this->appNamespace, $this->rootDir])->once();
         $uut->shouldReceive('replaceServiceProviders')->once();
 
         // When I call the create function
-        $uut->create($this->rootDir);
+        $uut->create($this->appNamespace, $this->rootDir);
     }
 
     /**
@@ -61,6 +63,7 @@ class ConfigFactoryTest extends Test
         $uut->shouldAllowMockingProtectedMethods();
         $uut->shouldReceive('revertServiceProviders')->once();
         $uut->shouldReceive('removeConfigFile')->once();
+        Config::shouldReceive('get')->withArgs(['modules.app_namespace', null])->andReturn($this->appNamespace);
 
         // When I call the undo function
         $uut->undo();
@@ -100,7 +103,7 @@ class ConfigFactoryTest extends Test
 
         // When I call the createConfigFile method with a rootdir as argument
         $factory = $this->app->make(ConfigFactory::class);
-        $uut->invoke($factory, $this->rootDir);
+        $uut->invoke($factory, $this->appNamespace, $this->rootDir);
 
         $this->assertMatchesSnapshot($configFileArgument);
     }
@@ -151,7 +154,6 @@ class ConfigFactoryTest extends Test
         /** @var ConfigFactoryContract $uut */
         $reflection = new \ReflectionClass(ConfigFactory::class);
         $uut = $reflection->getMethod("revertServiceProviders"); // The unit under test is this specific method
-        $uut->setAccessible(true);
 
         $mockFilesystem
             ->shouldReceive('get')
@@ -170,7 +172,7 @@ class ConfigFactoryTest extends Test
 
         // When I call the replaceServiceProviders method
         $factory = $this->app->make(ConfigFactory::class);
-        $uut->invoke($factory, $this->rootDir);
+        $uut->invoke($factory, $this->appNamespace, $this->rootDir);
 
         $this->assertMatchesSnapshot($appFileArgument);
     }

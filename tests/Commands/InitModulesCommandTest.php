@@ -13,14 +13,12 @@ use Thomasderooij\LaravelModules\Factories\ConfigFactory;
 use Thomasderooij\LaravelModules\Factories\ModuleMigrationFactory;
 use Thomasderooij\LaravelModules\Factories\TrackerFactory;
 use Thomasderooij\LaravelModules\Services\ComposerEditor;
-use Thomasderooij\LaravelModules\Services\ModuleManager;
-use Thomasderooij\LaravelModules\Tests\Test;
 
 class InitModulesCommandTest extends CommandTest
 {
-    private $root = 'test_root';
+    private string $root = 'test_root';
 
-    private $bootstrapFactory;
+    private readonly Mockery\MockInterface|AppBootstrapFactory $bootstrapFactory;
     private $composer;
     private $composerEditor;
     private $configFactory;
@@ -58,6 +56,8 @@ class InitModulesCommandTest extends CommandTest
     {
         // When I run the init command
         $response = $this->artisan("module:init");
+        // I expect to be asked the app directory namespace
+        $response->expectsQuestion("What is the namespace of your app directory?", $namespace = "MyNamespace");
         // I expect to be asked which directory will be my modules directory
         $response->expectsQuestion("What will be the root directory of your modules?", $this->root);
         // And I expect to receive instructions after a successful initialisation
@@ -72,7 +72,7 @@ class InitModulesCommandTest extends CommandTest
         $this->bootstrapFactory->shouldReceive('create')->once();
 
         // And the config factory create method should be called
-        $this->configFactory->shouldReceive('create')->withArgs([$this->root])->once();
+        $this->configFactory->shouldReceive('create')->withArgs([$namespace, $this->root])->once();
 
         // And the migration factory create method should be called
         $this->migrationFactory->shouldReceive('create')->once();
@@ -123,6 +123,8 @@ class InitModulesCommandTest extends CommandTest
     {
         // When I run the init command
         $response = $this->artisan("module:init");
+        // I expect to be asked the app directory namespace
+        $response->expectsQuestion("What is the namespace of your app directory?", $namespace = "MyNamespace");
         // I expect to be asked which directory will be my modules directory
         $response->expectsQuestion("What will be the root directory of your modules?", $this->root);
 
@@ -133,7 +135,7 @@ class InitModulesCommandTest extends CommandTest
 
         // And if the config factory throws an exception
         $errorMessage = "Error. Things went terribly wrong!";
-        $this->configFactory->shouldReceive("create")->withArgs([$this->root])->andThrow(
+        $this->configFactory->shouldReceive("create")->withArgs([$namespace, $this->root])->andThrow(
             FileNotFoundException::class,
             $errorMessage
         );

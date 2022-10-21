@@ -105,6 +105,9 @@ class InitModuleCommand extends Command
             return;
         }
 
+        // Ask for app namespace
+        $namespace = $this->askForNamespace();
+
         // Ask for the name of the root directory
         $rootDir = $this->askForRootDir();
 
@@ -114,7 +117,7 @@ class InitModuleCommand extends Command
         // Create a config and tracker file named modules.php and $rootdir and add your module root to the psr4 namespace
         //  in your composer.json file.
         try {
-            $this->configFactory->create($rootDir);
+            $this->configFactory->create($namespace, $rootDir);
             $this->trackerFactory->create($rootDir);
             $this->composerEditor->addNamespaceToAutoload($rootDir);
             $this->moduleMigrationFactory->create();
@@ -138,6 +141,11 @@ class InitModuleCommand extends Command
         $this->composer->dumpAutoloads();
         $this->displayCompleteInfoMessage();
         $this->displayInstructionsInfoMessage();
+    }
+
+    protected function askForNamespace(): string
+    {
+        return $this->ask("What is the namespace of your app directory?", "App");
     }
 
     /**

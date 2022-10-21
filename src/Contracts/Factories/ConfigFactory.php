@@ -9,7 +9,7 @@ interface ConfigFactory
     /**
      * Create modules config files and metadata files
      */
-    public function create(string $rootDir): void;
+    public function create(string $appNamespace, string $rootDir): void;
 
     public function undo(): void;
 }

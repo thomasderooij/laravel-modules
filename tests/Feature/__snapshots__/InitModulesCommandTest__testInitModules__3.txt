@@ -190,10 +190,10 @@ return [
          * Application Service Providers...
          */
         // App\Providers\AppServiceProvider::class,
-        // Thomasderooij\LaravelModules\CompositeProviders\AuthCompositeServiceProvider::class,
-        // // Thomasderooij\LaravelModules\CompositeProviders\BroadcastCompositeServiceProvider::class,
-        // Thomasderooij\LaravelModules\CompositeProviders\EventCompositeServiceProvider::class,
-        // Thomasderooij\LaravelModules\CompositeProviders\RouteCompositeServiceProvider::class,
+        // App\Providers\AuthServiceProvider::class,
+        // // App\Providers\BroadcastServiceProvider::class,
+        // App\Providers\EventServiceProvider::class,
+        // App\Providers\RouteServiceProvider::class,
 
     ],
 

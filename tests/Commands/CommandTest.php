@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Thomasderooij\LaravelModules\Tests\Commands;
 
 use Mockery;
+use Mockery\MockInterface;
+use Thomasderooij\LaravelModules\Contracts\Services\ModuleManager as ModuleManagerContract;
 use Thomasderooij\LaravelModules\Services\ModuleManager;
 use Thomasderooij\LaravelModules\Tests\Test;
 
 abstract class CommandTest extends Test
 {
-    protected $moduleManager;
+    protected readonly MockInterface|ModuleManagerContract $moduleManager;
 
     protected function setUp(): void
     {
