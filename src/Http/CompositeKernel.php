@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomasderooij\LaravelModules\Http;
 
+use Illuminate\Config\Repository as Config;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Router;
@@ -70,12 +71,12 @@ class CompositeKernel extends HttpKernel implements HttpCompositeKernel
             return parent::__construct($app, $router);
         }
 
-        $vanilla = config('modules.app_namespace', 'App') . "\\Http\\Kernel";
-        if (class_exists($vanilla)) {
-            $this->kernels[] = new $vanilla($app, $router);
-        }
-
         $app->booted(function (Application $application) use ($router) {
+            $config = $application->make(Config::class);
+            $vanilla = $config->get('modules.app_namespace', 'App') . "\\Http\\Kernel";
+            if (class_exists($vanilla)) {
+                $this->kernels[] = new $vanilla($application, $router);
+            }
             /** @var ModuleManager $moduleManager */
             $moduleManager = $application->make(\Thomasderooij\LaravelModules\Services\ModuleManager::class);
 
